@@ -1,0 +1,23 @@
+\label{sec:empirical}
+% Empirical	Approach
+% Description of the empirical model: specification and variables involved
+% Strategy for the estimation of the parameters of interest and test of the hypothesis
+\subsection{Different time trends}
+\label{subsec:e_trends}
+There exists great variation between companies in terms of size, distribution of customers (residential and commercial), industry-intensity. Both at a certain point in time and regarding the time trends. Several options exists in order to to control for unobserved grid-company specific difference. As a starting point we chose to go for grid company fixed effects (FE).
+\par
+One important factor to control for is the trend over time in electricity use. This consists of a trend in economic growth (increase) and in technological progress (decrease) \citep{lijesen2007real}. The different grids covers different areas of the country, thus, some can be in recession and we include individual trends in our specification which can either be linear or exponential $(1+\beta)^x$. For state-level data it is also common to control for size \citep{burke2017price} for which reason we include metering 
+
+
+\subsection{Instrumenting for prices}
+\label{subsec:instruments}
+To circumvent the simultaneity problem described in section \ref{subsec:bg_endogeneity} we consider using lagged prices or wind-energy production as price instruments.
+
+\subsection{Baseline model}
+\label{subsec:model}
+We use a log-log specification as it allows us to model demand responses across grid areas of different size. It is the more standard specification which allows for more direct comparison to the results in other studies \citep{burke2017price}. Other attractive properties include that the estimation provides the elasticity directly and does not predict non-positive electricity consumption, furthermore, the specification reduces the impact of outliers and are found to reduce systematic patterns in the estimated residuals \citep{burke2017price}. \citet{burke2017price}  also discuss various models and their econometric disadvantages regarding yearly data, e.g. that Generalized Methods of Moments (GMM) is prone to non-stationary data.
+
+
+\subsection{Robustness checks}
+\label{subsec:robustness}
+

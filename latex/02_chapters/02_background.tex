@@ -1,0 +1,42 @@
+\label{sec:background}
+Estimating price elasticities of electricity and has been an area of interest for economists for a long time and increasingly so. Deregulation of the electricity market made it important to measure how a broad spectre of consumers (residential, industrial and commercial) react to changing electricity prices.\par
+The supply side is becoming even more volatile following the increased share of renewable energy driven by political goals and competitive establishment costs. In the case of a very inelastic electricity demand \citet{wolak2001impact} outlines how an oligopolistic supply side can capitalize on intraday peaks in demand, however, firms that are able to have a more flexible energy use can face clear advantages in the market while on aggregate making it possible to further increase the share of renewables in the electricity supply. \par
+Thus, it is of importance to conduct better empirical estimations of how consumers respond at a micro level - in particular because taxes often are used as a policy tool to incentivize a decreased consumption of power. In the following we highlight the key contributions in this area.
+
+\subsection{The electricity market}
+\label{subsec:b_market}
+The electricity market differs from the majority of other markets because demand and supply mus synchronize completely at all times. Storing electricity is at best highly inefficient and thus too costly to implement practically. 
+\medskip\\
+There are several ways to organize a market. The market is subject to heavy regulation because the distribution is a natural monopoly. The EU wants to promote a single energy market which implies linking the electrical grids throughout Europe. As of now the 
+
+The final price paid by the firm is .. 
+Bids in the day-ahead-market forms the hourly spot price\footnote{\url{nordpoolgroup.com/trading/Day-ahead-trading/Price-calculation}} to which individual firms are charged. For our analysis we aim at estimating the implicit own-price elasticity of demand by assuming the individual firms takes the spot price as given and plans it's hourly electricity use accordingly.
+\medskip\\
+Domestic firms with an annual electricity consumption of at least 100,000 kWh in general have their hourly consumption charged by the corresponding spot market price. Between December 2017 and 2020 it is gradually phased in that
+smaller firms and households likewise have their hourly electricity consumption settled at the spot market price.
+*Smart meters
+
+\subsection{Previous studies}
+\label{subsec:b_results}
+% Previous empirical evidence
+% only the ones more closely related to your study!
+\citet{patrick2001estimating} were the first to estimate the demand-side responses to electricity prices for intraday-markets. For firms in England and Wales they find the overall magnitude of the real-time price elasticity of electricity to be quite low, though significant. Similar results on an hour-to-hour basis are found for the Netherlands \citep{lijesen2007real}. \par
+Regarding residential electricity demand most estimates of the demand response to price changes of electricity are in the range 0.0076 to -2.01 in the short run and -0.07 to -2.5 in the long run as reported in \citet{espey2004turning}, who are looking at non-time-of-day studies. Generally elasticities tend to be bigger in the long run which is in accordance with economic reasoning since consumers better can better modify their capital stock in the long term. These estimates rely on a a wide range of different empirical approaches.
+
+\subsection{Heterogeneous effects}
+\label{subsec:b_heterogeneity}
+\citet{fan2011price} estimate yearly own-price elasticities for Southern Australia at the aggregated level using consumption at an half-hourly basis using a log-linear model. The authors find heterogeneous effects across quantiles, depending on how extreme the weather is. \par
+Though only being able to use the average firm-level responses within each code of British Industrial Classification (BIC) \citet{patrick2001estimating} find a substantial heterogeneity across industries not only in the magnitude of the own-price elasticity of electricity demand but also in the within-day patterns of cross-price elasticities.
+
+\subsection{Endogeneity problems}
+\label{subsec:b_endogeneity}
+Estimating demands-side responses to shifting electricity prices is associated with potential problems of endogeneity as price and output are simultaneous. Therefore lagged prices are often included to avoid an omitted variable bias and to combat endogeneity \citep{lijesen2007real}, however, this inclusion creates a dynamic bias instead, however, this is more of an issue when estimating long term elasticities \citep{okajima2013estimation}. %\citet{okajima2013estimation} use lagged dependent variables and  as instruments for the resident electricity price (which have also been done by many others) but use an FD GMM model to circumvent the dynamic bias.
+\par
+\citet{bonte2015price} were able to use wind speed as an instrument for the spot market price, however, the effectiveness of this strategy might be isolated to Germany due to their feed-in-tariff for Renewable Energy Sources that is designed to directly affect the price. Likewise, \citet{graf2013measuring} tried using emissions right and prices for primary energy as instruments but to limited success.
+
+\subsection{Estimation methods}
+\label{subsec:b_estimation}
+When data is limited to total electricity demand it is common to apply a two stage least square (2SLS) regression and either include a time trend \citep{lijesen2007real} or estimate the elasticity year-by-year \citep{bonte2015price}.
+\par
+For more disaggregate data different methods can be utilized. Unobserved heterogeneity must be accounted for, usually by including unit-specific fixed-effects. On household level data one option is to use Seemingly Unrelated Regression Equations (SUR/SURE) \citep{vesterberg2014residential}.
+
