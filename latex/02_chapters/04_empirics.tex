@@ -6,12 +6,12 @@
 \label{subsec:e_trends}
 There exists great variation between companies in terms of size, distribution of customers (residential and commercial), industry-intensity. Both at a certain point in time and regarding the time trends. Several options exists in order to to control for unobserved grid-company specific difference. As a starting point we chose to go for grid company fixed effects (FE).
 \par
-One important factor to control for is the trend over time in electricity use. This consists of a trend in economic growth (increase) and in technological progress (decrease) \citep{lijesen2007real}. The different grids covers different areas of the country, thus, some can be in recession and we include individual trends in our specification which can either be linear or exponential $(1+\beta)^x$. For state-level data it is also common to control for size \citep{burke2017price} for which reason we include metering 
+One important factor to control for is the trend over time in electricity use. This consists of a trend in economic growth (increase) and in technological progress (decrease) \citep{lijesen2007real}. The different grids covers different areas of the country, thus, some can be in recession and we include individual trends in our specification which can either be linear or exponential $(1+\beta)^x$. For state-level data it is also common to control for size \citep{burke2017price} for which reason we include metering
 
 
 \subsection{Instrumenting for prices}
 \label{subsec:instruments}
-To circumvent the simultaneity problem described in section \ref{subsec:bg_endogeneity} we consider using lagged prices or wind-energy production as price instruments.
+To circumvent the simultaneity problem described in section \ref{subsec:b_endogeneity} we consider using lagged prices or wind-energy production as price instruments.
 
 \subsection{Baseline model}
 \label{subsec:model}
@@ -20,4 +20,3 @@ We use a log-log specification as it allows us to model demand responses across 
 
 \subsection{Robustness checks}
 \label{subsec:robustness}
-
