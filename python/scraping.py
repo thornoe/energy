@@ -2,6 +2,9 @@ import numpy as np
 import pandas as pd
 import requests, json, tqdm, time
 
+yr: http://sharki.oslo.dnmi.no/portal/page?_pageid=73,39035,73_39049&_dad=portal&_schema=PORTAL
+dmi: https://www.dmi.dk/vejrarkiv/
+
 ### Check the page is accessible and collect the total number of observations
 url = 'https://api.energidataservice.dk/datastore_search?resource_id=consumptionpergridarea&limit=' # add limit
 response = requests.get(url+'1')
