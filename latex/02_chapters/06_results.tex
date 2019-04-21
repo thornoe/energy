@@ -2,41 +2,44 @@
 % Consequences and implications for the public policy from different expected results.
 \subsection{Results for wholesale}
 \label{subsec:r_wholesale}
-
+For the peak-hours 12-15 on business days wholesale of electricity is estimated to decrease with 5.0 pct. when the spot price doubles, other things equal (Table \ref{tab:ws_preferred}).
 \begin{table}[H]
   \vspace{-0.0cm}
   \centering
-  \caption{REIV estimation for log wholesale electricity consumption}
+  \caption{log wholesale electricity consumption (FEIV)}
   \footnotesize
     \begin{tabular}{lc}
       \toprule
         \input{04_tables/ws_preferred}
     \end{tabular}
     \text{Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.}
+    \text{Log spot price is instrumented for by wind power prognosis for the same and the other region.}
   \label{tab:ws_preferred}
   \vspace{-0.0cm}
 \end{table}
 
 \subsection{Results for households and small companies}
+For the grid company Radius operating in the Copenhagen metropolitan area flex-settled customers (households and small companies) are charged a Time-of-Use (TOU) tariff of 0.835 DKK (0.112 EUR) for the hours 17-19 from October-March as opposed to 0.3236 DKK otherwise (0.043 EUR). The estimated effect of this tariff is found to be a decrease in electricity use of 1.9 pct. However, on business days the smaller effect of 1.4 pct. is only statistically significant at the 10\% level while the decrease is 4.4 pct. on non-business days. Table \ref{tab:hh_17-19} shows pooled 2SLS estimates of electricity consumption for households and small companies in Radius for the hours 17, 18, and 19.
 \label{subsec:r_wholesale}
-
-% \begin{table}[H]
-%   \vspace{-0.0cm}
-%   \centering
-%   \caption{FEIV estimation for log electricity consumption for households and small companies}
-%   \footnotesize
-%     \begin{tabular}{lccccc}
-%       \toprule
-%         \input{04_tables/hh_preferred}
-%     \end{tabular}
-%     \text{Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.}
-%   \label{tab:ws_preferred}
-%   \vspace{-0.0cm}
-% \end{table}
+\begin{table}[H]
+  \vspace{-0.0cm}
+  \centering
+  \caption{log electricity consumption for households and small companies in Radius (2SLS)}
+  \footnotesize
+    \begin{tabular}{lccc}
+      \toprule
+        \input{04_tables/hh_radius_17-19}
+    \end{tabular}
+    \text{Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.}
+    \text{Log spot price is instrumented for by wind power prognosis for the same and the other region.}
+  \label{tab:hh_17-19}
+  \vspace{-0.0cm}
+\end{table}
 
 
 \subsection{Robustness checks}
 \label{subsec:r_robustness}
+
 
 \subsection{Discussion}
 \label{subsec:discussion}
