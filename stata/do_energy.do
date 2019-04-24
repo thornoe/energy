@@ -18,9 +18,9 @@ global figures	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\latex\03_figure
 global tables	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\latex\04_tables"
 
 *** Global directories, Cathrine ***
-cd 				"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\stata"
-global figures	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\latex\03_figures"
-global tables	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\latex\04_tables"
+cd 				"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\stata"
+global figures	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\latex\03_figures"
+global tables	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\latex\04_tables"
 
 
 ////////////////////////////////////////////////////////////////////////////////
