@@ -1,7 +1,53 @@
 \label{sec:theory}
 % Theoretical arguments in the literature closely related to your study
-\subsection{Price formation in the spot market for electricity}
-\label{subsec:t_price}
+
+\subsection{The electricity market}
+\label{subsec:t_market}
+The electricity market differs from the majority of other markets because demand and supply must synchronize completely at all times. Storing electricity is possible, but at best highly inefficient and thus too costly to implement practically. Instead supply must be at least as great as demand at all times if blackouts are to be avoided. Historically this has been ensured through the production of a surplus of electricity. Demand occurs in peaks 
+
+But with increasing demand and costs of emissions related to the production of electricity Too costly in terms of  - has been deemed more important to ensure stable supply over  
+\medskip\\
+In recent years the electricity market has undergone many changes to induce competition and reduce surplus production and thus "unnecessary" carbon dioxide emissions. The move towards more market liberalization still recognizes that that the distribution net constitutes a natural monopoly. To ensure the cheapest operation this is still often owned by governmental organisations and thus subject to heavy regulation. n many countries including Denmark the firm in charge maintaining and building the grid is state-controlled. The remainding market operators () are private and compete by .... Competition is ensured by letting thirds parties get access to the electric grids (that themselves are regulated / owned by a system operator) in a transparent way.
+There are several ways to organize a market.  I  The EU wants to promote a single energy market which implies linking the electrical grids throughout Europe. As of now the 
+
+Firms and residential households enter the energy market differently. They face different prices that are formed in different ways. This is described below
+
+\subsubsection{The retail market} %Er det her den rigtige oversættelse? 
+\label{subsubsec: t_resmarket}
+
+The way residential customers are settled is likely to change in the future as smart meters are adopted more widely. For instance xx has decided to enrol smart meters to all consumers by 20xx.  
+
+\subsubsection{The wholesale market}
+\label{subsubsec: t_whomarket}
+
+Electricity is also traded in the financial market in terms of forwards and futures. Price peaks are necessary for the wholesale market to invest in additional/reserve capacity. 
+
+ 
+
+The final price paid by the firm is .. 
+Bids in the day-ahead-market forms the hourly price\footnote{\url{nordpoolgroup.com/trading/Day-ahead-trading/Price-calculation}} to which individual firms are charged. 
+
+For our analysis we aim at estimating the implicit own-price elasticity of demand by assuming the individual firms takes the spot price as given and plans it's hourly electricity use accordingly.
+\medskip\\
+Domestic firms with an annual electricity consumption of at least 100,000 kWh in general have their hourly consumption charged by the corresponding spot market price. Between December 2017 and 2020 it is gradually phased in that
+smaller firms and households likewise have their hourly electricity consumption settled at the spot market price.
+*Smart meters
+There are plenty of ways to organize the market. In Denmark the model assimilates that of a fully liberalized market with retail competition, which requires as an independent balancing mechanism. 
+
+\subsubsection{The day-ahead market}
+The day-ahead market of electricity is the spot market. This is made up of several country-specific markets . In the spot market electricity for specific hours the next day and blocks thereof are sold in an auction. In the auction all bids and asks are aggregated to form the hourly supply and demand - while the market clearing price is determined by where they intersect. All actors pay or receive the same market clearing price. The majority of electricity is traded in the day-ahead market. %How is this linked to the intra-day market
+The day-ahead market closes at 2 pm the preceding day. All additional electricity trade takes place in the intra-day market where electricity is sold in blocks, hours and 15 minute intervals. The position is open when actual demand and/ or supply differ from the contracted quantities. If there are gaps after closing of the intra-day market they must be balanced by the responsible system operator. \todo{The prices of balancing energy is the average price of control energy and pay-as-bid.} 
+
+
+
+In the market foreign suppliers are limited due to constraints from inter-connector capacities across country borders. This implies that prices are heterogeneous across the different local markets in the Nordpool spot market. 
+
+Bullets to write about: 
+* Day-ahead markets
+* Hour ahead markets 
+Also remember to put references! 
+
+Potential problems: 
 
 
 \subsection{Simultaneity of demand and supply}
@@ -11,18 +57,34 @@ Our data set contains all firms that have their hourly consumption charged by th
 
 \subsection{Theory of demand-side response to electricity prices}
 \label{subsec:t_demand}
-Indirect demand - through the use of other appliances that demand for electricity is shaped. Not much information about consumption available => people adjust their consumption according to behavioural rules. t
+The market of electricity itself differs from others markets. This is made even more complex by the fact that the demand for electricity is of indirect character. Electricity demand is shaped by the demand for the use of a multitude of appliances that require electricity to function. This indirectness implies that even less information on consumption is available. Energy consumption is thus typically decided upon according to behavioural rules. \citep{kirschen2003demand}. 
 
-Two obvious limitations to the flexibility of demand is that demand responses require knowledge of prices and that one can assume taking action in order to reduce demand at a certain hour carries a fixed cost of e.g. \$5 which makes is optimal for small consumers to ignore spot market except at extreme prices or when time-of-use (TOU) tariffs are introduces \citep{wolak2011residential}. 
+In terms of demand of electricity there is an important distinction to make between residential and wholesale electricity consumers. They differ in how flexible they are and how they pay for electricity which makes , 
+
+For wholesale consumers electricity typically also constitute a much greater share of all costs as compared to residential consumers. 
+On the one hand wholesale are subject to more restrictions in terms of when they operate as this is typically in business hours depending, of course, on the nature of the firm i.e. what industry it is in, how energy intensive consumption is, not very much in service sector, what peak hours are etc. Also different to what extent it is possible to postpone production, alter schedule osv. On the other hand consumption constitutes a great share of costs such that incentive to improve energy efficiency. More flexibility because the prices that they face are settled in the wholesale market to which they have direct access. Prices are typically close to the spot price such that firm more or less knows one day ahead the electricity prices it faces the next comming day and plan accordingly. Knowing prices allow them to much greater extend respond to changes. 
+
+The residential consumers on the other hand. 
+Two obvious limitations to the flexibility of demand is that demand responses require knowledge of prices and that one can assume taking action in order to reduce demand at a certain hour carries a fixed cost of e.g. \$5 which makes is optimal for small consumers to ignore spot market except at extreme prices or when time-of-use (TOU) tariffs are introduced \citep{wolak2011residential}. 
 
 Another relevant point to make is that residential electricity consumers historically have not been treated as genuine 'demanders' in the sense that they are insulated from the spot price and instead face a fixed price that does not reflect the cost of generation of electricity at a given point in time. This is exacerbated even more by the multitude of tariffs that residential consumers face.  
 In Denmark these are particularly high and hence we may except an even smaller price sensitivity from the residential consumers in our estimation.   
 
 This all adds up to a weak elasticity. Another aspect has to do with how electricity is regarded as a good. \citep{kirschen2003demand} points to the fact that electricity is regarded as a good that is indispensable and essential to quality of life. It has always been marketed as easily accessible in terms of usage and availability although this may not genuinely be the case. In addition all consumption of electricity is indirect and consumption happens through the usage of other goods such as electrical appliances, entertainment etc. Distinction between some consumption that is foregone - lightning, listening to music, the radio etc. while other is postponed (dryer, washing machine etc.) 
 
+
+// NOTER // 
+- Måske generelt hvordan ser det ud med efterspørgslen i DK. Lidt under halvdelen - knap 45\%. 
+- Household production theory 
+- Kommentér på kort og lang sigtet efterspørgsel. Forskellen imellem disse. In the short term capital cannot be adjusted to the optimum. -> Motivates using a partial adjustment model  
+- Compared to other countries we may expet that the responses to climate variables are smaller in Denmark. Only few households have electrical heating + use of air condition is not widespread as temperatures in summer does not get that warm. 
+
+It is likely to get easier to smooth load profiles in the future as smart meters become more common, but as of now they are not rolled out yet. This is a necessity for interruptable contracts. 
+
+
 Many things have been considered. Should we name different demand response mechanisms? 
 
-This does not allow price spikes to form which may not be a good thing becuase they highlight what state the market is in. 
+This does not allow price spikes to form which may not be a good thing because they highlight what state the market is in. 
 
 Something about tariffs. They are large may overshadow any price fluctuations and thus make it more difficult for residential consumers to adjust their consumption. 
 
