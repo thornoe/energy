@@ -6,13 +6,13 @@
 \label{subsec:data_consumption}
 The Danish Transmission System Operator (TSO), Energinet\footnote{\url{https://en.energinet.dk}}, provide hourly aggregated consumption data since January 2016 for each of the 68 grid companies disaggregated into hourly-settled consumption, flex settled consumption and residual consumption. This allows us to distinguish between commercial and residential consumption. Hourly-settled consumption consists of all firms with an annual electricity consumption of at least 100,000 kWh. Flex-settled consumption was introduces in December 2017 such that household consumers can have their electricity consumption settled flexibly according to hour-by-hour prices as well. Though installation and telemeters and flexible settling is only being introduced gradually, this allows a portion of residential consumers and small firms to respond to price changes at an hourly instead of on an annual basis. The residual consumption is the remaining electricity consumption for which there is not remote metering and thus hourly-settling is not a possibility, thus including all households and small firms till December 1 2017.
 \par
-For each grid we include the number of metering points by category. This data is monthly and 
+For each grid we include the number of metering points by category. This data is monthly and
 
 
 
 \subsection{Spot market prices}
 \label{subsec:data_spot}
-For  indicated by the relevant area spot price of the day-ahead-market. Some firms are 
+For  indicated by the relevant area spot price of the day-ahead-market. Some firms are
 
 
 \subsection{Tariffs}
@@ -25,6 +25,14 @@ From December 2017 grid companies have been allowed to introduce time-of-use (TO
 The outside temperature is relevant to the extent that electrical heaters or air conditioning is used \citep{lijesen2007real, vesterberg2014residential}.
 
 
-\subsection{Variables}
+\subsection{Descriptive statistics}
 \label{subsec:variables}
 
+\begin{table}[H]
+  \centering
+  \caption{Descriptive statistics}
+  \footnotesize
+    \input{04_tables/descriptive}
+  \end{tabular}
+  \label{tab:descriptive}
+\end{table}

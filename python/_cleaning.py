@@ -256,9 +256,13 @@ ds.describe().T
 ##############################################################################
 #   EXPORT READY DATASETS                                                    #
 ##############################################################################
-### DTA for STATA ###
+### .dta for STATA ###
 ds.to_stata('stata/data_stata.dta')
 ds.columns.values
 
-### CSV for descriptive statistics and plots ###
+data[['date', 'grid', 'e_w', 'e_hh', 'p', 'wp', 'wp_other', 'n_w', 'n_hh',
+      'trend', 'temp', 'temp_sq', 'daytime', 's_tout']]\
+      .to_stata('stata/data_descriptive.dta')
+
+### CSV for plots ###
 data.to_csv('python/data.csv', index=False)

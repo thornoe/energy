@@ -47,10 +47,11 @@ def get(url, iterations=20, sleep_ok=1, sleep_err=5, check_function=lambda x: x.
 
 
 ##############################################################################
-#   CONSUMPTION - Quicker, but uneven distribution of dates (takes <2 hours ) #
+#   CONSUMPTION - iterated to get complete dataset (takes <2 hours )         #
 ##############################################################################
 # The big issue with the API address: API randomizes sample each time
 # Solution: Run several iterations (7 seems to be enough to get all)
+# More efficient alternative: Use SQL, see https://www.energidataservice.dk/api-guides
 
 # Instead used as validation, i.e. that no new observations are added
 url = 'https://api.energidataservice.dk/datastore_search?resource_id=consumptionpergridarea&limit=' # add limit
@@ -112,54 +113,6 @@ while improvement>0:
     cons = cons_both
 
 cons.sort_values(by=['date', 'hour', 'grid']).reset_index(drop=True).to_csv('cons.csv', index=False)
-
-
-##############################################################################
-#   CONSUMPTION - slow but higher representation of dates (takes ~13 hours)  #
-##############################################################################
-# The big issue with the API address:
-# some rows are scraped twice, some not as all
-url = 'https://api.energidataservice.dk/datastore_search?resource_id=consumptionpergridarea' # add limit
-d = parse(s.get(url+'&offset=0'))
-
-# d.keys()
-result = d['result']
-# result.keys()
-length = len(result['records'])
-# result['_links']
-total = result['total']
-total
-
-
-### Collect all links from search on Energidataservice.dk ###
-links = []
-
-for offset in range(0,total,length):
-    end = '&offset={o}'.format(o = offset)
-    links.append(url+end)
-len(links)
-
-
-### The scraping part ###
-data = []
-
-for url in tqdm.tqdm(links):
-
-    d = parse(get(url, iterations=50))
-
-    result = d['result']
-    data += result['records']
-
-cons = pd.DataFrame(data)
-
-cons['date'] = cons['HourDK'].str.slice(0, 10)
-cons['hour'] = cons['HourDK'].str.slice(11, 13)
-
-cons = cons.iloc[:, [0, 1, 4, 5, 7, 8]]
-cons.columns = ['flex', 'grid', 'hourly', 'residual', 'date', 'hour']
-cons = cons[['date', 'hour', 'grid', 'hourly', 'flex', 'residual']]
-
-cons.to_csv('cons.csv', index=False)
 
 
 ##############################################################################

@@ -4,15 +4,57 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
+# Set working folder
 os.chdir('C:/Users/thorn/Onedrive/Dokumenter/GitHub/energy/') # one level up
 
+# Load data
+data = pd.read_csv('python/data.csv')
+
+data.columns.values
 
 ##############################################################################
 #   DESCRIPTIVE STATISTICS                                                   #
 ##############################################################################
-data = pd.read_csv('python/data.csv')
 
-data.describe().T
+
+whole_numbers = ['e_w','e_hh','p','wp','n_w','n_hh','trend','temp','temp_sq']
+dummies = ['daytime', 's_tout']
+col_index = whole_numbers + dummies
+
+descriptive = data[col_index]
+
+decimals = pd.Series([2, 4], index=dummies)
+descriptive = descriptive.describe().drop(index='count').round(decimals)
+
+descriptive['e_w'].astype(int, copy=True)
+
+descriptive.columns = ['Wholesale electricity use',
+                       'Household electricity use',
+                       'Spot price',
+                       'Wind power prognosis',
+                       'Wholesale meters',
+                       'Household meters',
+                       'Time trend',
+                       'Temperature',
+                       'Temperature squared',
+                       'Daytime',
+                       'Time-of-Use tariff']
+
+descriptive.T
+
+descriptive.T.to_latex('latex/04_tables/descriptive.tex')
+
+continuous = main_var.drop(columns=['Daytime', 'Time-of-Use tariff']).describe().T.astype(int)
+descriptive
+col_ind = ['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max']
+decimals = pd.Series([0, 5, 5, 2, 2, 2, 2, 2], index=col_ind)
+dummies = main_var[['Daytime', 'Time-of-Use tariff']].describe().T.round(decimals)
+
+
+
+descriptive = pd.concat([continuous, dummies]).drop(columns='count')
+descriptive = continuous.append(dummies).drop(columns='count')
+descriptive
 
 
 ##############################################################################
