@@ -2,20 +2,34 @@
 % Empirical	Approach
 % Description of the empirical model: specification and variables involved
 % Strategy for the estimation of the parameters of interest and test of the hypothesis
-\subsection{Different time trends}
-\label{subsec:e_trends}
-There exists great variation between companies in terms of size, distribution of customers (residential and commercial), industry-intensity. Both at a certain point in time and regarding the time trends. Several options exists in order to to control for unobserved grid-company specific difference. As a starting point we chose to go for grid company fixed effects (FE).
+\subsection{Baseline model}
+\label{subsec:model}
+Our baseline model is a Random Effects (RE) model to be estimated using feasible Generalized Least Squares (fGLS). Electricity consumption $e$ for grid company $i$ at time $t$ (date and hour) is given by:
+\begin{equation}
+  \begin{split}
+  \ln e_{it}=&\varepsilon\ln p_{rt}+\delta\ln n_{im}+\bm{w}^{'}_{rt}\lambda+\gamma\cdot days\\
+  &+\eta_{year}+\eta_{week}+\eta_{month}\cdot\eta_{hour}+\eta_{day}\cdot\eta_{hour}+\psi_i+u_{it}
+  \end{split}
+  \label{eq:baseline}
+\end{equation}
+Where $p$ is the electricity spot price in price region $r$ at time $t$, $n$ is the number of meters at the beginning of the month $m$, $\bm{w}$ is a vector of weather variables for the given price region $r$ at time $t$. Time variables include the time trend $days$, dummies for year and month, as well as dummies for hour of the day interacted with month and day respectively. $\psi_i$ is the grid-specific time-invariant constant term that is treated as random and $u_{it}$ is the idiosyncratic error term.
 \par
-One important factor to control for is the trend over time in electricity use. This consists of a trend in economic growth (increase) and in technological progress (decrease) \citep{lijesen2007real}. The different grids covers different areas of the country, thus, some can be in recession and we include individual trends in our specification. For state-level data it is also common to control for size \citep{burke2017price} for which reason we include metering
-
+We use a log-log specification for electricity consumption, the spot price, and the number of meters as it allows us to model demand responses across grid areas of different size. Furthermore, log-log is the more standard specification which allows for a more direct comparison to the results in other studies \citep{burke2017price}. Other attractive properties include that the estimation provides the elasticity directly and does not predict non-positive electricity consumption, furthermore, the specification reduces the impact of outliers and are found to reduce systematic patterns in the estimated residuals \citep{burke2017price}. %\citet{burke2017price}  also discuss various models and their econometric disadvantages regarding yearly data, e.g. that Generalized Methods of Moments (GMM) is prone to non-stationary data.
+\par
+% The specification ...
 
 \subsection{Instrumenting for prices}
 \label{subsec:instruments}
-To circumvent the simultaneity problem described in section \ref{subsec:b_endogeneity} we consider using lagged prices or wind-energy production as price instruments. The latter makes sense as the marginal cost of production is close to zero, such that a high expected wind-energy production will increase the overall supply capacity and drive down the prices. As an over-production of wind energy will lead to transmission to neighbouring bidding areas, the wind-energy production prognosis for the other bidding area in Denmark is also included as an instrument.
+To circumvent the simultaneity problem described in section \ref{subsec:b_endogeneity} we consider using lagged prices or wind-power production as price instruments. The latter makes sense as the marginal cost of production is close to zero, such that a high expected wind-power production will increase the overall supply capacity and drive down the prices. As an over-production of wind power will lead to transmission to neighboring bidding areas, the wind-power production prognosis for the other bidding area in Denmark is also included as an instrument.
 
-\subsection{Baseline model}
-\label{subsec:model}
-We use a log-log specification as it allows us to model demand responses across grid areas of different size. It is the more standard specification which allows for more direct comparison to the results in other studies \citep{burke2017price}. Other attractive properties include that the estimation provides the elasticity directly and does not predict non-positive electricity consumption, furthermore, the specification reduces the impact of outliers and are found to reduce systematic patterns in the estimated residuals \citep{burke2017price}. \citet{burke2017price}  also discuss various models and their econometric disadvantages regarding yearly data, e.g. that Generalized Methods of Moments (GMM) is prone to non-stationary data.
+\subsection{Effect of Time-of-use tariff}
+Since 2018 flex-settled consumers in the Copenhagen metropolitan area are charged a time-of-use (TOU) tariff for the hours 17-19. To estimate this effect the baseline specification \ref{eq:baseline} is estimated for the hours 17-19 solely for the grid company Radius using 2SLS, thus, without the grid-area random effect $\psi_i$ but including a term for the effect of the TOU tariff:
+\begin{align}
+  \beta\frac{nf_{month}}{nhh_{month}}d_{year,month}
+  \label{eq:tout}
+\end{align}
+Where $nf$ is the number of flex-settled meters by month, $nhh$ is the total number of meters for households and small companies, and $d$ is a dummy for being in January-March or October-December in 2018. To isolate the effect of the TOU tariff we need to assume that residual consumers do not react on the tariff, on the contrary their consumption is assumed to follow the same hour-by-day, hour-by-month, and week patterns as the previous years and the effect of year dummies and the time trend to be evenly distributed across the year.
+
 
 
 \subsection{Robustness checks}

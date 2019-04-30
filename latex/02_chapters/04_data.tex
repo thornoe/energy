@@ -8,11 +8,37 @@ The descriptive statistics for the main variables are shown in Table \ref{tab:de
 \label{subsec:d_consumption}
 The Danish Transmission System Operator (TSO), Energinet\footnote{\url{https://en.energinet.dk}}, provide hourly aggregated consumption data since January 2016 for each of the 68 grid companies disaggregated into hourly-settled consumption, flex settled consumption and residual consumption. This allows us to distinguish between commercial and residential consumption. Hourly-settled consumption consists of all firms with an annual electricity consumption of at least 100,000 kWh. Flex-settled consumption was introduces in December 2017 such that household consumers can have their electricity consumption settled flexibly according to hour-by-hour prices as well. Though installation and telemeters and flexible settling is only being introduced gradually, this allows a portion of residential consumers and small firms to respond to price changes at an hourly instead of on an annual basis. The residual consumption is the remaining electricity consumption for which there is not remote metering and thus hourly-settling is not a possibility, thus including all households and small firms till December 1 2017.
 \medskip\\
-For each grid we include the number of metering points by category. This data is monthly and
+For each grid we include the number of metering points by category. This data is monthly by the \nth{1} of the month. For state-level data it is also common to control for size \citep{burke2017price}.
+\begin{figure}[H]
+  \centering
+  \caption{Electricity consumption by hour (business days)}
+  \label{fig:cons_hour}
+\end{figure}
+
 
 \subsection{Spot market prices and wind power prognosis}
 \label{subsec:d_spot}
-For  indicated by the relevant area spot price of the day-ahead-market. Some firms are
+We include the hour-by-hour spot market price on the day-ahead-market for the price region DK1 or DK2 in which the grid company is located.
+\begin{figure}[H]
+  \centering
+  \caption{Time series for spot price and total consumption (business days)}
+  \label{fig:price_cons_time_series}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \caption{Wind power prognosis and spot price by hour (business days)}
+  \label{fig:wp_price_hour}
+\end{figure}
+
+
+\begin{table}[H]
+  \centering
+  \caption{Correlations for consumption, spot price, and wind power prognosis}
+  \footnotesize
+  \label{tab:correlations}
+\end{table}
+
 
 \subsection{Time-of-use tariff}
 \label{subsec:d_tout}
@@ -26,10 +52,9 @@ An indicator for daytime is included as well. Such that $daytime=1$ for hours be
 
 \subsection{Time variables}
 \label{subsec:d_time}
-Year dummies as well as a time trend indicating the number of days since 2016-01-01 are included to account for growth, technological progress, or compositional changes that can affect electricity consumption other than the number of meters.
+Year dummies as well as a time trend indicating the number of days since 2016-01-01 are included to account for economic growth (increase), technological progress (decrease) \citep{lijesen2007real}, or compositional changes that can affect electricity consumption other than the number of meters.
 \medskip\\
-DK bank holidays as well as a few other common holidays are identified in order to do sample split regressions for business days and non-business days (including weekends).
-
+Danish bank holidays as well as a few other common holidays are taken into account in order to do sample split regressions for business days and non-business days, the latter including holidays and weekends.
 \begin{table}[H]
   \centering
   \caption{Descriptive statistics}
