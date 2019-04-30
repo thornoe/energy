@@ -3,19 +3,13 @@
 
 \subsection{The electricity market}
 \label{subsec:t_market}
-The electricity market differs from the majority of other markets because demand and supply must synchronize completely at all times. Storing electricity is possible, but at best highly inefficient and thus too costly to implement practically. Instead supply must be at least as great as demand at all times if blackouts are to be avoided. Historically this has been ensured through the production of a surplus of electricity. \medskip\\
+In order to understand how the price of electricity is formed it is necessary understand how electricity is produced and sold on the one hand and how it is bough and demanded on the other. The electricity market differs from the majority of other markets because demand and supply must synchronize completely at all times. Storing electricity is possible, but at best highly inefficient and thus too costly to implement practically. Instead supply must be at least as great as demand at all times if blackouts are to be avoided. Historically this has been ensured through the production of a surplus of electricity. \smallskip\\
 
 Because demand demand typically occurs this demands large production capacities that can start production when this is needed. Because plants are started in the merit order these peaks implies that production is extra costly (also in terms of carbon dioxide emissions) when answering to these spikes in demand. 
-\medskip\\
+\smallskip\\
 
-In recent years the electricity market has undergone many changes to induce competition and reduce surplus production and thus "unnecessary" carbon dioxide emissions. The move towards more market liberalization still recognizes that that the distribution net constitutes a natural monopoly. In many countries including Denmark the firm in charge maintaining and building the grid is still state-controlled while the remaining market operators are private. Competition is then ensured by letting thirds parties get access to the electric grids in a transparent way. This is only one of several ways to organize a market which has been adopted by the EU, that furthermore wants to promote a single energy market. This single market  implies linking the electrical grids throughout Europe such that the electricity price is the same across all of Europe. As of now Nordpool has already combined 13 markets; the Nordic countries, the Baltic countries, Germany, Austria, France, Belgium, the Netherlands and the UK, now constitute a single electricity market. The price still varies across countries due to limited cross border transfer capacity. For instance electricity consumers in Denmark also face different prices depending on what side of The great Belt they are situated. 
-\cite{https://www.nordpoolgroup.com/the-power-market/Integrated-Europe/}\medskip \\
-Firms and residential households enter the energy market differently.They face different prices that are formed in different ways. This is described further below. 
-
-\subsubsection{The retail market} %Er det her den rigtige oversættelse? 
-\label{subsubsec: t_resmarket}
-
-The way residential customers are settled is likely to change in the future as smart meters are adopted more widely. For instance xx has decided to enrol smart meters to all consumers by 20xx.  
+In recent years the electricity market has undergone many changes to induce competition and reduce surplus production and thus "unnecessary" carbon dioxide emissions. The move towards more market liberalization still recognizes that that the distribution net constitutes a natural monopoly. In many countries including Denmark the firm in charge maintaining and building the grid is still state-controlled while the remaining market operators are private. Competition is then ensured by letting thirds parties get access to the electric grids in a transparent way. This is only one of several ways to organize a market which has been adopted by the EU, that furthermore wants to promote a single energy market. This single market  implies linking the electrical grids throughout Europe such that the electricity price is the same across all of Europe. As of now Nordpool has already combined 13 markets; the Nordic countries, the Baltic countries, Germany, Austria, France, Belgium, the Netherlands and the UK, now constitute a single electricity market. The price still varies across countries due to limited cross border transfer capacity. For instance electricity consumers in Denmark also face different prices depending on what side of The great Belt they are situated. \cite{https://www.nordpoolgroup.com/the-power-market/Integrated-Europe/} \smallskip \\
+Firms and residential households enter the energy market differently.They face different prices that are formed in different ways. This is described further below.  
 
 \subsubsection{The wholesale market}
 \label{subsubsec: t_whomarket}
@@ -55,9 +49,17 @@ Potential problems:
 Our data set contains all firms that have their hourly consumption charged by the corresponding spot market price, however, for big companies options exist to negotiate a less volatile settling or to buy financial products in order to increase price security. Our data does not cover firms that buy their electricity directly on the spot market or bilaterally by the electricity supplier on the so-called over-the-counter (OTC) market. It is a clear advantage that we know all of the demand in our firm data is directly subject to the spot price \citep{lijesen2007real}.
 
 
+\subsubsection{The retail market} %Er det her den rigtige oversættelse? 
+\label{subsubsec: t_resmarket}
+The residential electricity consumers have historically not been treated as 'genuine demanders' \citep{kirschen2003demand}. Instead of facing the actual cost of electricity they instead sign contracts where a distributor acts as a middleman that trades electricity in the market on behalf of its customers, but they receive a premium for undertaking the market risk. The distributors and the consumers then undergo contracts where the price of electricity is typically fixed for up to a year. This insulates the retail consumers from the spot price that better reflects the cost of electricity production at a given point in time. This "distance" to the actual price of electricity is exacerbated even more by the tariffs on electricty that the residential consumers face. The electricity tariffs are particularly high in Denmark where they make up around 68 percent of the price paid for electricity. \smallskip \\ 
+
+It is, however, worth noting that the way residential customers are settled is likely to change in the future as smart meters are adopted more widely. For instance xx has decided to enrol smart meters to all consumers by 20xx. In Denmark several grid companies, among those Radius, have ... . More on flexible tariffs and demand responses below.  
+
+
+
 \subsection{Theory of demand-side response to electricity prices}
 \label{subsec:t_demand}
-The market of electricity itself differs from others markets. This is made even more complex by the fact that the demand for electricity is of indirect character. Electricity demand is shaped by the demand for the use of a multitude of appliances that require electricity to function. This indirectness implies that even less information on consumption is available. Energy consumption is thus typically decided upon according to behavioural rules. \citep{kirschen2003demand}. 
+The market of electricity itself differs from most other markets as described above. This complexity of the market and how the price is shaped is even higher because the nature of the demand for electricity is of indirect character. Electricity demand is shaped by the demand for the use of a multitude of appliances that require electricity to function. This indirectness implies that even less information on consumption is available. Energy consumption is thus typically decided upon according to behavioural rules. \citep{kirschen2003demand}. 
 
 In terms of demand of electricity there is an important distinction to make between residential and wholesale electricity consumers. They differ in how flexible they are and how they pay for electricity which makes , 
 
@@ -67,8 +69,7 @@ On the one hand wholesale are subject to more restrictions in terms of when they
 The residential consumers on the other hand. 
 Two obvious limitations to the flexibility of demand is that demand responses require knowledge of prices and that one can assume taking action in order to reduce demand at a certain hour carries a fixed cost of e.g. \$5 which makes is optimal for small consumers to ignore spot market except at extreme prices or when time-of-use (TOU) tariffs are introduced \citep{wolak2011residential}. 
 
-Another relevant point to make is that residential electricity consumers historically have not been treated as genuine 'demanders' in the sense that they are insulated from the spot price and instead face a fixed price that does not reflect the cost of generation of electricity at a given point in time. This is exacerbated even more by the multitude of tariffs that residential consumers face.  
-In Denmark these are particularly high and hence we may except an even smaller price sensitivity from the residential consumers in our estimation.   
+ 
 
 This all adds up to a weak elasticity. Another aspect has to do with how electricity is regarded as a good. \citep{kirschen2003demand} points to the fact that electricity is regarded as a good that is indispensable and essential to quality of life. It has always been marketed as easily accessible in terms of usage and availability although this may not genuinely be the case. In addition all consumption of electricity is indirect and consumption happens through the usage of other goods such as electrical appliances, entertainment etc. Distinction between some consumption that is foregone - lightning, listening to music, the radio etc. while other is postponed (dryer, washing machine etc.) 
 
