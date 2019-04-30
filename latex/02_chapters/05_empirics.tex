@@ -7,7 +7,7 @@
 Our baseline model is a Random Effects (RE) model to be estimated using feasible Generalized Least Squares (fGLS). Electricity consumption $e$ for grid company $i$ at time $t$ (date and hour) is given by:
 \begin{equation}
   \begin{split}
-  \ln e_{it}=&\varepsilon\ln p_{rt}+\delta\ln n_{im}+\bm{w}^{'}_{rt}\lambda+\gamma\cdot days\\
+  \ln e_{it}=&\ \varepsilon\ln p_{rt}+\delta\ln n_{im}+\bm{w}^{'}_{rt}\lambda+\gamma\ days\\
   &+\eta_{year}+\eta_{week}+\eta_{month}\cdot\eta_{hour}+\eta_{day}\cdot\eta_{hour}+\psi_i+u_{it}
   \end{split}
   \label{eq:baseline}
@@ -25,10 +25,10 @@ To circumvent the simultaneity problem described in section \ref{subsec:b_endoge
 \subsection{Effect of Time-of-use tariff}
 Since 2018 flex-settled consumers in the Copenhagen metropolitan area are charged a time-of-use (TOU) tariff for the hours 17-19. To estimate this effect the baseline specification \ref{eq:baseline} is estimated for the hours 17-19 solely for the grid company Radius using 2SLS, thus, without the grid-area random effect $\psi_i$ but including a term for the effect of the TOU tariff:
 \begin{align}
-  \beta\frac{nf_{month}}{nhh_{month}}d_{year,month}
+  \beta\frac{nf_{month}}{nhh_{month}}\tau_{year,month}
   \label{eq:tout}
 \end{align}
-Where $nf$ is the number of flex-settled meters by month, $nhh$ is the total number of meters for households and small companies, and $d$ is a dummy for being in January-March or October-December in 2018. To isolate the effect of the TOU tariff we need to assume that residual consumers do not react on the tariff, on the contrary their consumption is assumed to follow the same hour-by-day, hour-by-month, and week patterns as the previous years and the effect of year dummies and the time trend to be evenly distributed across the year.
+Where $nf$ is the number of flex-settled meters by month, $nhh$ is the total number of meters for households and small companies, and $\tau$ is a dummy for being in January-March or October-December in 2018. To isolate the effect of the TOU tariff we need to assume that residual consumers do not react on the tariff, on the contrary their consumption is assumed to follow the same hour-by-day, hour-by-month, and week patterns as the previous years and the effect of year dummies and the time trend to be evenly distributed across the year.
 
 
 

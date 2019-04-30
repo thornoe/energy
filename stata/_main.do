@@ -57,7 +57,6 @@ do "_descriptive" // reload data before running
 ////////////////////////////////////////////////////////////////////////////////
 drop n_f n_r holy _*
 
-
 label variable e_w "log wholesale consumption"
 label variable e_hh "log household consumption"
 label variable DK1 "Price region DK1"
@@ -86,34 +85,33 @@ label variable s_tout "Time-of-use tariff"
 ********************************************************************************
 est clear
 xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1) $x_w ///
-	i.day_bd#i.hour o12.month#i.hour ///
-	if bd==1 & inrange(hour,12,15), re vce(cluster grid)
+	o0.day_bd#i.hour i.month#i.hour ///
+	if bd==1 & inrange(hour,12,15), re vce(cluster grid) first
 estadd scalar cons = _b[_cons]
 est store peak, title("Peak: 12-15")
 
-xtivreg e_w (p = wp#i.DK1 wp_other) $x_w  daytime ///
+xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1) $x_w  daytime ///
 	o0.day_bd#i.hour i.month#i.hour ///
-	if bd==1 & inrange(hour,5,11)|inrange(hour,16,23), re vce(cluster grid)
+	if bd==1 & inrange(hour,5,11)|inrange(hour,16,23), re vce(cluster grid) first
 estadd scalar cons = _b[_cons]
 est store shoulder, title("Shoulder")
 
-xtivreg e_w (p = wp#i.DK1 wp_other) $x_w ///
+xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1) $x_w ///
 	o0.day_bd#i.hour i.month#i.hour ///
-	if bd==1 & inrange(hour,0,4), re vce(cluster grid)
+	if bd==1 & inrange(hour,0,4), re vce(cluster grid) first
 estadd scalar cons = _b[_cons]
 est store off_peak, title("Off-peak: 00-04")
 
-xtivreg e_w (p = wp#i.DK1 wp_other) $x_w daytime ///
+xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1) $x_w daytime ///
 	i.hour i.month#i.hour ///
-	if non_bd==1, re vce(cluster grid)
+	if non_bd==1, re vce(cluster grid) first
 estadd scalar cons = _b[_cons]
-est store non_bd, title("Non-business day")
+est store non_bd, title("Non-business days")
 
 estout _all using "ws_preferred.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(%12.0gc) )
-
 estout _all using $tables/ws_preferred.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
@@ -129,7 +127,7 @@ estout _all using $tables/ws_preferred.tex, style(tex) replace ///
 est clear
 foreach h of numlist 0/23 {
 	xtivreg e_w (p = wp wp_other) $x_w ///
-		o0.day_bd i.month ///
+		o0.day_bd o12.month ///
 		if bd==1 & hour==`h', fe vce(cluster grid)
 	est store bd_h_`h'
 }
