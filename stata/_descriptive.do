@@ -52,7 +52,7 @@ label variable holy "Holiday (not in a weekend)"
 estpost tabstat _* wp wp_other DK1 s_tout temp daytime trend holy ///
 	, listwise statistics(mean sd min p25 p50 p75 max) columns(statistics)
 esttab using $tables/descriptive.tex, style(tex) delimiter("&") replace ///
-	cells("mean sd min p25 p50 p75 max") label nostar nonumbers ///
+	cells("mean sd min p50 max") label nostar nonumbers ///
 	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
 
 xtdescribe
