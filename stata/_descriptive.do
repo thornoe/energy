@@ -39,17 +39,17 @@ label variable _p "Electricity spot price"
 label variable wp "Wind power prognosis same region"
 label variable wp_other "Wind power prognosis other region"
 label variable DK1 "Price region DK1"
+label variable s_tout "Time-of-use tariff"
 label variable temp "Temperature"
 label variable daytime "Daytime"
 label variable trend "Time trend"
 label variable holy "Holiday (not in a weekend)"
-label variable s_tout "Time-of-use tariff"
 
 
 ////////////////////////////////////////////////////////////////////////////////
 ////	B. Descriptive statistics											////
 ////////////////////////////////////////////////////////////////////////////////
-estpost tabstat _* wp wp_other temp daytime trend holy s_tout ///
+estpost tabstat _* wp wp_other DK1 s_tout temp daytime trend holy ///
 	, listwise statistics(mean sd min p25 p50 p75 max) columns(statistics)
 esttab using $tables/descriptive.tex, style(tex) delimiter("&") replace ///
 	cells("mean sd min p25 p50 p75 max") label nostar nonumbers ///
@@ -57,4 +57,4 @@ esttab using $tables/descriptive.tex, style(tex) delimiter("&") replace ///
 
 xtdescribe
 
-xtsum _* wp wp_other temp daytime trend holy s_tout
+xtsum _* wp wp_other DK1 s_tout temp daytime trend holy

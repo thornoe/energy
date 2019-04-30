@@ -1,9 +1,11 @@
-****	Install both packages	****
+****	Install both packages for FEIV	****
+/*
 findit ivreg210
 ssc install xtivreg2, replace
 * Reference: https://ideas.repec.org/c/boc/bocode/s456501.html
 help xtivreg2
 help xtivreg
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////	0. Global set up 											////////
@@ -18,7 +20,7 @@ xtset grid date, clocktime delta(1 hour) // strongly balanced
 
 
 *** Global variable lists ***
-global x_w "n_w temp* daytime trend i.year i.week" // wholesale
+global x_w "n_w temp* trend i.year i.week" // wholesale
 global x_hh "n_hh temp* daytime trend i.year i.week" // households
 global x_17_19 "i(1 2 3 4 5).day_bd#i(17 18 19).hour i.month#i(17 18 19).hour" // i1.non_bd#i(17 18 19).hour as baseline
 
@@ -83,23 +85,29 @@ label variable s_tout "Time-of-use tariff"
 **** 	Preferred specifications											****
 ********************************************************************************
 est clear
-xtivreg e_w (p = wp#i.DK1 wp_other) $x_w ///
-	o0.day_bd#i.hour i.month#i.hour ///
-	if bd==1 & inrange(hour,12,15), fe vce(cluster grid)
+xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1) $x_w ///
+	i.day_bd#i.hour o12.month#i.hour ///
+	if bd==1 & inrange(hour,12,15), re vce(cluster grid)
 estadd scalar cons = _b[_cons]
 est store peak, title("Peak: 12-15")
 
-xtivreg e_w (p = wp#i.DK1 wp_other) $x_w ///
+xtivreg e_w (p = wp#i.DK1 wp_other) $x_w  daytime ///
 	o0.day_bd#i.hour i.month#i.hour ///
-	if bd==1 & inrange(hour,5,11)|inrange(hour,16,23), fe vce(cluster grid)
+	if bd==1 & inrange(hour,5,11)|inrange(hour,16,23), re vce(cluster grid)
 estadd scalar cons = _b[_cons]
-est store peak, title("Shoulder")
+est store shoulder, title("Shoulder")
 
 xtivreg e_w (p = wp#i.DK1 wp_other) $x_w ///
 	o0.day_bd#i.hour i.month#i.hour ///
-	if bd==1 & inrange(hour,0,4), fe vce(cluster grid)
+	if bd==1 & inrange(hour,0,4), re vce(cluster grid)
 estadd scalar cons = _b[_cons]
-est store peak, title("Off-peak: 00-04")
+est store off_peak, title("Off-peak: 00-04")
+
+xtivreg e_w (p = wp#i.DK1 wp_other) $x_w daytime ///
+	i.hour i.month#i.hour ///
+	if non_bd==1, re vce(cluster grid)
+estadd scalar cons = _b[_cons]
+est store non_bd, title("Non-business day")
 
 estout _all using "ws_preferred.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
@@ -261,7 +269,7 @@ est store nbd, title("Non-business days")
 estout _all using "hh_radius_17-19.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(N, fmt(1 %12.0gc) )
+	stats(N, fmt(%12.0gc) )
 
 estout _all using $tables/hh_radius_17-19.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
