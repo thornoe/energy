@@ -12,10 +12,20 @@ set scheme s1color
 
 clear all
 
+use "data_stata", clear
+
+xtset grid date, clocktime delta(1 hour) // strongly balanced
+
+
+*** Global variable lists ***
+global x_w "n_w temp* daytime trend i.year i.week" // wholesale
+global x_hh "n_hh temp* daytime trend i.year i.week" // households
+
 *** Global directories, Thor ***
 cd 				"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\stata"
 global figures	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\latex\03_figures"
 global tables	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\latex\04_tables"
+
 
 *** Global directories, Cathrine ***
 cd 				"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\stata"
@@ -23,31 +33,40 @@ global figures	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\latex\03_figu
 global tables	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\latex\04_tables"
 
 
+
 ////////////////////////////////////////////////////////////////////////////////
 ////	1. Descriptive statistics											////
 ////////////////////////////////////////////////////////////////////////////////
-do "_descriptive"
+do "_descriptive" // reload data before running
 
-	
+/*	overall: Pooled mean, std.dev., var, min and max
+	between: Cross-section std.dev. and var (not mean, min. or max!)
+			 Permanent differences between grids
+			 (dif. between the overtime-means for each grid)
+	within:	 Time series std.dev. and var (not mean, min. or max!)
+			 Differences across time within each grid
+			 e.g. time-of-day & day-of-week deviations, business cycles or trend
+*/
+
 ////////////////////////////////////////////////////////////////////////////////
 ////	2. Load and set up data for regressions								////
 ////////////////////////////////////////////////////////////////////////////////
-use "data_stata", clear
+drop n_f n_r holy _*
 
-xtset grid date, clocktime delta(1 hour) // strongly balanced
 
-label variable e_w "log wholesale electricity use"
-label variable e_hh "log household electricity use"
+label variable e_w "log wholesale consumption"
+label variable e_hh "log household consumption"
+label variable DK1 "Price region DK1"
 label variable p "log spot price"
 label variable wp "Wind power prognosis same region"
 label variable wp_other "Wind power prognosis other region"
 label variable n_w "log wholesale meters"
-label variable n_f "log flex meters"
-label variable n_r "log residual meters"
 label variable n_hh "log household meters"
 label variable trend "Time trend"
 label variable temp "Temperature"
 label variable temp_sq "Temperature squared"
+label variable daytime "Daytime"
+label variable temp "Temperature"
 label variable daytime "Daytime"
 label variable s_tout "Time-of-use tariff"
 
@@ -62,8 +81,8 @@ label variable s_tout "Time-of-use tariff"
 **** 	Preferred specifications											****
 ********************************************************************************
 est clear
-xtivreg e_w (p = wp wp_other) n_w trend temp* daytime ///
-	o0.day_bd#i.hour i.month#i.hour i.week i.year ///
+xtivreg e_w (p = wp wp_other) $x_w ///
+	o0.day_bd#i.hour i.month#i.hour ///
 	if bd==1 & inrange(hour,12,15), fe vce(cluster grid)
 estadd scalar cons = _b[_cons]
 est store peak, title("Peak: 12-15")
@@ -87,8 +106,8 @@ estout _all using $tables/ws_preferred.tex, style(tex) replace ///
 ********************************************************************************
 est clear
 foreach h of numlist 0/23 {
-	xtivreg e_w (p = wp wp_other) n_w trend temp* daytime ///
-		o0.day_bd i.week i.month i.year ///
+	xtivreg e_w (p = wp wp_other) $x_w ///
+		o0.day_bd i.month ///
 		if bd==1 & hour==`h', fe vce(cluster grid)
 	est store bd_h_`h'
 }
@@ -105,8 +124,8 @@ est clear
 foreach d of numlist 1/5 {
 	est clear
 	foreach h of numlist 0/23 {
-		xtivreg e_w (p = wp wp_other) n_w trend temp* daytime ///
-			i.hour i.week i.month i.year ///
+		xtivreg e_w (p = wp wp_other) $x_w ///
+			i.hour i.month ///
 			if day_bd==`d' & hour==`h', fe vce(cluster grid)
 		est store bd_`d'_h_`h'
 	}
@@ -117,8 +136,8 @@ foreach d of numlist 1/5 {
 }
 est clear
 foreach h of numlist 0/23 {
-	xtivreg e_w (p = wp wp_other) n_w trend temp* daytime ///
-		i.hour i.week i.month i.year ///
+	xtivreg e_w (p = wp wp_other) $x_w ///
+		i.hour i.month ///
 		if non_bd==1 & hour==`h', fe vce(cluster grid)
 	est store nbd_h_`h'
 }
@@ -135,8 +154,8 @@ estout _all using "ws_non-bd-hour.xls", replace ///
 est clear
 foreach a of numlist 7/12 {
 	foreach b of numlist 12/18 {
-		xtivreg e_w (p = wp wp_other) n_w trend temp* daytime ///
-			o0.day_bd#i.hour i.week i.month i.year ///
+		xtivreg e_w (p = wp wp_other) $x ///
+			o0.day_bd#i.hour i.month#i.hour ///
 			if bd==1 & inrange(hour,`a',`b'), fe vce(cluster grid)
 		est store bd_`a'_to_`b'
 }
@@ -153,8 +172,8 @@ estout _all using "ws_peaks-comparison.xls", replace ///
 est clear
 foreach a of numlist 7/12 {
 	foreach b of numlist 12/18 {
-		xtivreg e_w (p = wp wp_other) n_w trend temp* daytime ///
-			o0.day_bd#i.hour i.week i.month i.year ///
+		xtivreg e_w (p = wp wp_other) $x ///
+			o0.day_bd#i.hour i.month#i.hour ///
 			if bd==1 & inrange(hour,`a',`b'), fe vce(cluster grid)
 		est store bd_`a'_to_`b'
 }
@@ -209,23 +228,24 @@ estout re fe reiv feiv using "ws_fe-re-feiv-reiv-comparison.xls", replace ///
 **** 	Pooled OLS for Radius, 17-19 only									****
 ********************************************************************************
 est clear
-ivregress 2sls e_hh (p = wp wp_other) s_tout n_hh trend temp* daytime ///
-	i.month#i(17 18 19).hour i(1 2 3 4 5).day_bd#i(17 18 19).hour ///
-	i1.non_bd#i(17 18 19).hour i.week i.year ///
+ivregress 2sls e_hh (p = wp wp_other) s_tout $x_hh ///
+	i.month#i(17 18 19).hour ///
+	i(1 2 3 4 5).day_bd#i(17 18 19).hour ///
+	i1.non_bd#i(17 18 19).hour ///
 	if grid==791 & inrange(hour,17,19), vce(robust)
 estadd scalar cons = _b[_cons]
 est store all, title("All days")
 
-ivregress 2sls e_hh (p = wp wp_other) s_tout n_hh trend temp* daytime ///
-	i.month#i(17 18 19).hour i(1 2 3 4 5).day_bd#i(17 18 19).hour ///
-	i.week i.year ///
+ivregress 2sls e_hh (p = wp wp_other) s_tout $x_hh ///
+	i.month#i(17 18 19).hour ///
+	i(1 2 3 4 5).day_bd#i(17 18 19).hour ///
 	if bd==1 & grid==791 & inrange(hour,17,19), vce(robust)
 estadd scalar cons = _b[_cons]
 est store bd, title("Business days")
 
-ivregress 2sls e_hh (p = wp wp_other) s_tout n_hh trend temp* daytime ///
-	i.month#i(17 18 19).hour i1.non_bd#i(17 18 19).hour ///
-	i.week i.year ///
+ivregress 2sls e_hh (p = wp wp_other) s_tout $x_hh ///
+	i.month#i(17 18 19).hour ///
+	i1.non_bd#i(17 18 19).hour ///
 	if non_bd==1 & grid==791 & inrange(hour,17,19), vce(robust)
 estadd scalar cons = _b[_cons]
 est store nbd, title("Non-business days")
@@ -238,9 +258,52 @@ estout _all using "hh_radius_17-19.xls", replace ///
 estout _all using $tables/hh_radius_17-19.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	indicate("Time trend=trend" "Calendar dummies=*.*") drop(_cons) ///
+	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(cons N, labels("Constant" "Observations") fmt(1 %12.0gc) ) ///	
 	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
+
+	
+********************************************************************************
+**** 	Pooled OLS for Radius, 17-19: Overidentification tests				****
+********************************************************************************
+est clear
+reg p wp wp_other s_tout $x_hh ///
+	i(1 2 3 4 5).day_bd#i(17 18 19).hour ///
+	i1.non_bd#i(17 18 19).hour ///
+	i.month#i(17 18 19).hour ///
+	if grid==791 & inrange(hour,17,19), vce(robust)
+predict vhat, residuals
+estadd scalar cons = _b[_cons]
+est store first, title("1st stage, y = log price")
+
+ivregress 2sls e_hh (p = wp wp_other) s_tout $x_hh ///
+	i(1 2 3 4 5).day_bd#i(17 18 19).hour ///
+	i1.non_bd#i(17 18 19).hour ///
+	i.month#i(17 18 19).hour ///
+	if grid==791 & inrange(hour,17,19), vce(robust)
+estadd scalar cons = _b[_cons]
+est store second, title("2nd stage")
+
+reg e_hh p vhat s_tout $x_hh ///
+	i(1 2 3 4 5).day_bd#i(17 18 19).hour ///
+	i1.non_bd#i(17 18 19).hour ///
+	i.month#i(17 18 19).hour ///
+	if grid==791 & inrange(hour,17,19), vce(robust) first
+estadd scalar cons = _b[_cons]
+est store endogeneity, title("Endogeneity test")
+
+estout _all using "hh_endogeneity.xls", replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(N, fmt(1 %12.0gc) )
+estout _all using $tables/hh_endogeneity.tex, style(tex) replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	indicate("Time variables=*.*") drop(trend _cons) ///
+	stats(cons N, labels("Constant" "Observations") fmt(1 %12.0gc) ) ///	
+	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
+drop vhat
+
 
 
 ********************************************************************************
@@ -273,7 +336,7 @@ estout _all using "hh_radius.xls", replace ///
 estout _all using $tables/hh_radius.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	indicate("Time trend=trend" "Calendar dummies=*.*") drop(_cons) ///
+	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(cons N, labels("Constant" "Observations") fmt(1 %12.0gc) ) ///	
 	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
 
@@ -308,7 +371,7 @@ estout _all using "hh_all.xls", replace ///
 estout _all using $tables/hh_all.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	indicate("Time trend=trend" "Calendar dummies=*.*") drop(_cons) ///
+	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(cons N, labels("Constant" "Observations") fmt(1 %12.0gc) ) ///	
 	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
 

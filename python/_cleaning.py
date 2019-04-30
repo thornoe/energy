@@ -87,6 +87,7 @@ grids = pd.merge(grids, wind, how='inner', on=['date', 'hour'], copy=False)
 
 ### Dummy for being in price area DK1 ###
 grids['DK1'] = grids['grid'] < 700
+grids['DK1'] = grids['DK1'].astype(int)
 
 ### Prices and wind power prognosis in the relevant price area ###
 grids['p'] = (grids['P_DK1']*grids['DK1']+grids['P_DK2']*(1-grids['DK1']))
@@ -161,9 +162,7 @@ data['temp_sq'] = data['temp']**2 # Temperature squared
 data['daytime'] = (data['dt_årh']*data['DK1']+data['dt_kbh']*(1-data['DK1']))
 
 ### Drop columns ###
-data.drop(['DK1', 'name', 'temp_kbh', 'temp_årh', 'dt_kbh', 'dt_årh'], axis=1, inplace=True)
-
-data.head(2)
+data.drop(['temp_kbh', 'temp_årh', 'dt_kbh', 'dt_årh'], axis=1, inplace=True)
 
 
 ##############################################################################
@@ -201,7 +200,7 @@ data['s_tout'] = np.select(\
      (data['grid']==791) & (np.isin(data['hour'], [17,18,19])) & (data['month']<4)],
     [data['n_f']/data['n_hh'], data['n_f']/data['n_hh']])
 
-data.iloc[:,list(range(-13,0))].describe().T
+data.iloc[:,list(range(-13,0))].describe()
 
 
 ##############################################################################
@@ -237,15 +236,15 @@ print('Full rank:',
 #   DATA FOR STATA                                                           #
 ##############################################################################
 ### Copy of df ###
-ds = data.drop(['e_t', 'n_t'], axis=1)
+ds = data.drop(['e_f', 'e_r', 'e_t', 'n_t', 'name'], axis=1)
 
 ### The natural logarithm of consumption and price ###
 def log_apply(s):
     if s < 1: return 0
     else: return np.log(s)
-for var in ['e_w', 'e_f', 'e_r', 'e_hh', 'p', 'n_w', 'n_f', 'n_r', 'n_hh']:
-    ds[var] = ds[var].apply(log_apply)
-
+for var in ['e_w', 'e_hh', 'n_w', 'n_hh', 'n_f', 'n_r', 'p']:
+    ds['_'+var] = ds[var] # non-log values
+    ds[var] = ds[var].apply(log_apply) # transformed to log values, same name
 
 ### Datetime format including hours ###
 ds['date'] = pd.to_datetime(ds['date'].astype(str)+' '+ds['hour'].astype(str)+':00:00')
@@ -257,12 +256,10 @@ ds.describe().T
 #   EXPORT READY DATASETS                                                    #
 ##############################################################################
 ### .dta for STATA ###
-ds.to_stata('stata/data_stata.dta')
+ds.to_stata('stata/data_stata.dta', write_index=False)
+ds.to_stata('D:/Google Drev/KU Thor/Energy Economics/Data/data_stata.dta', write_index=False)
 ds.columns.values
 
-data[['date', 'grid', 'e_w', 'e_hh', 'p', 'wp', 'wp_other', 'n_w', 'n_hh',
-      'trend', 'temp', 'temp_sq', 'daytime', 's_tout']]\
-      .to_stata('stata/data_descriptive.dta')
 
 ### CSV for plots ###
 data.to_csv('python/data.csv', index=False)
