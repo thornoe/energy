@@ -2,9 +2,11 @@
 % Main characteristics of the data set: source, type of data
 % Description of variables used for the	analysis and correspondence with the (ideal) magnitudes in the empirical specification
 % Descriptive statistics of the	main variables in the analysis
-The descriptive statistics for the main variables are shown in Table \ref{tab:descriptive} below.
+We have scraped most of our data from various web sources in respect of the terms of use. The descriptive statistics for the main variables are shown in Table \ref{tab:descriptive} below.
+\par
+For the regressions we log-transform electricity consumption, the number of electricity meters, and the electricity spot price. Before taking the natural logarithm the variables are censored with $1$ as the lower bound whereby we loose some information as the spot price is negative for a few instances due to exceed wind power production.
 
-\subsection{Consumption data}
+\subsection{Grid-level consumption}
 \label{subsec:d_consumption}
 The Danish Transmission System Operator (TSO), Energinet\footnote{\url{https://en.energinet.dk}}, provide hourly aggregated consumption data since January 2016 for each of the 52 grid companies disaggregated into hourly-settled consumption, flex settled consumption and residual consumption. This allows us to distinguish between commercial and residential consumption. Hourly-settled consumption consists of all firms with an annual electricity consumption of at least 100,000 kWh. Flex-settled consumption was introduced in January 2018 such that households and small firms can also have their electricity consumption settled flexibly according to hour-by-hour prices. Though installation of automatic meters and flex-settling is only being introduced gradually, this allows a portion of residential consumers and small firms to respond to price changes at an hourly instead of on a quarterly basis. The residual consumption is the remaining electricity consumption for which there is not remote metering and thus hourly-settling is not a possibility, thus including all households and small firms till December 1 2017 and most
 \medskip\\
@@ -18,7 +20,8 @@ For each grid we include the number of metering points by category. This data is
 
 \subsection{Spot market prices and wind power prognosis}
 \label{subsec:d_spot}
-We include the hour-by-hour spot market price on the day-ahead-market for the price region DK1 or DK2 depending on where the grid company is located. As the spot price is negative for a few instances the $log spot price$ is instead set to 0 when the price is less than 1 DKK.
+We include the hour-by-hour spot market price on the day-ahead-market for the price region DK1 or DK2 depending on where the grid company is located.
+
 \begin{figure}[H]
   \centering
   \caption{Time series for spot price and total consumption (business days)}

@@ -58,13 +58,13 @@ do "_descriptive" // reload data before running
 drop n_f n_r holy _*
 
 label variable e_w "log wholesale consumption"
-label variable e_hh "log household consumption"
+label variable e_hh "log retail consumption"
 label variable DK1 "Price region DK1"
 label variable p "log spot price"
 label variable wp "Wind power prognosis same region"
 label variable wp_other "Wind power prognosis other region"
 label variable n_w "log wholesale meters"
-label variable n_hh "log household meters"
+label variable n_hh "log retail meters"
 label variable trend "Time trend"
 label variable temp "Temperature"
 label variable temp_sq "Temperature squared"
@@ -84,7 +84,7 @@ label variable s_tout "Time-of-use tariff"
 **** 	Preferred specifications											****
 ********************************************************************************
 est clear
-xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1) $x_w ///
+xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
 	o0.day_bd#i.hour i.month#i.hour ///
 	if bd==1 & inrange(hour,12,15), re vce(cluster grid) first
 estadd scalar cons = _b[_cons]

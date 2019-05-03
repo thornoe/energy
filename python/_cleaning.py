@@ -36,6 +36,8 @@ wide.drop([('2017-11-01', 'Flexafr.'), ('2017-12-01', 'Flexafr.')], axis = 1, in
 
 wide.to_excel('python/grids.xlsx', index=True)
 
+wide.tail(2)
+
 ### Long format ###
 meters = wide.stack(level=0).fillna(0) # set no. flex-settled to 0, not None
 meters = meters.reorder_levels([2, 1, 0], axis=0).reset_index()
@@ -92,7 +94,7 @@ grids['DK1'] = grids['DK1'].astype(int)
 ### Prices and wind power prognosis in the relevant price area ###
 grids['p'] = (grids['P_DK1']*grids['DK1']+grids['P_DK2']*(1-grids['DK1']))
 grids['wp'] = (grids['WP_DK1']*grids['DK1']+grids['WP_DK2']*(1-grids['DK1']))
-grids['wp_other'] = (grids['WP_DK1']*(1-grids['DK1'])+grids['WP_DK2']*-grids['DK1'])
+grids['wp_other'] = (grids['WP_DK1']*(1-grids['DK1'])+grids['WP_DK2']*grids['DK1'])
 
 ### Create month and year variables for merging ###
 grids['month'], grids['year'] = grids['date'].dt.month, grids['date'].dt.year
