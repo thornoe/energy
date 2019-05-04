@@ -26,19 +26,18 @@ We include the hour-by-hour spot market price on the day-ahead-market for the pr
   \caption{Time series for spot price and total consumption (business days)}
   \label{fig:price_cons_time_series}
 \end{figure}
-An important factor for the spot price on the day-ahead-market is the hour-by-hour wind power prognosis\footnote{'Elspot prices' and 'Wind power prognosis' by price region and year is downloadable at \href{https://www.nordpoolgroup.com/historical-market-data/}{nordpoolgroup.com/historical-market-data}} for the following day.
+An important factor for the spot price on the day-ahead-market is the hour-by-hour wind power prognosis\footnote{'Elspot prices' and 'Wind power prognosis' by price region and year is updated daily after 2PM by Nord Pool and downloadable at \href{https://www.nordpoolgroup.com/historical-market-data/}{nordpoolgroup.com/historical-market-data}} for the following day.
 \begin{figure}[H]
   \centering
   \caption{Wind power prognosis and spot price by hour (business days)}
   \label{fig:wp_price_hour}
 \end{figure}
 
-
 \begin{table}[H]
   \centering
-  \caption{Correlations for consumption, spot price, and wind power prognosis}
+  \caption{Correlation matrix for consumption, spot price, and wind power prognosis}
   \footnotesize
-  \label{tab:correlations}
+  \label{tab:correlation}
 \end{table}
 
 
@@ -55,9 +54,11 @@ The variable for the TOU tariff represents the share of retail customers in Radi
 
 \subsection{Weather data}
 \label{subsec:d_weather}
-The outside temperature is relevant to the extent that electrical heaters or air conditioning is used \citep{lijesen2007real, vesterberg2014residential}. As the electricity consumption ceteris paribus is expected to be higher for both low-end and high-end temperatures, $temperature^2$ is included as well.
+The outside temperature is relevant to the extent that electrical heaters or air conditioning is used \citep{lijesen2007real, vesterberg2014residential}. As the electricity consumption ceteris paribus is expected to be higher for both low-end and high-end temperatures, $temperature^2$ is included as well.\footnote{Scraped via iterative lookups in the records of the Danish Meteorological Institute at \href{https://www.dmi.dk/vejrarkiv/}{dmi.dk/vejrarkiv/}}
 \medskip\\
-An indicator for daytime is included as well. Such that $daytime=1$ for hours between sunrise and sunset and e.g. $daytime=0.25$ for $hour=7$ if sunrise was a quarter past 7.
+Lighting is used more in the absence of daylight. Therefore, an indicator for daytime is included such that $daytime=1$ for hours between sunrise and sunset and e.g. $daytime=0.25$ for $hour=7$ if sunrise was a quarter past 7.\footnote{Sunrise and sunset is scraped via iterative lookups at \href{https://soltider.dk/}{soltider.dk}}
+\medskip\\
+Taking advantage of the dense size of Denmark, temperature and daytime are not scraped by the location of each of the 52 grid companies which often cross municipality-borders but for the two most populace municipalities and applied to all grids within that price region.\footnote{Temperature is for Aarhus and Copenhagen respectively while sunrise and sunset is for the City Hall Square in each of the two cites.}
 
 \subsection{Time variables}
 \label{subsec:d_time}
