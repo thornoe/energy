@@ -30,9 +30,8 @@ wide.drop(['085', 233], inplace=True)
 wide = wide[wide.iloc[:,-1] >= 10]
 # wide[wide.iloc[:,-1] == 0] # none without hourly metering (presence of companies)
 
-### Drop aggregate row and flex-settled for nov-dec 2017 (2 meters in total) ###
+### Drop aggregate row ###
 wide.drop('Hovedtotal', inplace=True) # 52 grids in total without Dinel+Læsø
-wide.drop([('2017-11-01', 'Flexafr.'), ('2017-12-01', 'Flexafr.')], axis = 1, inplace = True)
 
 wide.to_excel('python/grids.xlsx', index=True)
 
@@ -235,7 +234,7 @@ print('Full rank:',
 
 
 ##############################################################################
-#   DATA FOR STATA                                                           #
+#   DATASETS FOR STATA                                                       #
 ##############################################################################
 ### Copy of df ###
 ds = data.drop(['e_f', 'e_r', 'e_t', 'n_t', 'name'], axis=1)
