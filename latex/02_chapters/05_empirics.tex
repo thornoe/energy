@@ -14,7 +14,7 @@ Our baseline model is a Random Effects (RE) model to be estimated using feasible
 \end{equation}
 Where $p$ is the electricity spot price in price region $r$ at time $t$, $n$ is the number of meters at the beginning of the month $m$, $\bm{w}$ is a vector of weather variables for the given price region $r$ at time $t$. Time variables include the time trend $days$, dummies for year and month, as well as dummies for hour of the day interacted with month and day respectively. $\psi_i$ is the grid-specific time-invariant constant term that is treated as random and $u_{it}$ is the idiosyncratic error term.
 \par
-For state-level data it is likewise common to control for size \citep{burke2017price}. We use a log-log specification for electricity consumption, the spot price, and the number of meters as it allows us to model demand responses across grid areas of different size. Furthermore, log-log is the more standard specification which allows for a more direct comparison to the results in other studies \citep{burke2017price}. Other attractive properties include that the estimation provides the elasticity directly and does not predict non-positive electricity consumption, furthermore, the specification reduces the impact of outliers and are found to reduce systematic patterns in the estimated residuals \citep{burke2017price}. %\citet{burke2017price}  also discuss various models and their econometric disadvantages regarding yearly data, e.g. that Generalized Methods of Moments (GMM) is prone to non-stationary data.
+We use a log-log specification for electricity consumption, the spot price, and the number of meters as it allows us to model demand responses across grid areas of different size. Furthermore, log-log is the more standard specification which allows for a more direct comparison to the results in other studies \citep{burke2017price}. Other attractive properties include that the estimation provides the elasticity directly and does not predict non-positive electricity consumption, furthermore, the specification reduces the impact of outliers and are found to reduce systematic patterns in the estimated residuals \citep{burke2017price}. %\citet{burke2017price}  also discuss various models and their econometric disadvantages regarding yearly data, e.g. that Generalized Methods of Moments (GMM) is prone to non-stationary data.
 \par
 % The specification ...
 
@@ -25,10 +25,10 @@ To circumvent the simultaneity problem described in section \ref{subsec:b_endoge
 \subsection{Effect of Time-of-use tariff}
 Since 2018 flex-settled consumers in the Copenhagen metropolitan area are charged a time-of-use (TOU) tariff for the hours 17-19. To estimate this effect the baseline specification \ref{eq:baseline} is estimated for the hours 17-19 solely for the grid company Radius using 2SLS, thus, without the grid-area random effect $\psi_i$ but including a term for the effect of the TOU tariff:
 \begin{align}
-  \beta\frac{nf_{month}}{nhh_{month}}\tau_{year,month}
+  \beta\frac{nf_{month}}{nr_{month}}\tau_{year,month}
   \label{eq:tout}
 \end{align}
-Where $nf$ is the number of flex-settled meters by month, $nhh$ is the total number of meters for households and small companies, and $\tau$ is a dummy for being in January-March or October-December in 2018. To isolate the effect of the TOU tariff we need to assume that residual consumers do not react on the tariff, on the contrary their consumption is assumed to follow the same hour-by-day, hour-by-month, and week patterns as the previous years and the effect of year dummies and the time trend to be evenly distributed across the year.
+Where $nf$ is the number of flex-settled meters by month, $nr$ is the total number of meters for retail customers, and $\tau$ is a dummy for being in January-March or October-December in 2018. To isolate the effect of the TOU tariff we need to assume that residual consumers do not react on the tariff, on the contrary their consumption is assumed to follow the same hour-by-day, hour-by-month, and week patterns as the previous years and the effect of year dummies and the time trend to be evenly distributed across the year.
 
 
 
