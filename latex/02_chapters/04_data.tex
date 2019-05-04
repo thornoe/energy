@@ -56,15 +56,15 @@ The variable for the TOU tariff represents the share of retail customers in Radi
 \label{subsec:d_weather}
 The outside temperature is relevant to the extent that electrical heaters or air conditioning is used \citep{lijesen2007real, vesterberg2014residential}. As the electricity consumption ceteris paribus is expected to be higher for both low-end and high-end temperatures, $temperature^2$ is included as well.\footnote{Scraped via iterative lookups in the records of the Danish Meteorological Institute at \href{https://www.dmi.dk/vejrarkiv/}{dmi.dk/vejrarkiv/}}
 \medskip\\
-Lighting is used more in the absence of daylight. Therefore, an indicator for daytime is included such that $daytime=1$ for hours between sunrise and sunset and e.g. $daytime=0.25$ for $hour=7$ if sunrise was a quarter past 7.\footnote{Sunrise and sunset is scraped via iterative lookups at \href{https://soltider.dk/}{soltider.dk}}
+Lighting is used more in the absence of daylight. Therefore, an indicator for daytime is included such that $daytime=1$ for hours between sunrise and sunset and e.g. $daytime=0.25$ for $hour=7$ if sunrise was a quarter past 7.\footnote{Sunrise and sunset are scraped for each date in the sample via iterative lookups at \href{https://soltider.dk/}{soltider.dk}}
 \medskip\\
-Taking advantage of the dense size of Denmark, temperature and daytime are not scraped by the location of each of the 52 grid companies which often cross municipality-borders but for the two most populace municipalities and applied to all grids within that price region.\footnote{Temperature is for Aarhus and Copenhagen respectively while sunrise and sunset is for the City Hall Square in each of the two cites.}
+Taking advantage of the dense size of Denmark, temperature and daytime are not scraped by the location of each of the 52 grid companies which often cross municipality-borders but for the two most populace municipalities and applied to all grids within that price region.\footnote{Temperature is for the municipalities of Aarhus and Copenhagen respectively while sunrise and sunset are for the City Hall Square in each of the two cites.}
 
 \subsection{Time variables}
 \label{subsec:d_time}
 Year dummies as well as a time trend indicating the number of days since January 1 2016 are included to account for economic growth (increase), technological progress (decrease) \citep{lijesen2007real}, or compositional changes that can affect electricity consumption other than the number of meters.
 \medskip\\
-Danish bank holidays as well as a few other common holidays are taken into account in order to do sample split regressions for business days and non-business days, the latter including holidays and weekends.
+Danish bank holidays as well as a few other common holidays with lower wholesale electricity consumption\footnote{January 2 (the day after New Year's Day), May 1 (International Workers' Day), Friday after Ascension Day, June 5 (Constitution Day), last Friday before Christmas and the days between Christmas and New Year's. All according to \href{https://kalendersiden.dk/}{kalendersiden.dk}} are taken into account in order to do sample split regressions for business days and non-business days, the latter including holidays and weekends.
 \begin{table}[H]
   \centering
   \caption{Descriptive statistics}
