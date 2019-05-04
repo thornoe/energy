@@ -20,14 +20,13 @@ For each grid we include the number of metering points\footnote{Received from En
 
 \subsection{Spot market prices and wind power prognosis}
 \label{subsec:d_spot}
-We include the hour-by-hour spot market price on the day-ahead-market for the price region DK1 or DK2 depending on where the grid company is located.
-
+We include the hour-by-hour spot market price on the day-ahead-market for the price region DK1 or DK2 depending on where the grid company is located (see section \ref{subsec:t_market}).
 \begin{figure}[H]
   \centering
   \caption{Time series for spot price and total consumption (business days)}
   \label{fig:price_cons_time_series}
 \end{figure}
-An important factor for the spot price on the day-ahead-market is the hour-by-hour wind power prognosis for the following day.
+An important factor for the spot price on the day-ahead-market is the hour-by-hour wind power prognosis\footnote{'Elspot prices' and 'Wind power prognosis' by price region and year is downloadable at \href{https://www.nordpoolgroup.com/historical-market-data/}{nordpoolgroup.com/historical-market-data}} for the following day.
 \begin{figure}[H]
   \centering
   \caption{Wind power prognosis and spot price by hour (business days)}
@@ -45,7 +44,15 @@ An important factor for the spot price on the day-ahead-market is the hour-by-ho
 
 \subsection{Time-of-use tariff}
 \label{subsec:d_tout}
-From December 2017 grid companies have been allowed to introduce time-of-use (TOU) tariffs in order to send signals that can direct the more flexible tasks away from peak hours. Thus, two of the bigger grid companies have already introduced TIU tariffs for the peak-hours 5-7 PM (from here written as hours 17-19).
+From December 2017 grid companies have been allowed to introduce time-of-use (TOU) tariffs for retail consumption in order to send signals that can direct the more flexible tasks away from the peak hours around dinnertime. Thus, two of the bigger grid companies have already introduced TOU tariffs for the peak-hours 5-7 PM (from here written as hours 17-19) for the months October-March in which electricity consumption is also higher due to the lack of daylight. While NRGI initially only runs an experiment for a smaller group of flex-settled consumers Radius is introducing a full-scale TOU tariff scheme while exchanging the old prepayment meters with smart meters for the 600,000 retail customers in the Copenhagen metropolitan area.\footnote{See \href{https://ing.dk/artikel/nu-loebes-fleksible-elforbrug-omsider-gang-209251}{ing.dk/artikel/nu-loebes-fleksible-elforbrug-omsider-gang-209251} (Danish).}
+\par
+The variable for the TOU tariff represents the share of retail customers in Radius exposed to the tariff. As seen in Figure \ref{fig:cons_meters_time_series} and Table \ref{tab:descriptive} below the increasing share ends near 60 pct. in December 2018.
+\begin{figure}[H]
+  \centering
+  \caption{Time series for retail consumption and no. meters in Radius}
+  \label{fig:cons_meters_time_series}
+\end{figure}
+
 
 \subsection{Weather data}
 \label{subsec:d_weather}
