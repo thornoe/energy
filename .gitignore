@@ -23,3 +23,7 @@ python/wind-power-dk-prognosis_2019_hourly.xls
 python/wind.csv
 
 stata/data_stata.dta
+latex/main.synctex(busy)
+latex/main.lof
+latex/main.lot
+latex/main.toc

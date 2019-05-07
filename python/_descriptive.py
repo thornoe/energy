@@ -13,79 +13,26 @@ data = pd.read_csv('python/data.csv')
 data.columns.values
 
 ##############################################################################
-#   DESCRIPTIVE STATISTICS                                                   #
-##############################################################################
-
-
-whole_numbers = ['e_w','e_hh','p','wp','n_w','n_hh','trend','temp','temp_sq']
-dummies = ['daytime', 's_tout']
-col_index = whole_numbers + dummies
-
-descriptive = data[col_index]
-
-decimals = pd.Series([2, 4], index=dummies)
-descriptive = descriptive.describe().drop(index='count').round(decimals)
-
-descriptive['e_w'].astype(int, copy=True)
-
-descriptive.columns = ['Wholesale electricity use',
-                       'Household electricity use',
-                       'Spot price',
-                       'Wind power prognosis',
-                       'Wholesale meters',
-                       'Household meters',
-                       'Time trend',
-                       'Temperature',
-                       'Temperature squared',
-                       'Daytime',
-                       'Time-of-Use tariff']
-
-descriptive.T
-
-descriptive.T.to_latex('latex/04_tables/descriptive.tex')
-
-continuous = main_var.drop(columns=['Daytime', 'Time-of-Use tariff']).describe().T.astype(int)
-descriptive
-col_ind = ['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max']
-decimals = pd.Series([0, 5, 5, 2, 2, 2, 2, 2], index=col_ind)
-dummies = main_var[['Daytime', 'Time-of-Use tariff']].describe().T.round(decimals)
-
-
-
-descriptive = pd.concat([continuous, dummies]).drop(columns='count')
-descriptive = continuous.append(dummies).drop(columns='count')
-descriptive
-
-
-##############################################################################
 #   PLOTS BY HOUR                                                            #
 ##############################################################################
 business_days = data[data['bd']==1] # df for business days excluding holidays
 weekends = data[data['bd']==0] # df for weekends and holidays
 
-hours_business_days = business_days[['hour', 'e_w', 'e_f', 'e_r', 'e_hh']].groupby('hour').mean()
-hours_weekends = weekends[['hour', 'e_w', 'e_f', 'e_r', 'e_hh']].groupby('hour').mean()
+bd = business_days[['hour', 'e_w', 'e_f', 'e_r', 'e_hh']].groupby('hour').mean()
+nbd = weekends[['hour', 'e_w', 'e_f', 'e_r', 'e_hh']].groupby('hour').mean()
 
-hours_business_days.name, hours_weekends.name = 'hours_business_days', 'hours_weekends'
-
-list_hours = [hours_business_days, hours_weekends]
-
-for df in list_hours:
-    fig, ax = plt.subplots(figsize=(12,7.4)) # create new figure
-    df.plot(kind='line', ax=ax, y='e_w', label='Wholesale')
-    #df.plot(kind='line', ax=ax, y='e_r', label='Residual households', linestyle='dashed')
-    #df.plot(kind='line', ax=ax, y='e_f', label='Flexibly-settled households', linestyle='dotted')
-    #df.plot(kind='line', ax=ax, y='e_hh', label='Total households', linestyle='dashdot')
-    ax.set(xlabel='hour', ylabel='mean electricity consumption, kWh')
-    ax.set_xticks(np.arange(0, 24, 2))
-    ax.grid(axis='both')
-    # Place a legend above the subplots
-    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
-               ncol=4, mode="expand", borderaxespad=0.)
-    # plt.legend(loc='upper left')
-    fig.savefig('latex/03_figures/'+df.name+'.png')
-    print(df.name)
-    plt.show()
+fig, ax = plt.subplots(figsize=(12,7.4)) # create new figure
+bd.plot(kind='line', ax=ax, y='e_w', label='Wholesale, business day')
+nbd.plot(kind='line', ax=ax, y='e_w', label='Wholesale, non-business day', linestyle='dashed')
+bd.plot(kind='line', ax=ax, y='e_hh', label='Retail, business day', linestyle='dotted')
+nbd.plot(kind='line', ax=ax, y='e_hh', label='Retail non-business day', linestyle='dashdot')
+ax.set(xlabel='hour', ylabel='mean electricity consumption, kWh')
+ax.set_xticks(np.arange(0, 24, 2))
+ax.grid(axis='both')
+plt.legend(loc='upper right', ncol=1)
+# plt.legend(loc='upper left')
+fig.savefig('latex/03_figures/hours.png')
+plt.show()
 ### Wholesale intervals ###
 # peak: mon-fri 8-13
 # shoulder: mon-fri 6-7, 14-17
