@@ -252,12 +252,18 @@ ds['date'] = pd.to_datetime(ds['date'].astype(str)+' '+ds['hour'].astype(str)+':
 
 ds.describe().T
 
+### Applying share TOUT in Radius to all grid companies for robustness check
+ds2 = ds[ds.loc[:,'grid'] == 791]
+ds2 = ds2[['date', 's_tout']]
+ds2.columns = ['date', 's_radius']
+ds = pd.merge(ds, ds2, how='inner', on='date')
+
 
 ##############################################################################
 #   EXPORT READY DATASETS                                                    #
 ##############################################################################
 ### .dta for STATA ###
-ds.to_stata('stata/data_stata.dta', write_index=False)
+ds.to_stata('stata/data_stata.dta', write_index=False) # too big for GitHub
 ds.to_stata('D:/Google Drev/KU Thor/Energy Economics/Data/data_stata.dta', write_index=False)
 ds.columns.values
 

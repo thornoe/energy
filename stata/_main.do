@@ -71,7 +71,8 @@ label variable temp_sq "Temperature squared"
 label variable daytime "Daytime"
 label variable temp "Temperature"
 label variable daytime "Daytime"
-label variable s_tout "Time-of-use tariff"
+label variable s_tout "Share time-of-use tariff"
+label variable s_radius "Share TOUT in Radius"
 
 *xtdescribe
 
@@ -84,23 +85,23 @@ label variable s_tout "Time-of-use tariff"
 **** 	Preferred specifications											****
 ********************************************************************************
 est clear
-xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
-	o0.day_bd#i.hour i.month#i.hour ///
-	if bd==1 & inrange(hour,12,15), re vce(cluster grid)
-est store peak, title("Peak: 12-15")
+qui xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
+	o0.day_bd#i.hour o12.month#i.hour ///
+	if bd==1 & inrange(hour,11,15), re vce(cluster grid)
+est store peak, title("Peak: 11-15")
 
-xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
-	o0.day_bd#i.hour i.month#i.hour ///
+qui xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
+	o0.day_bd#i.hour o12.month#i.hour ///
 	if bd==1 & inrange(hour,0,4), re vce(cluster grid)
 est store off_peak, title("Off-peak: 00-04")
 
-xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w  daytime ///
-	o0.day_bd#i.hour i.month#i.hour ///
-	if bd==1 & inrange(hour,5,11)|inrange(hour,16,23), re vce(cluster grid)
+qui xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w  daytime ///
+	o0.day_bd#i.hour o12.month#i.hour ///
+	if bd==1 & inrange(hour,5,10)|inrange(hour,16,23), re vce(cluster grid)
 est store shoulder, title("Shoulder")
 
-xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w daytime ///
-	i.hour i.month#i.hour ///
+qui xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w daytime ///
+	i.hour o12.month#i.hour ///
 	if non_bd==1, re vce(cluster grid) first
 est store non_bd, title("Non-business days")
 
@@ -115,17 +116,16 @@ estout _all using $tables/ws_preferred.tex, style(tex) replace ///
 	stats(N, labels("Observations") fmt(%12.0gc) ) ///
 	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
 
-* how to show estimation method and instruments? (first stage)
 
 ********************************************************************************
 **** 	Elasticity for each hour (business days joint)						****
 ********************************************************************************
 est clear
-foreach h of numlist 0/23 {
+qui foreach h of numlist 0/23 {
 	xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
 		o0.day_bd o12.month ///
 		if bd==1 & hour==`h', fe vce(cluster grid)
-	est store bd_h_`h'
+	noisily est store bd_h_`h'
 }
 estout _all using "ws_bd-hour.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
@@ -137,13 +137,13 @@ estout _all using "ws_bd-hour.xls", replace ///
 **** 	Elasticity for each single hour-day combination						****
 ********************************************************************************
 est clear
-foreach d of numlist 1/5 {
+qui foreach d of numlist 1/5 {
 	est clear
 	foreach h of numlist 0/23 {
-		xtivreg e_w (p = wp wp_other) $x_w ///
-			i.hour i.month ///
+		xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
+			o0.hour o12.month ///
 			if day_bd==`d' & hour==`h', fe vce(cluster grid)
-		est store bd_`d'_h_`h'
+		noisily est store bd_`d'_h_`h'
 	}
 	estout _all using "ws_bd`d'-hour.xls", replace ///
 		label cells( b(star fmt(5)) se(par fmt(5)) ) ///
@@ -151,16 +151,67 @@ foreach d of numlist 1/5 {
 		stats(N, fmt(1 %12.0gc) )
 }
 est clear
-foreach h of numlist 0/23 {
-	xtivreg e_w (p = wp wp_other) $x_w ///
-		i.hour i.month ///
+qui foreach h of numlist 0/23 {
+	xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
+		o0.hour o12.month ///
 		if non_bd==1 & hour==`h', fe vce(cluster grid)
-	est store nbd_h_`h'
+	noisily est store nbd_h_`h'
 }
 estout _all using "ws_non-bd-hour.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(1 %12.0gc) )
+
+
+********************************************************************************
+**** 	Robustness: For each region/year/month										****
+********************************************************************************
+*** For each price region and each year ***
+est clear
+qui xtivreg e_w (p = wp wp_other) $x_w ///
+	o0.day_bd#i.hour o12.month#i.hour ///
+	if DK1==1 & bd==1 & inrange(hour,11,15), re vce(cluster grid)
+est store peak_DK1, title("Peak, Western DK")
+qui xtivreg e_w (p = wp wp_other) $x_w ///
+	o0.day_bd#i.hour o12.month#i.hour ///
+	if DK1==0 & bd==1 & inrange(hour,11,15), re vce(cluster grid)
+est store peak_DK2, title("Peak, Eastern DK")
+forvalues y = 2016/2018 {
+	qui xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) ///
+		n_w temp* trend i.week ///
+		o0.day_bd#i.hour o12.month#i.hour ///
+		if year==`y' & bd==1 & inrange(hour,11,15), re vce(cluster grid)
+	est store peak_`y', title("Peak, `y'")
+}
+estout _all using "ws_robustness_region_year.xls", replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(N, fmt(%12.0gc) )
+estout _all using $tables/robustness_region_year.tex, style(tex) replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	indicate("Time variables=*.*") drop(trend _cons) ///
+	stats(N, labels("Observations") fmt(%12.0gc) ) ///
+	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
+
+*** For each month ***
+est clear
+forvalues m = 1/12 {
+	qui xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
+		o0.day_bd#i.hour ///
+		if month==`m' & bd==1 & inrange(hour,11,15), re vce(cluster grid)
+	est store peak_`m', title("Peak, month `m'")
+}
+estout _all using "ws_robustness_month.xls", replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(N, fmt(%12.0gc) )
+estout _all using $tables/robustness_month.tex, style(tex) replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	indicate("Time variables=*.*") drop(trend _cons) ///
+	stats(N, labels("Observations") fmt(%12.0gc) ) ///
+	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
 
 
 *****	BACK TO WHOLESALE AGAIN!
@@ -245,15 +296,15 @@ estout re fe reiv feiv using "ws_fe-re-feiv-reiv-comparison.xls", replace ///
 **** 	Pooled 2SLS for Radius, 17-19 only									****
 ********************************************************************************
 est clear
-ivregress 2sls e_hh s_tout (p = wp wp_other) $x_hh $x_17_19 ///
+qui ivregress 2sls e_hh s_tout (p = wp wp_other) $x_hh $x_17_19 ///
 	if grid==791 & inrange(hour,17,19), vce(robust)
 est store all, title("All days")
 
-ivregress 2sls e_hh s_tout (p = wp wp_other) $x_hh $x_17_19 ///
+qui ivregress 2sls e_hh s_tout (p = wp wp_other) $x_hh $x_17_19 ///
 	if bd==1 & grid==791 & inrange(hour,17,19), vce(robust)
 est store bd, title("Business days")
 
-ivregress 2sls e_hh s_tout (p = wp wp_other) $x_hh ///
+qui ivregress 2sls e_hh s_tout (p = wp wp_other) $x_hh ///
 	i1.non_bd#i(17 18 19).hour i.month#i(17 18 19).hour ///
 	if non_bd==1 & grid==791 & inrange(hour,17,19), vce(robust)
 est store nbd, title("Non-business days")
@@ -278,14 +329,12 @@ est clear
 * Simple OLS
 reg e_hh s_tout p $x_hh $x_17_19 ///
 	if grid==791 & inrange(hour,17,19), vce(robust)
-estadd scalar cons = _b[_cons]
 est store OLS, title("OLS")
 
 * 1st stage
 reg p s_tout wp wp_other $x_hh $x_17_19 ///
 	if grid==791 & inrange(hour,17,19), vce(robust)
 predict vhat, residuals
-estadd scalar cons = _b[_cons]
 est store first, title("1st stage, y = log price")
 test wp = wp_other = 0 // F-statistic: 230
 // t- and F-test are strongly rejected
@@ -318,8 +367,9 @@ estout _all using $tables/hh_endogeneity.tex, style(tex) replace ///
 	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
 drop vhat
 
+
 ********************************************************************************
-**** 	Pooled 2SLS for Radius, 17-19: Testing for homoscedasticity			 ****
+**** 	Pooled 2SLS for Radius, 17-19: Testing for homoscedasticity			****
 ********************************************************************************
 est clear
 * OLS w. non-robust s.e.
@@ -391,88 +441,20 @@ estout _all using $tables/hh_overidentifying.tex, style(tex) replace ///
 
 
 ********************************************************************************
-**** 	Pooled OLS for Radius, all hours									****
+**** 	Robusness-check: Applying share-TOUT in Radius to other grids		****
 ********************************************************************************
 est clear
-/*
-ivregress 2sls e_hh (p = wp wp_other) s_tout n_hh trend temp* daytime ///
-	i.month#i.hour i(1 2 3 4 5).day_bd#i.hour i1.non_bd#i.hour i.week i.year ///
-	if grid==791, vce(robust)
-*/
-estadd scalar cons = _b[_cons]
-est store all, title("All days")
-
-/*
-ivregress 2sls e_hh (p = wp wp_other) s_tout n_hh trend temp* daytime ///
-	i.month#i.hour i(1 2 3 4 5).day_bd#i.hour i.week i.year ///
-	if bd==1 & grid==791, vce(robust)
-*/
-estadd scalar cons = _b[_cons]
-est store bd, title("Business days")
-
-/*
-ivregress 2sls e_hh (p = wp wp_other) s_tout n_hh trend temp* daytime ///
-	i.month#i.hour i.day#i.hour i.week i.year ///
-	if non_bd==1 & grid==791, vce(robust)
-*/
-estadd scalar cons = _b[_cons]
-est store nbd, title("Non-business days")
-
-estout _all using "hh_radius.xls", replace ///
+qui forvalues i = 23/911 {
+	count if grid == `i'
+	if r(N) == 0 {
+		continue
+	}
+	ivregress 2sls e_hh s_radius (p = wp wp_other) $x_hh $x_17_19 ///
+		if grid==`i' & inrange(hour,17,19), vce(robust)
+	est store grid_`i', title("Grid `i'")
+}
+estout _all using "hh_robustness.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(N, fmt(1 %12.0gc) )
-
-estout _all using $tables/hh_radius.tex, style(tex) replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
-	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	indicate("Time variables=*.*") drop(trend _cons) ///
-	stats(cons N, labels("Constant" "Observations") fmt(1 %12.0gc) ) ///	
-	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
-
-
-********************************************************************************
-**** 	All grid companies													****
-********************************************************************************
-est clear
-/*
-xtivreg e_hh (p = wp wp_other) s_tout n_hh trend temp* daytime ///
-	i.month#i.hour i(1 2 3 4 5).day_bd#i.hour i1.non_bd#i.hour i.week i.year ///
-	, fe vce(cluster grid)
-*/
-estadd scalar cons = _b[_cons]
-est store all, title("All days")
-
-/*
-xtivreg e_hh (p = wp wp_other) s_tout n_hh trend temp* daytime ///
-	i.month#i.hour i(1 2 3 4 5).day_bd#i.hour i.week i.year ///
-	if bd==1, fe vce(cluster grid)
-*/
-estadd scalar cons = _b[_cons]
-est store bd, title("Business days")
-
-/*
-xtivreg e_hh (p = wp wp_other) s_tout n_hh trend temp* daytime ///
-	i.month#i.hour i1.non_bd#i.hour i.week i.month i.year ///
-	if non_bd==1, fe vce(cluster grid)
-*/
-estadd scalar cons = _b[_cons]
-est store nbd, title("Non-business days")
-
-estout _all using "hh_all.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
-	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(N, fmt(1 %12.0gc) )
-
-estout _all using $tables/hh_all.tex, style(tex) replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
-	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	indicate("Time variables=*.*") drop(trend _cons) ///
-	stats(cons N, labels("Constant" "Observations") fmt(1 %12.0gc) ) ///	
-	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
-
-	
-	
-	
-	
+	stats(N, fmt(%12.0gc 3 3) )
 

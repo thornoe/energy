@@ -1,13 +1,13 @@
 \label{sec:background}
-Estimating price elasticities of electricity and has been an area of interest for economists for a long time and increasingly so. Deregulation of the electricity market made it important to measure how a broad spectre of consumers (residential, industrial and commercial) react to changing electricity prices.  
+Estimating price elasticities of electricity and has been an area of interest for economists for a long time and increasingly so. Deregulation of the electricity market made it important to measure how a broad spectre of consumers (residential, industrial and commercial) react to changing electricity prices.
 
-%Kommentér på smart metering. 
+%Kommentér på smart metering.
 
 
 The supply side is becoming even more volatile following the increased share of renewable energy driven by political goals and competitive establishment costs. In the case of a very inelastic electricity demand \citet{wolak2001impact} outlines how an oligopolistic supply side can capitalize on intraday peaks in demand, however, firms that are able to have a more flexible energy use can face clear advantages in the market while on aggregate making it possible to further increase the share of renewables in the electricity supply. \par
 Thus, it is of importance to conduct better empirical estimations of how consumers respond at a micro level - in particular because taxes often are used as a policy tool to incentivize a decreased consumption of power. In the following we highlight the key contributions in this area.
 
-\subsection{Previous studies}
+\subsection{Modest estimates}
 \label{subsec:b_results}
 % Previous empirical evidence
 % only the ones more closely related to your study!
@@ -15,7 +15,7 @@ Thus, it is of importance to conduct better empirical estimations of how consume
 
 Regarding residential electricity demand most estimates of the demand response to price changes of electricity are in the range 0.0076 to -2.01 in the short run and -0.07 to -2.5 in the long run as reported in \citet{espey2004turning}, who are looking at non-time-of-day studies. Generally elasticities tend to be bigger in the long run which is in accordance with economic reasoning since consumers better can better modify their capital stock in the long term. These estimates rely on a a wide range of different empirical approaches.
 
-%Distinguish between estimates for residential consumers and wholesale consumers 
+%Distinguish between estimates for residential consumers and wholesale consumers
 
 \subsection{Heterogeneous effects}
 \label{subsec:b_heterogeneity}
@@ -25,7 +25,7 @@ Though only being able to use the average firm-level responses within each code 
 \subsection{Endogeneity problems}
 \label{subsec:b_endogeneity}
 Estimating demands-side responses to shifting electricity prices is associated with potential problems of endogeneity as price and consumptions/production are simultaneous. That is, a higher expected demand can push up the overall prices and vice versa. An example of such a mechanism is that increasing demand-side competition can lead to imports of electricity from more expensive energy sources \citep{burke2017price} resulting in price increases. \todo{ Also an unobserved factor can influence both prices and demand.} Therefore lagged prices are often included to avoid an omitted variable bias and to combat endogeneity \citep{lijesen2007real}, however, this inclusion creates a dynamic bias instead. This is , however, not likely to be as big of an issue in our estimation,  because we only consider demand responses in the short run and the bias is likely to be bigger when estimating long term elasticities \citep{okajima2013estimation}. %\citet{okajima2013estimation} use lagged dependent variables and  as instruments for the resident electricity price (which have also been done by many others) but use an FD GMM model to circumvent the dynamic bias.
-\medskip \\ 
+\medskip \\
 \citet{bonte2015price} were able to use wind speed as an instrument for the spot market price, however, the effectiveness of this strategy might be isolated to Germany due to their feed-in-tariff for Renewable Energy Sources that is designed to directly affect the price. Likewise, \citet{graf2013measuring} tried using emissions right and prices for primary energy as instruments but to limited success. For the US \citet{burke2017price} use the state level share of coal and hydro as an instrument for yearly prices as they have generally been the two cheaper source of electricity.
 
 \subsection{Estimation methods}
@@ -33,4 +33,3 @@ Estimating demands-side responses to shifting electricity prices is associated w
 When data is limited to total electricity demand it is common to apply a two stage least square (2SLS) regression and either include a time trend \citep{lijesen2007real} or estimate the elasticity year-by-year \citep{bonte2015price}.
 \par
 For more dis-aggregated data different methods can be utilized. Unobserved heterogeneity must be accounted for, usually by including unit-specific fixed-effects. On household level data one option is to use Seemingly Unrelated Regression Equations (SUR/SURE) \citep{vesterberg2014residential}.
-
