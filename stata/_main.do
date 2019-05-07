@@ -22,7 +22,7 @@ xtset grid date, clocktime delta(1 hour) // strongly balanced
 *** Global variable lists ***
 global x_w "n_w temp* trend i.year i.week" // wholesale
 global x_hh "n_hh temp* daytime trend i.year i.week" // households
-global x_17_19 "i(1 2 3 4 5).day_bd#i(17 18 19).hour i.month#i(17 18 19).hour" // i1.non_bd#i(17 18 19).hour as baseline
+global x_17_19 "i(1 2 3 4 5).day_bd#i(17 18 19).hour i.month#i(17 18 19).hour" // baseline: i1.non_bd#i(17 18 19).hour
 
 
 *** Global directories, Thor ***
@@ -86,26 +86,22 @@ label variable s_tout "Time-of-use tariff"
 est clear
 xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
 	o0.day_bd#i.hour i.month#i.hour ///
-	if bd==1 & inrange(hour,12,15), re vce(cluster grid) first
-estadd scalar cons = _b[_cons]
+	if bd==1 & inrange(hour,12,15), re vce(cluster grid)
 est store peak, title("Peak: 12-15")
 
-xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1) $x_w  daytime ///
+xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
 	o0.day_bd#i.hour i.month#i.hour ///
-	if bd==1 & inrange(hour,5,11)|inrange(hour,16,23), re vce(cluster grid) first
-estadd scalar cons = _b[_cons]
-est store shoulder, title("Shoulder")
-
-xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1) $x_w ///
-	o0.day_bd#i.hour i.month#i.hour ///
-	if bd==1 & inrange(hour,0,4), re vce(cluster grid) first
-estadd scalar cons = _b[_cons]
+	if bd==1 & inrange(hour,0,4), re vce(cluster grid)
 est store off_peak, title("Off-peak: 00-04")
 
-xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1) $x_w daytime ///
+xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w  daytime ///
+	o0.day_bd#i.hour i.month#i.hour ///
+	if bd==1 & inrange(hour,5,11)|inrange(hour,16,23), re vce(cluster grid)
+est store shoulder, title("Shoulder")
+
+xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w daytime ///
 	i.hour i.month#i.hour ///
 	if non_bd==1, re vce(cluster grid) first
-estadd scalar cons = _b[_cons]
 est store non_bd, title("Non-business days")
 
 estout _all using "ws_preferred.xls", replace ///
@@ -116,7 +112,7 @@ estout _all using $tables/ws_preferred.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
-	stats(cons N, labels("Constant" "Observations") fmt(1 %12.0gc) ) ///	
+	stats(N, labels("Observations") fmt(%12.0gc) ) ///
 	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
 
 * how to show estimation method and instruments? (first stage)
@@ -126,7 +122,7 @@ estout _all using $tables/ws_preferred.tex, style(tex) replace ///
 ********************************************************************************
 est clear
 foreach h of numlist 0/23 {
-	xtivreg e_w (p = wp wp_other) $x_w ///
+	xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
 		o0.day_bd o12.month ///
 		if bd==1 & hour==`h', fe vce(cluster grid)
 	est store bd_h_`h'
@@ -239,29 +235,27 @@ estout re fe reiv feiv using "ws_fe-re-feiv-reiv-comparison.xls", replace ///
 
 
 
-
+********************************************************************************
+////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////	4. Regressions for households and small companies		 			////
 ////////////////////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////////////////////////
 ********************************************************************************
 **** 	Pooled 2SLS for Radius, 17-19 only									****
 ********************************************************************************
 est clear
 ivregress 2sls e_hh s_tout (p = wp wp_other) $x_hh $x_17_19 ///
 	if grid==791 & inrange(hour,17,19), vce(robust)
-estadd scalar cons = _b[_cons]
 est store all, title("All days")
 
 ivregress 2sls e_hh s_tout (p = wp wp_other) $x_hh $x_17_19 ///
 	if bd==1 & grid==791 & inrange(hour,17,19), vce(robust)
-estadd scalar cons = _b[_cons]
 est store bd, title("Business days")
 
 ivregress 2sls e_hh s_tout (p = wp wp_other) $x_hh ///
 	i1.non_bd#i(17 18 19).hour i.month#i(17 18 19).hour ///
 	if non_bd==1 & grid==791 & inrange(hour,17,19), vce(robust)
-estadd scalar cons = _b[_cons]
 est store nbd, title("Non-business days")
 
 estout _all using "hh_radius_17-19.xls", replace ///
@@ -273,7 +267,7 @@ estout _all using $tables/hh_radius_17-19.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
-	stats(cons N, labels("Constant" "Observations") fmt(1 %12.0gc) ) ///	
+	stats(N, labels("Observations") fmt(%12.0gc) ) ///	
 	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
 
 	
