@@ -22,6 +22,7 @@ xtset grid date, clocktime delta(1 hour) // strongly balanced
 *** Global variable lists ***
 global x_w "n_w temp* trend i.year i.week" // wholesale
 global x_hh "n_hh temp* daytime trend i.year i.week" // households
+global x_11_15 "i(1 2 3 4).day_bd#i(11 12 13 14 15).hour i.month#i(11 12 13 14 15).hour" // baseline: i5.non_bd#i(11 12 13 14 15).hour
 global x_17_19 "i(1 2 3 4 5).day_bd#i(17 18 19).hour i.month#i(17 18 19).hour" // baseline: i1.non_bd#i(17 18 19).hour
 
 
@@ -125,7 +126,7 @@ qui foreach h of numlist 0/23 {
 	xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
 		o0.day_bd o12.month ///
 		if bd==1 & hour==`h', fe vce(cluster grid)
-	noisily est store bd_h_`h'
+	est store bd_h_`h'
 }
 estout _all using "ws_bd-hour.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
@@ -137,13 +138,13 @@ estout _all using "ws_bd-hour.xls", replace ///
 **** 	Elasticity for each single hour-day combination						****
 ********************************************************************************
 est clear
-qui foreach d of numlist 1/5 {
+foreach d of numlist 1/5 {
 	est clear
-	foreach h of numlist 0/23 {
+	qui foreach h of numlist 0/23 {
 		xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
 			o0.hour o12.month ///
 			if day_bd==`d' & hour==`h', fe vce(cluster grid)
-		noisily est store bd_`d'_h_`h'
+		est store bd_`d'_h_`h'
 	}
 	estout _all using "ws_bd`d'-hour.xls", replace ///
 		label cells( b(star fmt(5)) se(par fmt(5)) ) ///
@@ -155,7 +156,7 @@ qui foreach h of numlist 0/23 {
 	xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
 		o0.hour o12.month ///
 		if non_bd==1 & hour==`h', fe vce(cluster grid)
-	noisily est store nbd_h_`h'
+	est store nbd_h_`h'
 }
 estout _all using "ws_non-bd-hour.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
@@ -171,23 +172,23 @@ est clear
 qui xtivreg e_w (p = wp wp_other) $x_w ///
 	o0.day_bd#i.hour o12.month#i.hour ///
 	if DK1==1 & bd==1 & inrange(hour,11,15), re vce(cluster grid)
-est store peak_DK1, title("Peak, Western DK")
+est store peak_DK1, title("Western DK")
 qui xtivreg e_w (p = wp wp_other) $x_w ///
 	o0.day_bd#i.hour o12.month#i.hour ///
 	if DK1==0 & bd==1 & inrange(hour,11,15), re vce(cluster grid)
-est store peak_DK2, title("Peak, Eastern DK")
+est store peak_DK2, title("Eastern DK")
 forvalues y = 2016/2018 {
 	qui xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) ///
 		n_w temp* trend i.week ///
 		o0.day_bd#i.hour o12.month#i.hour ///
 		if year==`y' & bd==1 & inrange(hour,11,15), re vce(cluster grid)
-	est store peak_`y', title("Peak, `y'")
+	est store peak_`y', title("`y'")
 }
 estout _all using "ws_robustness_region_year.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(%12.0gc) )
-estout _all using $tables/robustness_region_year.tex, style(tex) replace ///
+estout _all using $tables/ws_robustness_region_year.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
@@ -200,13 +201,40 @@ forvalues m = 1/12 {
 	qui xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
 		o0.day_bd#i.hour ///
 		if month==`m' & bd==1 & inrange(hour,11,15), re vce(cluster grid)
-	est store peak_`m', title("Peak, month `m'")
+	est store peak_`m', title("Month `m'")
 }
 estout _all using "ws_robustness_month.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(%12.0gc) )
-estout _all using $tables/robustness_month.tex, style(tex) replace ///
+
+
+********************************************************************************
+**** 	Robustness: For different grids										****
+********************************************************************************
+*** For each price region and each year ***
+est clear
+qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
+	if grid==131 & bd==1 & inrange(hour,11,15), vce(robust)
+est store peak_131, title("EnergiMidt (DK1)")
+qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
+	if grid==151 & bd==1 & inrange(hour,11,15), vce(robust)
+est store peak_151, title("NRGI (DK1)")
+qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
+	if grid==344 & bd==1 & inrange(hour,11,15), vce(robust)
+est store peak_344, title("SE (DK1)")
+qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
+	if grid==740 & bd==1 & inrange(hour,11,15), vce(robust)
+est store peak_740, title("SEAS-NVE (DK2)")
+qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
+	if grid==791 & bd==1 & inrange(hour,11,15), vce(robust)
+est store peak_791, title("Radius (DK2)")
+
+estout _all using "ws_robustness_grid.xls", replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(N, fmt(%12.0gc) )
+estout _all using $tables/ws_robustness_grid.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
@@ -214,43 +242,6 @@ estout _all using $tables/robustness_month.tex, style(tex) replace ///
 	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
 
 
-*****	BACK TO WHOLESALE AGAIN!
-********************************************************************************
-**** 	Trying Differenct peak periods										****
-********************************************************************************
-est clear
-foreach a of numlist 7/12 {
-	foreach b of numlist 12/18 {
-		xtivreg e_w (p = wp wp_other) $x ///
-			o0.day_bd#i.hour i.month#i.hour ///
-			if bd==1 & inrange(hour,`a',`b'), fe vce(cluster grid)
-		est store bd_`a'_to_`b'
-}
-}
-estout _all using "ws_peaks-comparison.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
-	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(N, fmt(1 %12.0gc) )
-
-
-********************************************************************************
-**** 	Trying Differenct shoulder periods									****
-********************************************************************************
-est clear
-foreach a of numlist 7/12 {
-	foreach b of numlist 12/18 {
-		xtivreg e_w (p = wp wp_other) $x ///
-			o0.day_bd#i.hour i.month#i.hour ///
-			if bd==1 & inrange(hour,`a',`b'), fe vce(cluster grid)
-		est store bd_`a'_to_`b'
-}
-}
-estout _all using "ws_different-shoulders.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
-	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(N, fmt(1 %12.0gc) )
-
-	
 ********************************************************************************
 **** 	FE, RE, FEIV, REIV comparison										****
 ********************************************************************************
