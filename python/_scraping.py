@@ -139,17 +139,29 @@ spot.to_csv('elspot.csv', index=False)
 ##############################################################################
 #   WIND POWER PROGNOSIS (takes around 10 seconds to download)              x #
 ##############################################################################
-wind = []
-for x in range(2016, 2020):
+wind_dk, wind_se = [], []
+
+# Denmark
+for x in range(2016, 2019):
     filename = 'wind-power-dk-prognosis_'+str(x)+'_hourly.xls'
     url = 'https://www.nordpoolgroup.com/globalassets/marketdata-excel-files/'+str(filename)
     re.urlretrieve(url,filename)
     data = pd.read_html(filename)
     data = pd.DataFrame(data[0])
-    data.columns=['date','hour', 'DK1', 'DK2']
-    wind.append(data)
+    wind_dk.append(data)
+wind_dk = pd.concat(wind_dk, axis=0)
 
-wind = pd.concat(wind, axis=0)
+# Sweden
+for x in range(2016, 2019):
+    filename = 'wind-power-se-prognosis_'+str(x)+'_hourly.xls'
+    url = 'https://www.nordpoolgroup.com/globalassets/marketdata-excel-files/'+str(filename)
+    re.urlretrieve(url,filename)
+    data = pd.read_html(filename)
+    data = pd.DataFrame(data[0])
+    wind_se.append(data)
+wind_se = pd.concat(wind_se, axis=0)
+
+wind_dk.head()
 
 wind['hour'] = wind['hour'].str.slice(0,2)
 wind.columns = ['date', 'hour', 'WP_DK1', 'WP_DK2']

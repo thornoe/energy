@@ -25,7 +25,7 @@ fig, ax = plt.subplots(figsize=(12,7.4)) # create new figure
 bd.plot(kind='line', ax=ax, y='e_w', label='Wholesale, business day')
 nbd.plot(kind='line', ax=ax, y='e_w', label='Wholesale, non-business day', linestyle='dashed')
 bd.plot(kind='line', ax=ax, y='e_hh', label='Retail, business day', linestyle='dotted')
-nbd.plot(kind='line', ax=ax, y='e_hh', label='Retail non-business day', linestyle='dashdot')
+nbd.plot(kind='line', ax=ax, y='e_hh', label='Retail, non-business day', linestyle='dashdot')
 ax.set(xlabel='hour', ylabel='mean electricity consumption, kWh')
 ax.set_xticks(np.arange(0, 24, 2))
 ax.grid(axis='both')
@@ -54,25 +54,24 @@ plt.show()
 ##############################################################################
 ### Setting up the data ###
 weekdays = data[['day', 'e_w', 'e_f', 'e_r', 'e_hh']].groupby('day').mean()
-weekdays_bd = business_days[['day', 'e_w', 'e_f', 'e_r', 'e_hh']].groupby('day').mean()
 weeks = data[['week', 'e_w', 'e_f', 'e_r', 'e_hh']].groupby('week').mean()
 weeks_bd = business_days[['week', 'e_w', 'e_f', 'e_r', 'e_hh']].groupby('week').mean()
 months = data[['month', 'e_w', 'e_f', 'e_r', 'e_hh']].groupby('month').mean()
 months_bd = business_days[['month', 'e_w', 'e_f', 'e_r', 'e_hh']].groupby('month').mean()
-time_series = business_days[['date', 'e_w', 'e_f', 'e_r', 'e_hh', 'year']].groupby('date').mean()
+time_series_bd = business_days[['date', 'e_w', 'e_f', 'e_r', 'e_hh', 'year']].groupby('date').mean()
 
-weekdays.name, weekdays_bd.name, weeks.name, weeks_bd.name = 'weekdays', 'weekdays_bd', 'weeks', 'weeks_bd'
-months.name, months_bd.name, time_series.name = 'months', 'months_bd' 'time_series'
+weekdays.name, weekdays_bd.name, weeks.name, weeks_bd.name = 'weekdays', 'weekdays, business days', 'weeks', 'weeks, business days'
+months.name, months_bd.name, time_series_bd.name = 'months', 'months, business days', 'time series, business days'
 
-list_other = [weekdays, weeks, months, time_series]
+list_other = [weekdays, weeks, weeks_bd, months, months_bd, time_series_bd]
 
 ### Weekday, week, month and time-series ###
 for df in list_other:
     fig, ax = plt.subplots(figsize=(12,7.4)) # create new figure
     df.plot(kind='line', ax=ax, y='e_w', label='Wholesale')
-    # df.plot(kind='line', ax=ax, y='e_r', label='Residual households', linestyle='dashed')
-    # df.plot(kind='line', ax=ax, y='e_f', label='Flexibly-settled households', linestyle='dotted')
-    # df.plot(kind='line', ax=ax, y='e_hh', label='Total households', linestyle='dashdot')
+    df.plot(kind='line', ax=ax, y='e_hh', label='Retail', linestyle='dashed')
+    # df.plot(kind='line', ax=ax, y='e_r', label='Residual households', linestyle='dotted')
+    # df.plot(kind='line', ax=ax, y='e_f', label='Flexibly-settled households', linestyle='dashdot')
     ax.set(xlabel=df.name, ylabel='mean electricity consumption, kWh')
     ax.grid(axis='x')
     # Place a legend above the subplots
