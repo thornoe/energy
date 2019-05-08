@@ -20,7 +20,7 @@ xtset grid date, clocktime delta(1 hour) // strongly balanced
 
 
 *** Global variable lists ***
-global x_w "n_w temp* trend i.year i.week" // wholesale
+global x_w "n_w temp* trend i.year i.week" // wholesale (without daytime)
 global x_hh "n_hh temp* daytime trend i.year i.week" // households
 global x_11_15 "i(1 2 3 4).day_bd#i(11 12 13 14 15).hour i.month#i(11 12 13 14 15).hour" // baseline: i5.non_bd#i(11 12 13 14 15).hour
 global x_17_19 "i(1 2 3 4 5).day_bd#i(17 18 19).hour i.month#i(17 18 19).hour" // baseline: i1.non_bd#i(17 18 19).hour
@@ -74,8 +74,6 @@ label variable temp "Temperature"
 label variable daytime "Daytime"
 label variable s_tout "Share time-of-use tariff"
 label variable s_radius "Share TOUT in Radius"
-
-*xtdescribe
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -215,19 +213,19 @@ estout _all using "ws_robustness_month.xls", replace ///
 *** For each price region and each year ***
 est clear
 qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
-	if grid==131 & bd==1 & inrange(hour,11,15), vce(robust)
+	if grid==131 & bd==1 & inrange(hour,11,15), robust
 est store peak_131, title("EnergiMidt (DK1)")
 qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
-	if grid==151 & bd==1 & inrange(hour,11,15), vce(robust)
+	if grid==151 & bd==1 & inrange(hour,11,15), robust
 est store peak_151, title("NRGI (DK1)")
 qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
-	if grid==344 & bd==1 & inrange(hour,11,15), vce(robust)
+	if grid==344 & bd==1 & inrange(hour,11,15), robust
 est store peak_344, title("SE (DK1)")
 qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
-	if grid==740 & bd==1 & inrange(hour,11,15), vce(robust)
+	if grid==740 & bd==1 & inrange(hour,11,15), robust
 est store peak_740, title("SEAS-NVE (DK2)")
 qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
-	if grid==791 & bd==1 & inrange(hour,11,15), vce(robust)
+	if grid==791 & bd==1 & inrange(hour,11,15), robust
 est store peak_791, title("Radius (DK2)")
 
 estout _all using "ws_robustness_grid.xls", replace ///
@@ -241,7 +239,7 @@ estout _all using $tables/ws_robustness_grid.tex, style(tex) replace ///
 	stats(N, labels("Observations") fmt(%12.0gc) ) ///
 	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
 
-
+	
 ********************************************************************************
 **** 	FE, RE, FEIV, REIV comparison										****
 ********************************************************************************
@@ -275,12 +273,148 @@ estout re fe reiv feiv using "ws_fe-re-feiv-reiv-comparison.xls", replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(1 %12.0gc) )
 
+	
+********************************************************************************
+////////////////////////////////////////////////////////////////////////////////
+////	4. Wholesale in single-grids: Statistical tests				 		////
+////////////////////////////////////////////////////////////////////////////////
+********************************************************************************
+/*	
+Using the more elastic of the bigger grids in each price region:
+- DK1: EnergiMidt, grid number 131
+- DK2: SEAS-NVE, grid number 740
+For business days wholesale, peak hours 11-15
+*/
+
+qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
+	if grid==`i' & bd==1 & inrange(hour,11,15), robust
+est store peak_131, title("EnergiMidt (DK1)")
+
+qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
+	if grid==740 & bd==1 & inrange(hour,11,15), robust
+est store peak_740, title("SEAS-NVE (DK2)")
+
+********************************************************************************
+**** 	Testing for homoscedasticity										****
+********************************************************************************
+est clear
+foreach i in 131 740 {
+	* OLS w. non-robust s.e.
+	qui reg e_w p $x_w $x_11_15 if grid==`i' & bd==1 & inrange(hour,11,15)
+	est store non_robust_`i', title("`i': OLS")
+	* The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity
+	estat hettest, rhs mtest(bonf)
+	/*
+	Both:
+ 	- The simultaneous test clearly rejects that the variance is constant (p=0.000)
+	EnergiMidt:
+	- The Bonferroni-adjusted p-values for price, n_w, & temperature are 0.000
+	SEAS-NVE:
+	- The Bonferroni-adjusted p-val for price, n_w, & temperature are ~1 however
+	*/
+	* OLS w. robust s.e.
+	qui reg e_w p $x_w $x_11_15 if grid==`i' & bd==1 & inrange(hour,11,15), robust
+	est store robust_`i', title("`i': OLS, robust s.e.")
+}
+estout _all using "ws_homoscedasticity.xls", replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(N, fmt(%12.0gc) )
+
+********************************************************************************
+**** 	Testing endogeneity (relevance)					 					****
+********************************************************************************
+foreach i in 131 740 {
+	est clear
+	* Simple OLS
+	qui reg e_w p $x_w $x_11_15 if grid==`i' & bd==1 & inrange(hour,11,15), robust
+	est store OLS, title("OLS")
+
+	* 1st stage
+	qui reg p wp wp_other $x_w $x_11_15 if grid==`i' & bd==1 & inrange(hour,11,15), robust
+	predict vhat, residuals
+	label variable vhat "Estimated residuals, 1st stage"
+	est store first, title("1st stage, y = log price")
+	test wp = wp_other = 0 // F-statistics: , 
+	// t- and F-test are strongly rejected: F(2,3539)= 221, 178 respectively
+	// i.e instruments are strongly correlated with price, thus, are relevant
+
+	* 2nd stage
+	qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
+		if grid==`i' & bd==1 & inrange(hour,11,15), robust
+	est store second, title("2SLS")
+	// Very different from OLS, thus p is likely to be endogenous
+
+	* Endogeneity test (Hausman)
+	qui reg e_w vhat p $x_w $x_11_15 if grid==`i' & bd==1 & inrange(hour,11,15), robust
+	est store endogeneity, title("Hausman-test: OLS")
+	// We reject the t-test that vhat=0, thus p is endogenous and we prefer 2SLS.
+
+	estout _all using "ws_endogeneity_`i'.xls", replace ///
+		label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+		starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+		stats(N, fmt(1 %12.0gc) )
+	estout _all using $tables/ws_endogeneity_`i'.tex, style(tex) replace ///
+		label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+		starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+		indicate("Time variables=*.*") drop(trend _cons) ///
+		stats(N, labels("Constant" "Observations") fmt(%12.0gc) ) ///	
+		posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
+	drop vhat
+}
+
+********************************************************************************
+**** 	Testing overidentifying restrictions 								****
+********************************************************************************
+* test only holds in case of homoscedasticity, however, this assumption doesn't hold
+est clear
+foreach z of varlist wp wp_other {
+ivregress 2sls e_hh s_tout (p = `z') $x_hh $x_17_19 ///
+	if grid==791 & inrange(hour,17,19), vce(robust)
+predict uhat, residuals
+estadd scalar cons = _b[_cons]
+est store iv_`z', title("2SLS, `z' only")
+reg uhat s_tout `z' $x_hh $x_17_19 ///
+	if grid==791 & inrange(hour,17,19), vce(robust)
+estadd scalar cons = _b[_cons]
+est store OLS_`z', title("OLS, y = uhat(`z')")
+drop uhat
+}
+* Both instruments
+ivregress 2sls e_hh s_tout (p = wp wp_other) $x_hh $x_17_19 ///
+	if grid==791 & inrange(hour,17,19), vce(robust)
+predict uhat, residuals
+estadd scalar cons = _b[_cons]
+est store iv_both, title("2SLS, both")
+reg uhat s_tout wp wp_other $x_hh $x_17_19 ///
+	if grid==791 & inrange(hour,17,19), vce(robust)
+estadd scalar nR2 = e(N)*e(r2) // .345
+estadd scalar p_value = 1-chi2(1, e(N)*e(r2)) // chi-sq with df=1: p-value: 0.55
+// we cannot reject H0: that at least one of wp and wp_other are not exogenous
+estadd scalar cons = _b[_cons]
+est store OLS_both, title("OLS, y = uhat(both)")
+test wp = wp_other = 0 // F-statistic: 0.16, p-value: 0.85
+// t- and F-tests cannot be rejected even at high confidence levels
+// i.e. both instruments are uncorrelated with uhat, thus are exogenous.
+drop uhat
+
+estout _all using "hh_overidentifying.xls", replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(N nR2 p_value, fmt(%12.0gc 3 3) )
+estout _all using $tables/hh_overidentifying.tex, style(tex) replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	indicate("Time variables=*.*") drop(trend _cons) ///
+	stats(cons N nR2 p_value, labels("Constant" "Observations" "n*R2" "p-value") fmt(1 %12.0gc 3 3) ) ///
+	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
+
 
 
 ********************************************************************************
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-////	4. Regressions for households and small companies		 			////
+////	5. Regressions for households and small companies		 			////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ********************************************************************************
@@ -312,7 +446,30 @@ estout _all using $tables/hh_radius_17-19.tex, style(tex) replace ///
 	stats(N, labels("Observations") fmt(%12.0gc) ) ///	
 	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
 
-	
+
+********************************************************************************
+**** 	Pooled 2SLS for Radius, 17-19: Testing for homoscedasticity			****
+********************************************************************************
+est clear
+* OLS w. non-robust s.e.
+reg e_hh s_tout p $x_hh $x_17_19 ///
+	if grid==791 & inrange(hour,17,19)
+* The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity
+estat hettest, rhs mtest(bonf)
+// The simultaneous test clearly rejects that the variance is constant
+// The Bonferroni-adjusted p-values for price and daytime are as low as 0.000
+est store non_robust, title("OLS, non-robust s.e.")
+
+* OLS w. robust s.e.
+reg e_hh s_tout p $x_hh $x_17_19 ///
+	if grid==791 & inrange(hour,17,19), robust
+est store robust, title("OLS, robust s.e.")
+
+estout _all using "hh_homoscedasticity.xls", replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(N, fmt(%12.0gc) )
+
 ********************************************************************************
 **** 	Pooled 2SLS for Radius, 17-19: Testing endogeneity 					****
 ********************************************************************************
@@ -360,30 +517,6 @@ drop vhat
 
 
 ********************************************************************************
-**** 	Pooled 2SLS for Radius, 17-19: Testing for homoscedasticity			****
-********************************************************************************
-est clear
-* OLS w. non-robust s.e.
-reg e_hh s_tout p $x_hh $x_17_19 ///
-	if grid==791 & inrange(hour,17,19)
-* The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity
-estat hettest, rhs mtest(bonf)
-// The simultaneous test clearly rejects that the variance is constant
-// The Bonferroni-adjusted p-values for price and daytime are as low as 0.000
-est store non_robust, title("OLS, non-robust s.e.")
-
-* OLS w. robust s.e.
-reg e_hh s_tout p $x_hh $x_17_19 ///
-	if grid==791 & inrange(hour,17,19), robust
-est store robust, title("OLS, robust s.e.")
-
-estout _all using "hh_homoscedasticity.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
-	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(N, fmt(%12.0gc) )
-
-
-********************************************************************************
 **** 	Pooled 2SLS for Radius, 17-19: Testing overidentifying restrictions ****
 ********************************************************************************
 * test only holds in case of homoscedasticity, however, this assumption doesn't hold
@@ -428,7 +561,6 @@ estout _all using $tables/hh_overidentifying.tex, style(tex) replace ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(cons N nR2 p_value, labels("Constant" "Observations" "n*R2" "p-value") fmt(1 %12.0gc 3 3) ) ///
 	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
-
 
 
 ********************************************************************************
