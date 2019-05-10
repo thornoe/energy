@@ -359,11 +359,10 @@ help estout
 
 
 estout _all using "price.md", style(html) replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) incelldelimiter(<br>) ///
+	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_a N, labels("Adjusted R&sup2" "Observations") fmt(4 %12.0gc) ) ///
-	prehead("<html><table><thead>") posthead("</thead><tbody>") ///
-	prefoot("</tbody><tfoot>") postfoot("</tfoot></table></html>")
+	prehead("<html><table>") postfoot("</table><br>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Each hour of non-business days as baseline.</html>")
 
 	
 
