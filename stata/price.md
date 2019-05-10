@@ -1,7 +1,28 @@
+<<<<<<< HEAD:stata/price.html
 <html><table><thead>
 <tr><td>                    </td><td>(1) Price DK1   </td><td>(2) Price DK1   </td><td>(3) Price DK1   </td><td>(4) Price DK2   </td><td>(5) Price DK2   </td><td>(6) Price DK2   </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
 </thead><tbody>
+=======
+<html>
+<head>
+    <meta HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+    <style type="text/css">
+        tr.border_top td {
+            border-top:1pt solid black;
+        }
+        tr.border_bottom td {
+            border-bottom:1pt solid black;
+        }
+    </style>
+</head>
+<table>
+<thead>
+<tr><td>                    </td><td>(1) Price DK1   </td><td>(2) Price DK1   </td><td>(3) Price DK1   </td><td>(4) Price DK2   </td><td>(5) Price DK2   </td><td>(6) Price DK2   </td></tr>
+<tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
+</thead>
+<tbody>
+>>>>>>> 9afe5f4f556e480b91f956aa00c84bdd4d8328ec:stata/price.md
 <tr><td>Wind power prognosis same region</td><td>    -0.11774***</td><td>    -0.12970***</td><td>    -0.28905***</td><td>    -0.11774***</td><td>    -0.12970***</td><td>    -0.28905***</td></tr>
 <tr><td>                    </td><td>   (0.00997)   </td><td>   (0.00869)   </td><td>   (0.00760)   </td><td>   (0.00997)   </td><td>   (0.00869)   </td><td>   (0.00760)   </td></tr>
 <tr><td>Wind power prognosis other region</td><td>    -0.69712***</td><td>    -0.69868***</td><td>               </td><td>    -0.69712***</td><td>    -0.69868***</td><td>               </td></tr>
@@ -948,5 +969,13 @@
 <tr><td>                    </td><td>   (0.11066)   </td><td>   (0.11023)   </td><td>   (0.11317)   </td><td>   (0.11066)   </td><td>   (0.11023)   </td><td>   (0.11317)   </td></tr>
 </tbody><tfoot>
 <tr><td>r2_a                </td><td>      0.3423   </td><td>      0.3419   </td><td>      0.3282   </td><td>      0.3423   </td><td>      0.3419   </td><td>      0.3282   </td></tr>
+</tbody>
+<tfoot>
 <tr><td>N                   </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td></tr>
+<<<<<<< HEAD:stata/price.html
 </tfoot></table></html>
+=======
+</tfoot>
+</table>
+</html>
+>>>>>>> 9afe5f4f556e480b91f956aa00c84bdd4d8328ec:stata/price.md
