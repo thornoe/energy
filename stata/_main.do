@@ -10,33 +10,37 @@ help xtivreg
 ////////////////////////////////////////////////////////////////////////////////
 ////////	0. Global set up 											////////
 ////////////////////////////////////////////////////////////////////////////////
+
+*** Global directories, Cathrine ***
+cd 				"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\stata"
+*global data		"??? \Energy Economics\Data"
+global figures	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\latex\03_figures"
+global tables	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\latex\04_tables"
+
+
+*** Global directories, Thor ***
+cd 				"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\stata"
+global data		"D:\Google Drev\KU Thor\Energy Economics\Data"
+global figures	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\latex\03_figures"
+global tables	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\latex\04_tables"
+
+
+*** Load data ***
 set scheme s1color
 
 clear all
 
-use "data_stata", clear
+use "$data/data_stata.dta", clear
 
 xtset grid date, clocktime delta(1 hour) // strongly balanced
 
 
 *** Global variable lists ***
+global x "temp* trend daytime i.year i.week i(1 2 3 4 5).day_bd#i.hour i.month#i.hour" // baseline: i1.non_bd#i.hour
 global x_w "n_w temp* trend i.year i.week" // wholesale (without daytime)
 global x_hh "n_hh temp* daytime trend i.year i.week" // households
 global x_11_15 "i(1 2 3 4).day_bd#i(11 12 13 14 15).hour i.month#i(11 12 13 14 15).hour" // baseline: i5.non_bd#i(11 12 13 14 15).hour
 global x_17_19 "i(1 2 3 4 5).day_bd#i(17 18 19).hour i.month#i(17 18 19).hour" // baseline: i1.non_bd#i(17 18 19).hour
-
-
-*** Global directories, Thor ***
-cd 				"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\stata"
-global figures	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\latex\03_figures"
-global tables	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\latex\04_tables"
-
-
-*** Global directories, Cathrine ***
-cd 				"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\stata"
-global figures	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\latex\03_figures"
-global tables	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\latex\04_tables"
-
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -222,10 +226,10 @@ est store peak_151, title("NRGI (DK1)")
 qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
 	if grid==344 & bd==1 & inrange(hour,11,15), robust
 est store peak_344, title("SE (DK1)")
-qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
+qui ivregress 2sls e_w (p = wp wp_se) $x_w $x_11_15 ///
 	if grid==740 & bd==1 & inrange(hour,11,15), robust
 est store peak_740, title("SEAS-NVE (DK2)")
-qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
+qui ivregress 2sls e_w (p = wp wp_se) $x_w $x_11_15 ///
 	if grid==791 & bd==1 & inrange(hour,11,15), robust
 est store peak_791, title("Radius (DK2)")
 
@@ -281,9 +285,9 @@ estout re fe reiv feiv using "ws_fe-re-feiv-reiv-comparison.xls", replace ///
 ////////////////////////////////////////////////////////////////////////////////
 ********************************************************************************
 /*	
-Using the more elastic of the bigger grids in each price region:
+Using the two biggest grids (one in each price region):
 - DK1: EnergiMidt, grid number 131
-- DK2: SEAS-NVE, grid number 740
+- DK2: Radius, grid number 791
 For business days wholesale, peak hours 11-15
 */
 
@@ -291,15 +295,15 @@ qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
 	if grid==`i' & bd==1 & inrange(hour,11,15), robust
 est store peak_131, title("EnergiMidt (DK1)")
 
-qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
-	if grid==740 & bd==1 & inrange(hour,11,15), robust
-est store peak_740, title("SEAS-NVE (DK2)")
+qui ivregress 2sls e_w (p = wp wp_se) $x_w $x_11_15 ///
+	if grid==791 & bd==1 & inrange(hour,11,15), robust
+est store peak_791, title("Radius (DK2)")
 
 ********************************************************************************
 **** 	Testing for homoscedasticity										****
 ********************************************************************************
 est clear
-foreach i in 131 740 {
+foreach i in 131 791 {
 	* OLS w. non-robust s.e.
 	qui reg e_w p $x_w $x_11_15 if grid==`i' & bd==1 & inrange(hour,11,15)
 	est store non_robust_`i', title("`i': OLS")
@@ -322,10 +326,52 @@ estout _all using "ws_homoscedasticity.xls", replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(%12.0gc) )
 
+	
 ********************************************************************************
-**** 	Testing endogeneity (relevance)					 					****
+**** 	Predicting price (relevance of instruments)							****
 ********************************************************************************
-foreach i in 131 740 {
+est clear
+qui reg p wp wp_other wp_se $x if grid==131, robust
+est store a_DK1, title("Price DK1")
+qui reg p wp wp_other $x if grid==131, robust
+est store b_DK1, title("Price DK1")
+qui reg p wp wp_se $x if grid==131, robust
+est store d_DK1, title("Price DK1")
+qui reg p wp wp_other wp_se $x if grid==131, robust
+est store a_DK2, title("Price DK2")
+qui reg p wp wp_other $x if grid==131, robust
+est store d_DK2, title("Price DK2")
+qui reg p wp wp_se $x if grid==131, robust
+est store c_DK2, title("Price DK2")
+
+estout _all using "price.xls", replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	indicate("Time variables=*.*") drop(temp* trend daytime _cons) ///
+	stats(r2_a N, fmt(4 %12.0gc) )
+estout _all using $tables/price.tex, style(tex) replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	indicate("Time variables=*.*") drop(trend _cons) ///
+	stats(r2_a N, labels("Adjusted \(R^2\)" "Observations") fmt(%12.0gc) ) ///	
+	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
+help estout
+
+
+estout _all using "price.html", style(html) replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) incelldelimiter(<br>) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	indicate("Time variables=*.*") drop(temp* trend daytime _cons) ///
+	stats(r2_a N, fmt(4 %12.0gc) ) ///
+	prehead("<html><table><thead>") posthead("</thead><tbody>") ///
+	prefoot("</tbody><tfoot>") postfoot("</tfoot></table></html>")
+
+	
+
+********************************************************************************
+**** 	Testing endogeneity (relevance of instrumenting)					****
+********************************************************************************
+foreach i in 131 791 {
 	est clear
 	* Simple OLS
 	qui reg e_w p $x_w $x_11_15 if grid==`i' & bd==1 & inrange(hour,11,15), robust
