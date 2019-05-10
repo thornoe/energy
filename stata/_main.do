@@ -358,11 +358,10 @@ estout _all using $tables/price.tex, style(tex) replace ///
 help estout
 
 
-estout _all using "price.html", style(html) replace ///
+estout _all using "price.md", style(html) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	indicate("Time variables=*.*") drop(temp* trend daytime _cons) ///
-	stats(r2_a N, fmt(4 %12.0gc) ) ///
+	stats(r2_a N, labels("Adjusted R&sup2" "Observations") fmt(4 %12.0gc) ) ///
 	prehead("<html><table><thead>") posthead("</thead><tbody>") ///
 	prefoot("</tbody><tfoot>") postfoot("</tfoot></table></html>")
 
