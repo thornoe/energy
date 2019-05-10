@@ -119,7 +119,7 @@ cons.sort_values(by=['date', 'hour', 'grid']).reset_index(drop=True).to_csv('con
 #   ELSPOT PRICES (takes around 10 seconds to download)                      #
 ##############################################################################
 spot = []
-for x in range(2016, 2020):
+for x in range(2016, 2019):
     filename = 'elspot-prices_'+str(x)+'_hourly_dkk.xls'
     url = 'https://www.nordpoolgroup.com/globalassets/marketdata-excel-files/'+str(filename)
     re.urlretrieve(url,filename)
@@ -128,7 +128,6 @@ for x in range(2016, 2020):
     data = data.iloc[:, [0,1,8,9] ]
     data.columns=['date','hour', 'P_DK1', 'P_DK2']
     spot.append(data)
-
 spot = pd.concat(spot, axis=0)
 
 spot['hour'] = spot['hour'].str.slice(0,2)
@@ -137,7 +136,7 @@ spot.to_csv('elspot.csv', index=False)
 
 
 ##############################################################################
-#   WIND POWER PROGNOSIS (takes around 10 seconds to download)              x #
+#   WIND POWER PROGNOSIS (takes around 20 seconds to download)              x #
 ##############################################################################
 wind_dk, wind_se = [], []
 
@@ -148,6 +147,7 @@ for x in range(2016, 2019):
     re.urlretrieve(url,filename)
     data = pd.read_html(filename)
     data = pd.DataFrame(data[0])
+    data.columns=['date','hour', 'DK1', 'DK2']
     wind_dk.append(data)
 wind_dk = pd.concat(wind_dk, axis=0)
 
@@ -158,13 +158,14 @@ for x in range(2016, 2019):
     re.urlretrieve(url,filename)
     data = pd.read_html(filename)
     data = pd.DataFrame(data[0])
+    data.columns=['date','hour', 'SE1', 'SE2', 'SE3', 'SE4', 'SE']
     wind_se.append(data)
 wind_se = pd.concat(wind_se, axis=0)
 
-wind_dk.head()
-
+# Both countries
+wind = pd.concat([wind_dk, wind_se[['SE']]], axis=1)
 wind['hour'] = wind['hour'].str.slice(0,2)
-wind.columns = ['date', 'hour', 'WP_DK1', 'WP_DK2']
+wind.columns = ['date', 'hour', 'wp_DK1', 'wp_DK2', 'wp_se']
 
 wind.to_csv('wind.csv', index=False)
 

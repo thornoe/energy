@@ -92,8 +92,9 @@ grids['DK1'] = grids['DK1'].astype(int)
 
 ### Prices and wind power prognosis in the relevant price area ###
 grids['p'] = (grids['P_DK1']*grids['DK1']+grids['P_DK2']*(1-grids['DK1']))
-grids['wp'] = (grids['WP_DK1']*grids['DK1']+grids['WP_DK2']*(1-grids['DK1']))
-grids['wp_other'] = (grids['WP_DK1']*(1-grids['DK1'])+grids['WP_DK2']*grids['DK1'])
+grids['wp'] = (grids['wp_DK1']*grids['DK1']+grids['wp_DK2']*(1-grids['DK1']))
+grids['wp_other'] = (grids['wp_DK1']*(1-grids['DK1'])+grids['wp_DK2']*grids['DK1'])
+grids['wp_se'] = grids['wp_SE']
 
 ### Create month and year variables for merging ###
 grids['month'], grids['year'] = grids['date'].dt.month, grids['date'].dt.year
@@ -102,7 +103,7 @@ grids['month'], grids['year'] = grids['date'].dt.month, grids['date'].dt.year
 grids = pd.merge(grids, meters, how='inner', on=['month', 'year', 'grid'], copy=False)
 
 ### Drop columns ###
-grids.drop(['P_DK1','P_DK2','WP_DK1','WP_DK2','month','year'], axis=1, inplace=True)
+grids.drop(['P_DK1','P_DK2','wp_DK1','wp_DK2','wp_SE','month','year'], axis=1, inplace=True)
 
 grids.head(2)
 
@@ -263,8 +264,7 @@ ds = pd.merge(ds, ds2, how='inner', on='date')
 #   EXPORT READY DATASETS                                                    #
 ##############################################################################
 ### .dta for STATA ###
-ds.to_stata('stata/data_stata.dta', write_index=False) # too big for GitHub
-ds.to_stata('D:/Google Drev/KU Thor/Energy Economics/Data/data_stata.dta', write_index=False)
+ds.to_stata('D:/Google Drev/KU Thor/Energy Economics/Data/data_stata.dta', write_index=False) # too big for GitHub
 ds.columns.values
 
 

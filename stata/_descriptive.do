@@ -35,9 +35,10 @@ label variable _n_w "Number of wholesale meters"
 label variable _n_hh "Number of retail meters"
 label variable _n_f "- of which flex-settled"
 label variable _n_r "- of which residual"
-label variable _p "Electricity spot price"
-label variable wp "Wind power prognosis same region"
-label variable wp_other "Wind power prognosis other region"
+label variable _p "Electricity spot price, DKK"
+label variable wp "Wind power prognosis same region, GWh"
+label variable wp_other "Wind power prognosis other region, GWh"
+label variable wp_se "Wind power prognosis for Sweden, GWh"
 label variable DK1 "Price region DK1"
 label variable s_tout "Share time-of-use tariff"
 label variable temp "Temperature"
@@ -49,7 +50,7 @@ label variable holy "Holiday (not in a weekend)"
 ////////////////////////////////////////////////////////////////////////////////
 ////	B. Descriptive statistics											////
 ////////////////////////////////////////////////////////////////////////////////
-estpost tabstat _* wp wp_other DK1 s_tout temp daytime trend holy ///
+estpost tabstat _* wp* DK1 s_tout temp daytime trend holy ///
 	, listwise statistics(mean sd min p25 p50 p75 max) columns(statistics)
 esttab using $tables/descriptive.tex, style(tex) delimiter("&") replace ///
 	cells("mean sd min p50 max") label nostar nonumbers ///
@@ -57,4 +58,4 @@ esttab using $tables/descriptive.tex, style(tex) delimiter("&") replace ///
 
 xtdescribe
 
-xtsum _* wp wp_other DK1 s_tout temp daytime trend holy
+xtsum _* wp* DK1 s_tout temp daytime trend holy

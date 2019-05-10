@@ -12,14 +12,15 @@ python/data.csv
 python/elspot-prices_2016_hourly_dkk.xls
 python/elspot-prices_2017_hourly_dkk.xls
 python/elspot-prices_2018_hourly_dkk.xls
-python/elspot-prices_2019_hourly_dkk.xls
 python/elspot.csv
 python/sun.csv
 python/temp.csv
 python/wind-power-dk-prognosis_2016_hourly.xls
 python/wind-power-dk-prognosis_2017_hourly.xls
 python/wind-power-dk-prognosis_2018_hourly.xls
-python/wind-power-dk-prognosis_2019_hourly.xls
+python/wind-power-se-prognosis_2016_hourly.xls
+python/wind-power-se-prognosis_2017_hourly.xls
+python/wind-power-se-prognosis_2018_hourly.xls
 python/wind.csv
 
 stata/data_stata.dta
