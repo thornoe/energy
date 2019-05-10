@@ -473,6 +473,6 @@
 <tr><td>month=12 # hour=22  </td><td>-0.66675<br>(0.54943)   </td><td>-0.66526<br>(0.54997)   </td><td>-0.58602<br>(0.54010)   </td><td>-0.66675<br>(0.54943)   </td><td>-0.66526<br>(0.54997)   </td><td>-0.58602<br>(0.54010)   </td></tr>
 <tr><td>month=12 # hour=23  </td><td>-1.00103*<br>(0.56056)   </td><td>-0.99993*<br>(0.56116)   </td><td>-0.92047*<br>(0.55167)   </td><td>-1.00103*<br>(0.56056)   </td><td>-0.99993*<br>(0.56116)   </td><td>-0.92047*<br>(0.55167)   </td></tr>
 <tr><td>_cons               </td><td>5.19801***<br>(0.11066)   </td><td>5.17790***<br>(0.11023)   </td><td>5.17651***<br>(0.11317)   </td><td>5.19801***<br>(0.11066)   </td><td>5.17790***<br>(0.11023)   </td><td>5.17651***<br>(0.11317)   </td></tr>
-<tr><td>Adjusted R&sup2     </td><td>      0.3423   </td><td>      0.3419   </td><td>      0.3282   </td><td>      0.3423   </td><td>      0.3419   </td><td>      0.3282   </td></tr>
+<tr><td>Adjusted R&sup2     </td><td>       0.342   </td><td>       0.342   </td><td>       0.328   </td><td>       0.342   </td><td>       0.342   </td><td>       0.328   </td></tr>
 <tr><td>Observations        </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td></tr>
 </table>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Each hour of non-business days as baseline.</html>

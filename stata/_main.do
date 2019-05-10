@@ -347,25 +347,21 @@ est store c_DK2, title("Price DK2")
 estout _all using "price.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	indicate("Time variables=*.*") drop(temp* trend daytime _cons) ///
-	stats(r2_a N, fmt(4 %12.0gc) )
+	indicate("Control variables=*.*") drop(temp* trend daytime _cons) ///
+	stats(r2_a N, fmt(3 %12.0gc) )
 estout _all using $tables/price.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
-	stats(r2_a N, labels("Adjusted \(R^2\)" "Observations") fmt(%12.0gc) ) ///	
+	stats(r2_a N, labels("Adjusted \(R^2\)" "Observations") fmt(3 %12.0gc) ) ///	
 	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
-help estout
-
-
 estout _all using "price.md", style(html) replace ///
 	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(r2_a N, labels("Adjusted R&sup2" "Observations") fmt(4 %12.0gc) ) ///
-	prehead("<html><table>") postfoot("</table><br>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Each hour of non-business days as baseline.</html>")
+	stats(r2_a N, labels("Adjusted R&sup2" "Observations") fmt(3 %12.0gc) ) ///
+	prehead("<html><table>") postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Each hour of non-business days as baseline.</html>")
 
 	
-
 ********************************************************************************
 **** 	Testing endogeneity (relevance of instrumenting)					****
 ********************************************************************************
