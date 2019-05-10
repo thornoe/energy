@@ -1,6 +1,7 @@
 <html>
 <table>
 <thead>
+tr.border_top td {border-top:1pt solid black; }
 <tr><td>                    </td><td>(1) Price DK1   </td><td>(2) Price DK1   </td><td>(3) Price DK1   </td><td>(4) Price DK2   </td><td>(5) Price DK2   </td><td>(6) Price DK2   </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
 </thead>
