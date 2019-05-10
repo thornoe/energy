@@ -475,4 +475,4 @@
 <tr><td>_cons               </td><td>5.19801***<br>(0.11066)   </td><td>5.17790***<br>(0.11023)   </td><td>5.17651***<br>(0.11317)   </td><td>5.19801***<br>(0.11066)   </td><td>5.17790***<br>(0.11023)   </td><td>5.17651***<br>(0.11317)   </td></tr>
 <tr><td>Adjusted R&sup2     </td><td>      0.3423   </td><td>      0.3419   </td><td>      0.3282   </td><td>      0.3423   </td><td>      0.3419   </td><td>      0.3282   </td></tr>
 <tr><td>Observations        </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td></tr>
-</table><br>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Each hour of non-business days as baseline.</html>
+</table>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Each hour of non-business days as baseline.</html>
