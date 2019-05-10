@@ -947,6 +947,6 @@
 <tr><td>_cons               </td><td>     5.19801***</td><td>     5.17790***</td><td>     5.17651***</td><td>     5.19801***</td><td>     5.17790***</td><td>     5.17651***</td></tr>
 <tr><td>                    </td><td>   (0.11066)   </td><td>   (0.11023)   </td><td>   (0.11317)   </td><td>   (0.11066)   </td><td>   (0.11023)   </td><td>   (0.11317)   </td></tr>
 </tbody><tfoot>
-<tr><td>Adjusted \(R^2\)    </td><td>      0.3423   </td><td>      0.3419   </td><td>      0.3282   </td><td>      0.3423   </td><td>      0.3419   </td><td>      0.3282   </td></tr>
+<tr><td>Adjusted R;&sup2;)    </td><td>      0.3423   </td><td>      0.3419   </td><td>      0.3282   </td><td>      0.3423   </td><td>      0.3419   </td><td>      0.3282   </td></tr>
 <tr><td>Observations        </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td><td>      26,300   </td></tr>
 </tfoot></table></html>
