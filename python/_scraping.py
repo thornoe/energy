@@ -43,7 +43,7 @@ def get(url, iterations=20, sleep_ok=1, sleep_err=5, check_function=lambda x: x.
             """
             print(e)  # print or log the exception message
             time.sleep(sleep_err) # sleep before trying again in case of error
-    return None # code will purposely crash if you don't create a check function later.
+    return None # code will purposely crash if you don't create a check function later
 
 
 ##############################################################################
@@ -138,6 +138,7 @@ spot.to_csv('elspot.csv', index=False)
 ##############################################################################
 #   WIND POWER PROGNOSIS (takes around 20 seconds to download)              x #
 ##############################################################################
+%timeit
 wind_dk, wind_se = [], []
 
 # Denmark
@@ -165,7 +166,11 @@ wind_se = pd.concat(wind_se, axis=0)
 # Both countries
 wind = pd.concat([wind_dk, wind_se[['SE']]], axis=1)
 wind['hour'] = wind['hour'].str.slice(0,2)
-wind.columns = ['date', 'hour', 'wp_DK1', 'wp_DK2', 'wp_se']
+wind.columns = ['date', 'hour', 'wp_DK1', 'wp_DK2', 'wp_SE']
+
+### From MWh to GWh ###
+for var in ['wp_DK1', 'wp_DK2', 'wp_SE']:
+    wind[var] = wind[var].apply(lambda MWh: MWh/1000) # transformed to GWh, same name
 
 wind.to_csv('wind.csv', index=False)
 

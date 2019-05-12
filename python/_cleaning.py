@@ -103,7 +103,7 @@ grids['month'], grids['year'] = grids['date'].dt.month, grids['date'].dt.year
 grids = pd.merge(grids, meters, how='inner', on=['month', 'year', 'grid'], copy=False)
 
 ### Drop columns ###
-grids.drop(['P_DK1','P_DK2','wp_DK1','wp_DK2','wp_SE','month','year'], axis=1, inplace=True)
+grids.drop(['P_DK1','P_DK2','wp_SE','month','year'], axis=1, inplace=True)
 
 grids.head(2)
 
