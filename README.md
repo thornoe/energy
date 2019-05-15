@@ -5,7 +5,7 @@ The project is a part of the 2019 seminar in Energy Economics held by Frederik R
 
 See our
 
-* [Seminar paper](https://github.com/thornoe/energy/blob/master/latex/main.pdf) co-written with [Cathrine Falbe Pedersen](https://github.com/CathrinePedersen).
+* [Seminar paper](https://github.com/thornoe/energy/blob/master/latex/main.pdf), co-written with [Cathrine Falbe Pedersen](https://github.com/CathrinePedersen).
 
 * Python code for [scraping](https://github.com/thornoe/energy/blob/master/python/_scraping.py), [cleaning](https://github.com/thornoe/energy/blob/master/python/_cleaning.py), and [descriping](https://github.com/thornoe/energy/blob/master/python/_descriptive.py) the data from various sources.
 
