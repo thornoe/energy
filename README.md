@@ -9,4 +9,4 @@ See our
 
 * Python code for [scraping](https://github.com/thornoe/energy/blob/master/python/_scraping.py), [cleaning](https://github.com/thornoe/energy/blob/master/python/_cleaning.py), and [descriping](https://github.com/thornoe/energy/blob/master/python/_descriptive.py) the data from various sources.
 
-* Stata code for [estimation](https://github.com/thornoe/energy/blob/master/stata/_main.do) of grid-level electricity consumption using a Fixed Effects Instrumental Variables model.
+* Stata code for [estimation](https://github.com/thornoe/energy/blob/master/stata/_main.do) of grid-level electricity consumption using a Random Effects Instrumental Variables (REIV) model.
