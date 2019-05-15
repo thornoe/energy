@@ -1,5 +1,5 @@
 ## Elasticity of electricity demand
-We estimate the own-price elasticity of electricity demand with respect to the hourly spot market price.
+We estimate the own-price elasticity of electricity demand with respect to the hourly spot price for wholesale and retail electricity consumption.
 
 The project is a part of the 2019 seminar in Energy Economics held by Frederik Roose Øvlisen at University of Copenhagen, Department of Economics.
 
@@ -9,4 +9,4 @@ See our
 
 * Python code for [scraping](https://github.com/thornoe/energy/blob/master/python/_scraping.py), [cleaning](https://github.com/thornoe/energy/blob/master/python/_cleaning.py), and [descriping](https://github.com/thornoe/energy/blob/master/python/_descriptive.py) the data from various sources.
 
-* Stata code for [estimation](https://github.com/thornoe/energy/blob/master/stata/_main.do) of grid-level electricity consumption for wholesale and retail sale respectively using a Fixed Effects Instrumental Variables model.
+* Stata code for [estimation](https://github.com/thornoe/energy/blob/master/stata/_main.do) of grid-level electricity consumption using a Fixed Effects Instrumental Variables model.
