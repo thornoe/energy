@@ -1,5 +1,5 @@
 ## Elasticity of electricity demand
-We estimate the own-price elasticity of electricity demand with respect to the hourly spot price for wholesale and retail electricity consumption respectively.
+We estimate the own-price elasticity of electricity demand with respect to the hourly spot price for wholesale and retail electricity consumption respectively, using Danish data from [Energinet](https://www.energidataservice.dk/en) for the years 2016-2018.
 
 The project is a part of the 2019 seminar in Energy Economics held by Frederik Roose Øvlisen at University of Copenhagen, Department of Economics.
 
