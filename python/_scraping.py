@@ -1,6 +1,6 @@
 # Imports
 import pandas as pd
-import urllib.request as re
+import urllib.request as req
 import os, requests, json, tqdm, time
 
 # Set working directory (use forwardslashes not backslashes)
@@ -122,7 +122,7 @@ spot = []
 for x in range(2016, 2019):
     filename = 'elspot-prices_'+str(x)+'_hourly_dkk.xls'
     url = 'https://www.nordpoolgroup.com/globalassets/marketdata-excel-files/'+str(filename)
-    re.urlretrieve(url,filename)
+    req.urlretrieve(url,filename)
     data = pd.read_html(filename, thousands='.', decimal=',')
     data = pd.DataFrame(data[0])
     data = data.iloc[:, [0,1,8,9] ]
@@ -145,7 +145,7 @@ wind_dk, wind_se = [], []
 for x in range(2016, 2019):
     filename = 'wind-power-dk-prognosis_'+str(x)+'_hourly.xls'
     url = 'https://www.nordpoolgroup.com/globalassets/marketdata-excel-files/'+str(filename)
-    re.urlretrieve(url,filename)
+    req.urlretrieve(url,filename)
     data = pd.read_html(filename)
     data = pd.DataFrame(data[0])
     data.columns=['date','hour', 'DK1', 'DK2']
@@ -156,7 +156,7 @@ wind_dk = pd.concat(wind_dk, axis=0)
 for x in range(2016, 2019):
     filename = 'wind-power-se-prognosis_'+str(x)+'_hourly.xls'
     url = 'https://www.nordpoolgroup.com/globalassets/marketdata-excel-files/'+str(filename)
-    re.urlretrieve(url,filename)
+    req.urlretrieve(url,filename)
     data = pd.read_html(filename)
     data = pd.DataFrame(data[0])
     data.columns=['date','hour', 'SE1', 'SE2', 'SE3', 'SE4', 'SE']

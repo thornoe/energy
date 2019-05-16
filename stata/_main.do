@@ -36,9 +36,9 @@ xtset grid date, clocktime delta(1 hour) // strongly balanced
 
 
 *** Global variable lists ***
-global x "temp* trend daytime i.year i.week i(1 2 3 4 5).day_bd#i.hour i.month#i.hour" // baseline: i1.non_bd#i.hour
+global x "temp* trend i.year i.week i(1 2 3 4 5).day_bd#i.hour i.month#i.hour" // baseline: i1.non_bd#i.hour
 global x_w "n_w temp* trend i.year i.week" // wholesale (without daytime)
-global x_hh "n_hh temp* daytime trend i.year i.week" // households
+global x_hh "n_hh temp* daytime trend i.year i.week" // retail
 global x_11_15 "i(1 2 3 4).day_bd#i(11 12 13 14 15).hour i.month#i(11 12 13 14 15).hour" // baseline: i5.non_bd#i(11 12 13 14 15).hour
 global x_17_19 "i(1 2 3 4 5).day_bd#i(17 18 19).hour i.month#i(17 18 19).hour" // baseline: i1.non_bd#i(17 18 19).hour
 
@@ -331,17 +331,17 @@ estout _all using "ws_homoscedasticity.xls", replace ///
 **** 	Predicting price (relevance of instruments)							****
 ********************************************************************************
 est clear
-qui reg p wp wp_other wp_se $x if grid==131, robust
+qui reg p wp wp_other wp_se daytime $x if grid==131, robust
 est store a_DK1, title("Price DK1")
-qui reg p wp wp_other $x if grid==131, robust
+qui reg p wp wp_other daytime $x if grid==131, robust
 est store b_DK1, title("Price DK1")
-qui reg p wp wp_se $x if grid==131, robust
+qui reg p wp wp_se daytime $x if grid==131, robust
 est store d_DK1, title("Price DK1")
-qui reg p wp wp_other wp_se $x if grid==131, robust
+qui reg p wp wp_other wp_se daytime $x if grid==131, robust
 est store a_DK2, title("Price DK2")
-qui reg p wp wp_other $x if grid==131, robust
+qui reg p wp wp_other daytime $x if grid==131, robust
 est store d_DK2, title("Price DK2")
-qui reg p wp wp_se $x if grid==131, robust
+qui reg p wp wp_se daytime $x if grid==131, robust
 est store c_DK2, title("Price DK2")
 
 estout _all using "price.xls", replace ///

@@ -29,17 +29,17 @@ global tables	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\latex\04_table
 ////////////////////////////////////////////////////////////////////////////////
 ////	A. Load and set up the time-series data								////
 ////////////////////////////////////////////////////////////////////////////////
-label variable _e_w "Wholesale electricity use"
-label variable _e_hh "Household electricity use"
+label variable _e_w "Wholesale electricity consumption, MWh"
+label variable _e_hh "Retail electricity consumption, MWh"
 label variable _n_w "Number of wholesale meters"
 label variable _n_hh "Number of retail meters"
 label variable _n_f "- of which flex-settled"
 label variable _n_r "- of which residual"
 label variable _p "Electricity spot price, DKK"
-label variable wp "Wind power prognosis same region, GWh"
-label variable wp_other "Wind power prognosis other region, GWh"
+label variable wp_DK1 "Wind power prognosis for DK1, GWh"
+label variable wp_DK2 "Wind power prognosis for DK2, GWh"
 label variable wp_se "Wind power prognosis for Sweden, GWh"
-label variable DK1 "Price region DK1"
+label variable DK1 "Price region DK1 (Western Denmark)"
 label variable s_tout "Share time-of-use tariff"
 label variable temp "Temperature"
 label variable daytime "Daytime"
@@ -54,7 +54,7 @@ estpost tabstat _* wp* DK1 s_tout temp daytime trend holy ///
 	, listwise statistics(mean sd min p25 p50 p75 max) columns(statistics)
 esttab using $tables/descriptive.tex, style(tex) delimiter("&") replace ///
 	cells("mean sd min p50 max") label nostar nonumbers ///
-	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule")
+	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule \end{tabular}")
 
 xtdescribe
 
