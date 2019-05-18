@@ -60,7 +60,7 @@ do "_descriptive" // reload data before running
 ////////////////////////////////////////////////////////////////////////////////
 ////	2. Load and set up data for regressions								////
 ////////////////////////////////////////////////////////////////////////////////
-drop n_f n_r holy _*
+drop n_f n_r holy wp_DK1 wp_DK2 _*
 
 label variable e_w "log wholesale consumption"
 label variable e_hh "log retail consumption"
