@@ -1,4 +1,4 @@
-**Wholesale**: Testing for homoscedasticity (business days, hours 11-15)<br><html><table>
+**Table:**: Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br><html><table>
 <tr><td>                    </td><td>(1) 131: POLS, non-robust s.e.   </td><td>(2) 131: POLS, robust s.e.   </td><td>(3) 791: POLS, non-robust s.e.   </td><td>(4) 791: POLS, robust s.e.   </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
 <tr><td>p                   </td><td>-0.01512***<br>(0.00229)   </td><td>-0.01512***<br>(0.00381)   </td><td>-0.00385***<br>(0.00099)   </td><td>-0.00385***<br>(0.00093)   </td></tr>
@@ -146,4 +146,4 @@
 <tr><td>R&sup2              </td><td>    2679.945   </td><td>               </td><td>    1154.400   </td><td>               </td></tr>
 <tr><td>Adjusted R&sup2     </td><td>       0.000   </td><td>               </td><td>       0.000   </td><td>               </td></tr>
 <tr><td>Observations        </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td></tr>
-</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2 and p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Each hour of fridays as baseline.</html>
+</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2 and p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: Each hour on fridays.</html>
