@@ -342,15 +342,15 @@ estout _all using "ws_homoscedasticity.xls", replace ///
 estout _all using "$results/ws_homoscedasticity.md", style(html) replace ///
 	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(r2 r2_a hettest hetdf hetp N, fmt(3 3 0 0 3 %12.0gc) labels("R&sup2" "Adjusted R&sup2" "Chi&sup2" "p-val" "df" "Observations") ) ///
+	stats(r2 r2_a hettest hetdf hetp N, fmt(3 3 0 0 3 %12.0gc) labels("R&sup2" "Adjusted R&sup2" "Chi&sup2" "Adj. p-val" "df" "Observations") ) ///
 	prehead("**Table:** Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid number 131 is EnergiMidt (DK1), grid number 791 is Radius (in DK2)*<br><html><table>") ///
-	postfoot("</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2 and p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: Each hour on fridays.</html>")
+	postfoot("</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2, df, and p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: Each hour on fridays.</html>")
 estout matrix(A_131, fmt(3 0 3 3)) using "$results/ws_homoscedasticity_bp_131.md", ///
-	style(html) replace prehead("**Table:** The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity<br>(log wholesale electricity consumption in , business days, hours 11-15)<br>*Grid company 131: EnergiMidt (in DK1)*<br><html><table>") ///
+	style(html) replace prehead("**Table:** The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity<br>(log wholesale electricity consumption, business days, hours 11-15)<br>*Grid company 131: EnergiMidt (in DK1)*<br><html><table>") ///
 	postfoot("</table>Columns 1-4 show: 1. Chi&sup2; 2. Degrees of freedom; 3. The unadjusted p-value; 4. The Bonferroni-adjusted p-value.</html>")
 estout matrix(A_791, fmt(3 0 3 3)) using "$results/ws_homoscedasticity_bp_791.md", ///
-	style(html) replace prehead("**Table:** The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity<br>(log wholesale electricity consumption in , business days, hours 11-15)<br>*Grid company 791: Radius (in DK2)*<br><html><table>") ///
-	postfoot("</table>Columns 1-4 are the Chi&sup2, degrees of freedom, unadjusted p-value, and the Bonferroni-adjusted p-value.</html>")
+	style(html) replace prehead("**Table:** The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity<br>(log wholesale electricity consumption, business days, hours 11-15)<br>*Grid company 791: Radius (in DK2)*<br><html><table>") ///
+	postfoot("</table>Columns 1-4 show: (1) Chi&sup2 ; (2) Degrees of freedom; (3) The unadjusted p-values; (4) The Bonferroni-adjusted p-values.</html>")
 
 
 ********************************************************************************

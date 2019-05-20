@@ -144,7 +144,7 @@
 <tr><td>R&sup2              </td><td>       0.992   </td><td>       0.992   </td><td>       0.868   </td><td>       0.868   </td></tr>
 <tr><td>Adjusted R&sup2     </td><td>       0.992   </td><td>       0.992   </td><td>       0.863   </td><td>       0.863   </td></tr>
 <tr><td>Chi&sup2            </td><td>        2680   </td><td>               </td><td>        1154   </td><td>               </td></tr>
-<tr><td>p-val               </td><td>         134   </td><td>               </td><td>         134   </td><td>               </td></tr>
+<tr><td>Adj. p-val          </td><td>         134   </td><td>               </td><td>         134   </td><td>               </td></tr>
 <tr><td>df                  </td><td>       0.000   </td><td>               </td><td>       0.000   </td><td>               </td></tr>
 <tr><td>Observations        </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td></tr>
 </table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2, df, and p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: Each hour on fridays.</html>

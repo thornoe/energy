@@ -140,4 +140,4 @@
 <tr><td>12.month#13.hour</td><td>      35.332</td><td>           1</td><td>       0.000</td><td>       0.000</td></tr>
 <tr><td>12.month#14.hour</td><td>       4.372</td><td>           1</td><td>       0.037</td><td>       1.000</td></tr>
 <tr><td>12o.month#15o.hour</td><td>       0.000</td><td>           0</td><td>           .</td><td>           .</td></tr>
-</table>Columns 1-4 show: 1. Chi&sup2; 2. Degrees of freedom; 3. The unadjusted p-value; 4. The Bonferroni-adjusted p-value.</html>
+</table>Columns 1-4 show: (1) Chi&sup2 ; (2) Degrees of freedom; (3) The unadjusted p-values; (4) The Bonferroni-adjusted p-values.</html>
