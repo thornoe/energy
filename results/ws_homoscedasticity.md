@@ -143,8 +143,8 @@
 <tr><td>_cons               </td><td>-0.44926<br>(1.03238)   </td><td>-0.44926<br>(0.85941)   </td><td>9.45839***<br>(0.44096)   </td><td>9.45839***<br>(0.40932)   </td></tr>
 <tr><td>R&sup2              </td><td>       0.992   </td><td>       0.992   </td><td>       0.868   </td><td>       0.868   </td></tr>
 <tr><td>Adjusted R&sup2     </td><td>       0.992   </td><td>       0.992   </td><td>       0.863   </td><td>       0.863   </td></tr>
-<tr><td>Chi&sup2            </td><td>    2679.945   </td><td>               </td><td>    1154.400   </td><td>               </td></tr>
-<tr><td>p-val               </td><td>     134.000   </td><td>               </td><td>     134.000   </td><td>               </td></tr>
+<tr><td>Chi&sup2            </td><td>        2680   </td><td>               </td><td>        1154   </td><td>               </td></tr>
+<tr><td>p-val               </td><td>         134   </td><td>               </td><td>         134   </td><td>               </td></tr>
 <tr><td>df                  </td><td>       0.000   </td><td>               </td><td>       0.000   </td><td>               </td></tr>
 <tr><td>Observations        </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td></tr>
 </table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2 and p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: Each hour on fridays.</html>

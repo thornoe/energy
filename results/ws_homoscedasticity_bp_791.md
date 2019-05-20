@@ -1,4 +1,4 @@
-**Table:** The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity<br>(log wholesale electricity consumption in , business days, hours 11-15)<br>*Grid company 791: Radius (in DK2)*<br><html><table>
+**Table:** The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity<br>(log wholesale electricity consumption, business days, hours 11-15)<br>*Grid company 791: Radius (in DK2)*<br><html><table>
 <tr><td>            </td><td>       A_791</td><td>            </td><td>            </td><td>            </td></tr>
 <tr><td>            </td><td>        chi2</td><td>          df</td><td>           p</td><td>          c1</td></tr>
 <tr><td>p           </td><td>       2.899</td><td>           1</td><td>       0.089</td><td>       1.000</td></tr>
@@ -140,4 +140,4 @@
 <tr><td>12.month#13.hour</td><td>       1.015</td><td>           1</td><td>       0.314</td><td>       1.000</td></tr>
 <tr><td>12.month#14.hour</td><td>       1.712</td><td>           1</td><td>       0.191</td><td>       1.000</td></tr>
 <tr><td>12o.month#15o.hour</td><td>       0.000</td><td>           0</td><td>           .</td><td>           .</td></tr>
-</table>Columns 1-4 are the Chi&sup2, degrees of freedom, unadjusted p-value, and the Bonferroni-adjusted p-value.</html>
+</table>Columns 1-4 show: 1. Chi&sup2; 2. Degrees of freedom; 3. The unadjusted p-value; 4. The Bonferroni-adjusted p-value.</html>

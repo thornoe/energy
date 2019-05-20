@@ -312,14 +312,10 @@ foreach i in 131 791 {
 	qui reg e_w p $x_w $x_11_15 if grid==`i' & bd==1 & inrange(hour,11,15)
 	estat hettest, rhs mtest(bonf)
 	estadd scalar hettest = r(chi2)
+	estadd scalar hetdf = r(df)
 	estadd scalar hetp = r(p)
 	est store non_robust_`i', title("`i': POLS, non-robust s.e.")
-	matrix A = r(mtest)
-	estout matrix(A, fmt(3 0 3 3)) using "$results/ws_homoscedasticity_bp_`i'.md", style(html) replace ///
-		label starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-		stats(r2 r2_a hettest hetp N, fmt(3 3 3 3 %12.0gc) labels("Chi&sup2" "p-val" "R&sup2" "Adjusted R&sup2" "Observations") ) ///
-		prehead("**Table:** Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid number 131 is EnergiMidt (DK1), grid number 791 is Radius (in DK2)*<br><html><table>") ///
-		postfoot("</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2 and p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: Each hour on fridays.</html>")
+	matrix A_`i' = r(mtest)
 	/*
 	The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity
 	H0: Constant variance, i.e. homoscedasticity
@@ -339,55 +335,45 @@ foreach i in 131 791 {
 	- Relatively small for Radius (DK2)
 	*/
 }
-qui reg e_w p $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15)
-estat hettest, rhs mtest(bonf)
-matrix B_chi2 = A[.,1]
-matrix B_p = A[.,4]
-
-est store non_robust, title("131: POLS, non-robust s.e.")
-
-estout matrix(A, fmt(3 0 3 3)) using "$results/ws_homoscedasticity_bp_131.md", ///
-	style(html) replace ///
-	prehead("**Table:** The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid number 131 is EnergiMidt (DK1), grid number 791 is Radius (in DK2)*<br><html><table>") ///
-	postfoot("</table>Columns 1-4 are the Chi&sup2, degrees of freedom, unadjusted p-value, and the Bonferroni-adjusted p-value.</html>")
-
-estout non_robust, ///
-	label cells( r(mtest)[.,1](star fmt(5)) ) ///
-	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-
 estout _all using "ws_homoscedasticity.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(r2 r2_a hettest hetp N, fmt(3 3 3 3 %12.0gc) )
-
-
-estout _all using "ws_homoscedasticity.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
-	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(r2 r2_a hettest hetp N, fmt(3 3 3 3 %12.0gc) )
+	stats(r2 r2_a hettest hetdf hetp N, fmt(3 3 0 0 3 %12.0gc) )
 estout _all using "$results/ws_homoscedasticity.md", style(html) replace ///
 	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(r2 r2_a hettest hetp N, fmt(3 3 3 3 %12.0gc) labels("Chi&sup2" "p-val" "R&sup2" "Adjusted R&sup2" "Observations") ) ///
+	stats(r2 r2_a hettest hetdf hetp N, fmt(3 3 0 0 3 %12.0gc) labels("R&sup2" "Adjusted R&sup2" "Chi&sup2" "p-val" "df" "Observations") ) ///
 	prehead("**Table:** Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid number 131 is EnergiMidt (DK1), grid number 791 is Radius (in DK2)*<br><html><table>") ///
 	postfoot("</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2 and p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: Each hour on fridays.</html>")
+estout matrix(A_131, fmt(3 0 3 3)) using "$results/ws_homoscedasticity_bp_131.md", ///
+	style(html) replace prehead("**Table:** The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity<br>(log wholesale electricity consumption in , business days, hours 11-15)<br>*Grid company 131: EnergiMidt (in DK1)*<br><html><table>") ///
+	postfoot("</table>Columns 1-4 show: 1. Chi&sup2; 2. Degrees of freedom; 3. The unadjusted p-value; 4. The Bonferroni-adjusted p-value.</html>")
+estout matrix(A_791, fmt(3 0 3 3)) using "$results/ws_homoscedasticity_bp_791.md", ///
+	style(html) replace prehead("**Table:** The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity<br>(log wholesale electricity consumption in , business days, hours 11-15)<br>*Grid company 791: Radius (in DK2)*<br><html><table>") ///
+	postfoot("</table>Columns 1-4 are the Chi&sup2, degrees of freedom, unadjusted p-value, and the Bonferroni-adjusted p-value.</html>")
+
 
 ********************************************************************************
 **** 	Predicting price (relevance of instruments)							****
 ********************************************************************************
 est clear
-qui reg p wp wp_other wp_se daytime $x if grid==131, robust
+qui reg p wp wp_other wp_se $x_ws $x_17_19 if grid==131 & bd==1 & inrange(hour,11,15), robust
 est store a_DK1, title("Price DK1")
-qui reg p wp wp_other daytime $x if grid==131, robust
+qui reg p wp_other wp_se $x_ws $x_17_19 if grid==131 & bd==1 & inrange(hour,11,15), robust
 est store b_DK1, title("Price DK1")
-qui reg p wp wp_se daytime $x if grid==131, robust
+qui reg p wp wp_se $x_ws $x_17_19 if grid==131 & bd==1 & inrange(hour,11,15), robust
+est store c_DK1, title("Price DK1")
+qui reg p wp wp_other $x_ws $x_17_19 if grid==131 & bd==1 & inrange(hour,11,15), robust
 est store d_DK1, title("Price DK1")
-qui reg p wp wp_other wp_se daytime $x if grid==131, robust
+
+qui reg p wp wp_other wp_se $x_ws $x_17_19 if grid==791 & bd==1 & inrange(hour,11,15), robust
 est store a_DK2, title("Price DK2")
-qui reg p wp wp_other daytime $x if grid==131, robust
-est store d_DK2, title("Price DK2")
-qui reg p wp wp_se daytime $x if grid==131, robust
+qui reg p wp_other wp_se $x_ws $x_17_19 if grid==791 & bd==1 & inrange(hour,11,15), robust
+est store b_DK2, title("Price DK2")
+qui reg p wp wp_se $x_ws $x_17_19 if grid==791 & bd==1 & inrange(hour,11,15), robust
 est store c_DK2, title("Price DK2")
+qui reg p wp wp_other $x_ws $x_17_19 if grid==791 & bd==1 & inrange(hour,11,15), robust
+est store d_DK2, title("Price DK2")
 
 estout _all using "price.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
