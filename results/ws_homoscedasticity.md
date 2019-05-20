@@ -146,4 +146,4 @@
 <tr><td>R&sup2              </td><td>    2679.945   </td><td>               </td><td>    1154.400   </td><td>               </td></tr>
 <tr><td>Adjusted R&sup2     </td><td>       0.000   </td><td>               </td><td>       0.000   </td><td>               </td></tr>
 <tr><td>Observations        </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td></tr>
-</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2 and p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: Each hour on fridays.</html>
+</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2 and p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: Each hour on fridays.<br>Grid company 131 is EnergiMidt (Western Denmark), grid company 791 is Radius (Eastern Denmark)</html>
