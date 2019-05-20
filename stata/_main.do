@@ -341,7 +341,7 @@ estout _all using "$results/ws_homoscedasticity.md", style(html) replace ///
 	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2 r2_a hettest hetp N, fmt(3 3 3 3 %12.0gc) labels("Chi&sup2" "p-val" "R&sup2" "Adjusted R&sup2" "Observations") ) ///
-	prehead("###Table: Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid number 131 is EnergiMidt (in Western Denmark), grid number 791 is Radius (in Eastern Denmark)*<br><html><table>") ///
+	prehead("**Table:** Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid number 131 is EnergiMidt (Western Denmark), grid number 791 is Radius (in Eastern Denmark)*<br><html><table>") ///
 	postfoot("</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2 and p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: Each hour on fridays.</html>")
 
 
