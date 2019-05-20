@@ -1,4 +1,4 @@
-**Table:** The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity<br>(log wholesale electricity consumption, business days, hours 11-15)<br>*Grid company 131: EnergiMidt (in DK1)*<br><html><table>
+**Table:** The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity<br>(log wholesale electricity consumption, business days, hours 11-15)<br>*Grid number 131 is EnergiMidt (DK1), grid number 791 is Radius (in DK2)*<br><html><table>
 <tr><td>            </td><td>       A_131</td><td>            </td><td>            </td><td>            </td></tr>
 <tr><td>            </td><td>        chi2</td><td>          df</td><td>           p</td><td>          c1</td></tr>
 <tr><td>p           </td><td>     502.920</td><td>           1</td><td>       0.000</td><td>       0.000</td></tr>
