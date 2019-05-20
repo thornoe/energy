@@ -11,18 +11,29 @@ help xtivreg
 ////////	0. Global set up 											////////
 ////////////////////////////////////////////////////////////////////////////////
 
+
 *** Global directories, Cathrine ***
 cd 				"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\stata"
-*global data		"??? \Energy Economics\Data"
-global figures	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\latex\03_figures"
-global tables	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\latex\04_tables"
+*global data		"??? \Google Drev\Energy Economics\Data"
+global latex	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\latex\04_tables"
+global results	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\results"
 
 
 *** Global directories, Thor ***
 cd 				"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\stata"
 global data		"D:\Google Drev\KU Thor\Energy Economics\Data"
-global figures	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\latex\03_figures"
-global tables	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\latex\04_tables"
+global latex	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\latex\04_tables"
+global results	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\results"
+
+
+*** Global variable lists ***
+* Wholesale:
+global x_w "n_w temp* trend i.year i.week" // without daytime)
+* Retail:
+global x_hh "n_hh temp* daytime trend i.year i.week"
+* Using pooled 2SLS (P2SLS) for the relevant hours ('omit' doesn't work):
+global x_11_15 "i(1 2 3 4).day_bd#i(11 12 13 14 15).hour i.month#i(11 12 13 14 15).hour" // baseline: i5.non_bd#i(11 12 13 14 15).hour
+global x_17_19 "i(1 2 3 4 5).day_bd#i(17 18 19).hour i.month#i(17 18 19).hour" // baseline: i1.non_bd#i(17 18 19).hour
 
 
 *** Load data ***
@@ -33,14 +44,6 @@ clear all
 use "$data/data_stata.dta", clear
 
 xtset grid date, clocktime delta(1 hour) // strongly balanced
-
-
-*** Global variable lists ***
-global x "temp* trend i.year i.week i(1 2 3 4 5).day_bd#i.hour i.month#i.hour" // baseline: i1.non_bd#i.hour
-global x_w "n_w temp* trend i.year i.week" // wholesale (without daytime)
-global x_hh "n_hh temp* daytime trend i.year i.week" // retail
-global x_11_15 "i(1 2 3 4).day_bd#i(11 12 13 14 15).hour i.month#i(11 12 13 14 15).hour" // baseline: i5.non_bd#i(11 12 13 14 15).hour
-global x_17_19 "i(1 2 3 4 5).day_bd#i(17 18 19).hour i.month#i(17 18 19).hour" // baseline: i1.non_bd#i(17 18 19).hour
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -113,7 +116,7 @@ estout _all using "ws_preferred.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(%12.0gc) )
-estout _all using $tables/ws_preferred.tex, style(tex) replace ///
+estout _all using $latex/ws_preferred.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
@@ -191,7 +194,7 @@ estout _all using "ws_robustness_region_year.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(%12.0gc) )
-estout _all using $tables/ws_robustness_region_year.tex, style(tex) replace ///
+estout _all using $latex/ws_robustness_region_year.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
@@ -237,7 +240,7 @@ estout _all using "ws_robustness_grid.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(%12.0gc) )
-estout _all using $tables/ws_robustness_grid.tex, style(tex) replace ///
+estout _all using $latex/ws_robustness_grid.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
@@ -285,10 +288,11 @@ estout re fe reiv feiv using "ws_fe-re-feiv-reiv-comparison.xls", replace ///
 ////////////////////////////////////////////////////////////////////////////////
 ********************************************************************************
 /*	
+For wholesale consumption on business days, peak hours 11-15
+
 Using the two biggest grids (one in each price region):
 - DK1: EnergiMidt, grid number 131
 - DK2: Radius, grid number 791
-For business days wholesale, peak hours 11-15
 */
 
 qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
@@ -306,27 +310,41 @@ est clear
 foreach i in 131 791 {
 	* OLS w. non-robust s.e.
 	qui reg e_w p $x_w $x_11_15 if grid==`i' & bd==1 & inrange(hour,11,15)
-	est store non_robust_`i', title("`i': OLS")
-	* The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity
 	estat hettest, rhs mtest(bonf)
+	estadd scalar hettest = r(chi2)
+	estadd scalar hetp = r(p)
+	est store non_robust_`i', title("`i': POLS, non-robust s.e.")
 	/*
+	The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity
+	H0: Constant variance, i.e. homoscedasticity
 	Both:
- 	- The simultaneous test clearly rejects that the variance is constant (p=0.000)
-	EnergiMidt:
+ 	- The simultaneous test clearly rejects H0 (p=0.000)
+	EnergiMidt (DK1):
 	- The Bonferroni-adjusted p-values for price, n_w, & temperature are 0.000
-	SEAS-NVE:
+	Radius (DK2):
 	- The Bonferroni-adjusted p-val for price, n_w, & temperature are ~1 however
 	*/
 	* OLS w. robust s.e.
 	qui reg e_w p $x_w $x_11_15 if grid==`i' & bd==1 & inrange(hour,11,15), robust
-	est store robust_`i', title("`i': OLS, robust s.e.")
+	est store robust_`i', title("`i': POLS, robust s.e.")
+	/*
+	The differences between non-robust s.e. and robust s.e. are
+	- Relatively large for EnergiMidt (DK1)
+	- Relatively small for Radius (DK2)
+	*/
 }
 estout _all using "ws_homoscedasticity.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(N, fmt(%12.0gc) )
+	stats(r2 r2_a hettest hetp N, fmt(3 3 3 3 %12.0gc) )
+estout _all using "$results/ws_homoscedasticity.md", style(html) replace ///
+	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(r2 r2_a hettest hetp N, fmt(3 3 3 3 %12.0gc) labels("Chi&sup2" "p-val" "R&sup2" "Adjusted R&sup2" "Observations") ) ///
+	prehead("**Wholesale**: Testing for homoscedasticity (business days, hours 11-15)<br><html><table>") ///
+	postfoot("</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2 and p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Each hour of fridays as baseline.</html>")
 
-	
+
 ********************************************************************************
 **** 	Predicting price (relevance of instruments)							****
 ********************************************************************************
@@ -349,7 +367,7 @@ estout _all using "price.xls", replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Control variables=*.*") drop(temp* trend daytime _cons) ///
 	stats(r2_a N, fmt(3 %12.0gc) )
-estout _all using $tables/price.tex, style(tex) replace ///
+estout _all using $latex/price.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
@@ -395,7 +413,7 @@ foreach i in 131 791 {
 		label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 		starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 		stats(N, fmt(1 %12.0gc) )
-	estout _all using $tables/ws_endogeneity_`i'.tex, style(tex) replace ///
+	estout _all using $latex/ws_endogeneity_`i'.tex, style(tex) replace ///
 		label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 		starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 		indicate("Time variables=*.*") drop(trend _cons) ///
@@ -443,7 +461,7 @@ estout _all using "hh_overidentifying.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N nR2 p_value, fmt(%12.0gc 3 3) )
-estout _all using $tables/hh_overidentifying.tex, style(tex) replace ///
+estout _all using $latex/hh_overidentifying.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
@@ -480,7 +498,7 @@ estout _all using "hh_radius_17-19.xls", replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(%12.0gc) )
 
-estout _all using $tables/hh_radius_17-19.tex, style(tex) replace ///
+estout _all using $latex/hh_radius_17-19.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
@@ -548,7 +566,7 @@ estout _all using "hh_endogeneity.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(1 %12.0gc) )
-estout _all using $tables/hh_endogeneity.tex, style(tex) replace ///
+estout _all using $latex/hh_endogeneity.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
@@ -596,7 +614,7 @@ estout _all using "hh_overidentifying.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N nR2 p_value, fmt(%12.0gc 3 3) )
-estout _all using $tables/hh_overidentifying.tex, style(tex) replace ///
+estout _all using $latex/hh_overidentifying.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
