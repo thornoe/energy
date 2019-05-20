@@ -314,6 +314,12 @@ foreach i in 131 791 {
 	estadd scalar hettest = r(chi2)
 	estadd scalar hetp = r(p)
 	est store non_robust_`i', title("`i': POLS, non-robust s.e.")
+	matrix A = r(mtest)
+	estout matrix(A, fmt(3 0 3 3)) using "$results/ws_homoscedasticity_bp_`i'.md", style(html) replace ///
+		label starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+		stats(r2 r2_a hettest hetp N, fmt(3 3 3 3 %12.0gc) labels("Chi&sup2" "p-val" "R&sup2" "Adjusted R&sup2" "Observations") ) ///
+		prehead("**Table:** Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid number 131 is EnergiMidt (DK1), grid number 791 is Radius (in DK2)*<br><html><table>") ///
+		postfoot("</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2 and p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: Each hour on fridays.</html>")
 	/*
 	The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity
 	H0: Constant variance, i.e. homoscedasticity
@@ -333,6 +339,28 @@ foreach i in 131 791 {
 	- Relatively small for Radius (DK2)
 	*/
 }
+qui reg e_w p $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15)
+estat hettest, rhs mtest(bonf)
+matrix B_chi2 = A[.,1]
+matrix B_p = A[.,4]
+
+est store non_robust, title("131: POLS, non-robust s.e.")
+
+estout matrix(A, fmt(3 0 3 3)) using "$results/ws_homoscedasticity_bp_131.md", ///
+	style(html) replace ///
+	prehead("**Table:** The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid number 131 is EnergiMidt (DK1), grid number 791 is Radius (in DK2)*<br><html><table>") ///
+	postfoot("</table>Columns 1-4 are the Chi&sup2, degrees of freedom, unadjusted p-value, and the Bonferroni-adjusted p-value.</html>")
+
+estout non_robust, ///
+	label cells( r(mtest)[.,1](star fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+
+estout _all using "ws_homoscedasticity.xls", replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(r2 r2_a hettest hetp N, fmt(3 3 3 3 %12.0gc) )
+
+
 estout _all using "ws_homoscedasticity.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
@@ -343,7 +371,6 @@ estout _all using "$results/ws_homoscedasticity.md", style(html) replace ///
 	stats(r2 r2_a hettest hetp N, fmt(3 3 3 3 %12.0gc) labels("Chi&sup2" "p-val" "R&sup2" "Adjusted R&sup2" "Observations") ) ///
 	prehead("**Table:** Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid number 131 is EnergiMidt (DK1), grid number 791 is Radius (in DK2)*<br><html><table>") ///
 	postfoot("</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2 and p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: Each hour on fridays.</html>")
-
 
 ********************************************************************************
 **** 	Predicting price (relevance of instruments)							****
