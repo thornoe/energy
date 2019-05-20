@@ -28,8 +28,8 @@ weekends = data[data['bd']==0] # df for weekends and holidays
 ##############################################################################
 #   PLOTS BY HOUR                                                            #
 ##############################################################################
-bd = business_days[['hour', 'e_w', 'e_f', 'e_r', 'e_hh', 'p']].groupby('hour').mean()
-nbd = weekends[['hour', 'e_w', 'e_f', 'e_r', 'e_hh', 'p']].groupby('hour').mean()
+bd = business_days[['hour', 'e_w', 'e_f', 'e_r', 'e_hh', 'e_t', 'p']].groupby('hour').mean()
+nbd = weekends[['hour', 'e_w', 'e_f', 'e_r', 'e_hh', 'e_t', 'p']].groupby('hour').mean()
 
 ### Consumption only ###
 fig, ax = plt.subplots(figsize=(12,7.4)) # create new figure
@@ -124,7 +124,7 @@ for df in df_list:
 ### Time series for consumption only ###
 for df in [time_series, time_series_bd, time_series_tt]:
     fig, ax = plt.subplots(figsize=(12,7.4)) # create new figure
-    df.plot(kind='line', ax=ax, y='e_w', label='Wholesale', linestyle='solid', color='#1f77b4')
+    df.plot(kind='line', ax=ax, y='e_w', label='Wholesale', linestyle='solid', color='#3182bd')
     df.plot(kind='line', ax=ax, y='e_hh', label='Retail', linestyle='dashed', color='#aec7e8')
     # df.plot(kind='line', ax=ax, y='e_r', label='Residual households', linestyle='dotted')
     # df.plot(kind='line', ax=ax, y='e_f', label='Flexibly-settled households', linestyle='dashdot')

@@ -67,6 +67,9 @@ cons['total'] = cons[['hourly', 'households']].sum(axis=1, skipna=True)
 cons.columns = ['date', 'hour', 'grid', 'e_w', 'e_f', 'e_r', 'e_hh', 'e_t']
 # cons.head(2) # starts at 1AM due to time format being UTC+1, not UTC
 
+### From kWh to MWh ###
+for var in ['e_w', 'e_f', 'e_r', 'e_hh', 'e_t']:
+    cons[var] = cons[var].apply(lambda kWh: kWh/1000) # transformed to MWh, same name
 
 ### 'Dinel' og 'Læsø' ###
 # for date in cons['date'].unique():
