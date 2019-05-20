@@ -1,6 +1,4 @@
-###Table: Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)
-
-<br>*Grid number 131 is EnergiMidt (in Western Denmark), grid number 791 is Radius (in Eastern Denmark)*<br><html><table>
+### Table: Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid number 131 is EnergiMidt (in Western Denmark), grid number 791 is Radius (in Eastern Denmark)*<br><html><table>
 <tr><td>                    </td><td>(1) 131: POLS, non-robust s.e.   </td><td>(2) 131: POLS, robust s.e.   </td><td>(3) 791: POLS, non-robust s.e.   </td><td>(4) 791: POLS, robust s.e.   </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
 <tr><td>p                   </td><td>-0.01512***<br>(0.00229)   </td><td>-0.01512***<br>(0.00381)   </td><td>-0.00385***<br>(0.00099)   </td><td>-0.00385***<br>(0.00093)   </td></tr>
