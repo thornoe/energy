@@ -1,11 +1,11 @@
 **Table:** Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid 131 is EnergiMidt (DK1), grid 791 is Radius (DK2)*<br><html><table>
 <tr><td>                    </td><td>(1) 131: POLS, non-robust s.e.   </td><td>(2) 131: POLS, robust s.e.   </td><td>(3) 791: POLS, non-robust s.e.   </td><td>(4) 791: POLS, robust s.e.   </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
-<tr><td>p                   </td><td>-0.01512***<br>(0.00229)   </td><td>-0.01512***<br>(0.00381)   </td><td>-0.00385***<br>(0.00099)   </td><td>-0.00385***<br>(0.00093)   </td></tr>
-<tr><td>n_w                 </td><td>0.68926***<br>(0.13227)   </td><td>0.68926***<br>(0.11022)   </td><td>-0.29722***<br>(0.04591)   </td><td>-0.29722***<br>(0.04260)   </td></tr>
-<tr><td>temp                </td><td>-0.00331***<br>(0.00050)   </td><td>-0.00331***<br>(0.00063)   </td><td>-0.00407***<br>(0.00020)   </td><td>-0.00407***<br>(0.00025)   </td></tr>
-<tr><td>temp_sq             </td><td>0.00013***<br>(0.00002)   </td><td>0.00013***<br>(0.00002)   </td><td>0.00018***<br>(0.00001)   </td><td>0.00018***<br>(0.00001)   </td></tr>
-<tr><td>trend               </td><td>-0.01283***<br>(0.00159)   </td><td>-0.01283***<br>(0.00128)   </td><td>-0.00125**<br>(0.00063)   </td><td>-0.00125**<br>(0.00060)   </td></tr>
+<tr><td>log spot price      </td><td>-0.01512***<br>(0.00229)   </td><td>-0.01512***<br>(0.00381)   </td><td>-0.00385***<br>(0.00099)   </td><td>-0.00385***<br>(0.00093)   </td></tr>
+<tr><td>log wholesale meters</td><td>0.68926***<br>(0.13227)   </td><td>0.68926***<br>(0.11022)   </td><td>-0.29722***<br>(0.04591)   </td><td>-0.29722***<br>(0.04260)   </td></tr>
+<tr><td>Temperature         </td><td>-0.00331***<br>(0.00050)   </td><td>-0.00331***<br>(0.00063)   </td><td>-0.00407***<br>(0.00020)   </td><td>-0.00407***<br>(0.00025)   </td></tr>
+<tr><td>Temperature squared </td><td>0.00013***<br>(0.00002)   </td><td>0.00013***<br>(0.00002)   </td><td>0.00018***<br>(0.00001)   </td><td>0.00018***<br>(0.00001)   </td></tr>
+<tr><td>Time trend          </td><td>-0.01283***<br>(0.00159)   </td><td>-0.01283***<br>(0.00128)   </td><td>-0.00125**<br>(0.00063)   </td><td>-0.00125**<br>(0.00060)   </td></tr>
 <tr><td>year=2016           </td><td>0.00000<br>(.)   </td><td>0.00000<br>(.)   </td><td>0.00000<br>(.)   </td><td>0.00000<br>(.)   </td></tr>
 <tr><td>year=2017           </td><td>4.68190***<br>(0.57863)   </td><td>4.68190***<br>(0.46662)   </td><td>0.46303**<br>(0.22905)   </td><td>0.46303**<br>(0.21852)   </td></tr>
 <tr><td>year=2018           </td><td>9.79778***<br>(1.16687)   </td><td>9.79778***<br>(0.93551)   </td><td>0.92923**<br>(0.45806)   </td><td>0.92923**<br>(0.43701)   </td></tr>
@@ -141,10 +141,10 @@
 <tr><td>month=12 # hour=14  </td><td>0.05103***<br>(0.01262)   </td><td>0.05103***<br>(0.01586)   </td><td>0.03298***<br>(0.00499)   </td><td>0.03298***<br>(0.00442)   </td></tr>
 <tr><td>month=12 # hour=15  </td><td>0.00000<br>(.)   </td><td>0.00000<br>(.)   </td><td>0.00000<br>(.)   </td><td>0.00000<br>(.)   </td></tr>
 <tr><td>_cons               </td><td>-0.44926<br>(1.03238)   </td><td>-0.44926<br>(0.85941)   </td><td>9.45839***<br>(0.44096)   </td><td>9.45839***<br>(0.40932)   </td></tr>
-<tr><td>R&sup2              </td><td>       0.992   </td><td>       0.992   </td><td>       0.868   </td><td>       0.868   </td></tr>
-<tr><td>Adjusted R&sup2     </td><td>       0.992   </td><td>       0.992   </td><td>       0.863   </td><td>       0.863   </td></tr>
 <tr><td>Chi&sup2            </td><td>        2680   </td><td>               </td><td>        1154   </td><td>               </td></tr>
 <tr><td>DF                  </td><td>         134   </td><td>               </td><td>         134   </td><td>               </td></tr>
 <tr><td>Adj. p-val          </td><td>       0.000   </td><td>               </td><td>       0.000   </td><td>               </td></tr>
+<tr><td>R&sup2              </td><td>       0.992   </td><td>       0.992   </td><td>       0.868   </td><td>       0.868   </td></tr>
+<tr><td>Adj. R&sup2         </td><td>       0.992   </td><td>       0.992   </td><td>       0.863   </td><td>       0.863   </td></tr>
 <tr><td>Observations        </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td></tr>
 </table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2, DF, and Adj. p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: Each hour on fridays.</html>

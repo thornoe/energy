@@ -1,4 +1,4 @@
-                    &     (1) OLS   &(2) 1st stage, y = log price   &    (3) 2SLS   &(4) Hausman-test: OLS   \\
+                    &    (1) POLS   &(2) Reduced form, y = log price   &   (3) P2SLS   &(4) Hausman-test: POLS   \\
                     &        b/se   &        b/se   &        b/se   &        b/se   \\
 \midrule
 log spot price      &    -0.01512***&               &    -0.07786***&    -0.07786***\\
@@ -9,13 +9,14 @@ Temperature         &    -0.00331***&    -0.02388***&    -0.00554***&    -0.0055
                     &   (0.00063)   &   (0.00330)   &   (0.00069)   &   (0.00069)   \\
 Temperature squared &     0.00013***&     0.00077***&     0.00022***&     0.00022***\\
                     &   (0.00002)   &   (0.00014)   &   (0.00003)   &   (0.00003)   \\
-Wind power prognosis same region&               &    -0.00009***&               &               \\
-                    &               &   (0.00001)   &               &               \\
-Wind power prognosis other region&               &    -0.00027***&               &               \\
-                    &               &   (0.00005)   &               &               \\
+Wind power prognosis same region&               &    -0.09490***&               &               \\
+                    &               &   (0.01289)   &               &               \\
+Wind power prognosis other region&               &    -0.27433***&               &               \\
+                    &               &   (0.04614)   &               &               \\
 Estimated residuals, 1st stage&               &               &               &     0.07378***\\
                     &               &               &               &   (0.00794)   \\
 Time variables      &         Yes   &         Yes   &         Yes   &         Yes   \\
 \midrule
-Constant            &       3,675   &       3,675   &       3,675   &       3,675   \\
-\bottomrule
+Adj. \(R^2\)        &        0.99   &        0.46   &        0.99   &        0.99   \\
+Observations        &       3,675   &       3,675   &       3,675   &       3,675   \\
+\bottomrule\end{tabular}
