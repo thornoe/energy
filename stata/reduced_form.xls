@@ -1,0 +1,17 @@
+	(1) Price DK1	(2) Price DK1	(3) Price DK1	(4) Price DK1	(5) Price DK2	(6) Price DK2	(7) Price DK2	(8) Price DK2
+	b/se	b/se	b/se	b/se	b/se	b/se	b/se	b/se
+Wind power prognosis same region	-0.09191***	-0.09490***	-0.16211***		-0.45621***	-0.42333***	-0.46627***	-0.46627***
+	-0.01365	-0.01289	-0.00783		-0.04297	-0.02769	-0.02434	-0.02434
+Wind power prognosis other region	-0.27476***	-0.27433***			0.01254			
+	-0.04607	-0.04614			-0.0104			
+Wind power prognosis for Sweden	-0.00448				-0.02452***	-0.02211***		
+	-0.00563				-0.00427	-0.00406		
+Control variables	Yes	Yes	Yes	Yes	Yes	Yes	Yes	Yes
+F statistic (df=3)	172.5				167.2			
+"p-val (F-test, df=3)"	0				0			
+F statistic (df=2)	19.3	221			16.8	249.3		
+"p-val (F-test, df=2)"	0	0			0	0		
+F statistic (df=1)	0.6	35.4	429.1		1.5	29.6	366.9	
+"p-val (F-test, df=1)"	0.426	0	0		0.228	0	0	
+Adj. R^2	0.4603	0.4604	0.4549	0.3659	0.4691	0.4691	0.4674	0.4674
+Observations	"3,675"	"3,675"	"3,675"	"3,675"	"3,675"	"3,675"	"3,675"	"3,675"
