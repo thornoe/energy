@@ -1,5 +1,5 @@
 **Table:** Testing endogeneity of prices (wholesale, business days, hours 11-15)<br>*For grid company EnergiMidt (DK1)*<br><html><table>
-<tr><td>                    </td><td>    (1) POLS   </td><td>(2) Reduced form, y = log price   </td><td>   (3) P2SLS   </td><td>(4) Hausman-test: POLS   </td></tr>
+<tr><td>                    </td><td>    (1) POLS   </td><td>(2) Reduced form of log price   </td><td>   (3) P2SLS   </td><td>(4) Hausman-test: POLS   </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
 <tr><td>log spot price      </td><td>-0.01512***<br>(0.00381)   </td><td>        <br>   </td><td>-0.07786***<br>(0.00821)   </td><td>-0.07786***<br>(0.00791)   </td></tr>
 <tr><td>log wholesale meters</td><td>0.68926***<br>(0.11022)   </td><td>0.13030<br>(0.62268)   </td><td>0.64979***<br>(0.11358)   </td><td>0.64979***<br>(0.10843)   </td></tr>

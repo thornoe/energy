@@ -358,7 +358,7 @@ estout matrix(A, fmt(3 0 3 3)) using "$results/ws_homoscedasticity_bp.md", ///
 
 
 ********************************************************************************
-**** 	Predicting price (relevance of instruments)							****
+**** 	Reducet form for log price (relevance of instruments)				****
 ********************************************************************************
 est clear
 * DK1:
@@ -418,12 +418,12 @@ estout _all using $results/reduced_form.md, style(html) replace ///
 
 
 ********************************************************************************
-**** 	Testing endogeneity (relevance of instrumenting)					****
+**** 	NOT USED: Testing endogeneity (relevance of instrumenting)			****
 ********************************************************************************
 est clear
 
 *** EnergiMidt (DK1) ***
-* Simple OLS
+* Simple OLS for comparison (relevance of instrumenting)
 qui reg e_w p $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
 est store OLS_131, title("POLS")
 * 1st stage
@@ -475,7 +475,8 @@ foreach i in 131 791 {
 			starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 			indicate("Time variables=*.*") drop(trend _cons) ///
 			stats(r2_a N, fmt(2 %12.0gc) labels("Adj. \(R^2\)" "Observations") ) ///	
-			posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule\end{tabular}")	
+			prehead("\begin{tabular}{lcccc}\toprule") posthead("\midrule") ///
+			prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
 }
 estout _all using "ws_endogeneity.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
@@ -499,21 +500,23 @@ drop vhat_*
 
 
 ********************************************************************************
-**** 	Testing overidentifying restrictions 								****
+**** 	NOT USED: Testing overidentifying restrictions						****
+****	by standard Sargan-Hausman test										****
 ********************************************************************************
 /* test only holds in case of homoscedasticity, an assumption that:
    - doesn't hold in general, and especially not for EnergiMidt (DK1)
    - holds for the main variables for Radius (DK2) but not for the overall model
 */
+est clear
 
 *** EnergiMidt (DK1) ***
 * Each instrument individually
-foreach z of varlist wp wp_other {
-	qui ivregress 2sls e_w (p = `z') $x_w $x_11_15 ///
+qui foreach z of varlist wp wp_other {
+	ivregress 2sls e_w (p = `z') $x_w $x_11_15 ///
 		if grid==131 & bd==1 & inrange(hour,11,15), robust
-	predict uhat_`v'_131, residuals
+	predict uhat_`z'_131, residuals
 	est store iv_`z'_131, title("P2SLS, `z' only")
-	reg uhat_`v'_131 $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
+	reg uhat_`z'_131 $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
 	est store OLS_`z'_131, title("POLS, y = uhat(`z')")
 }
 * Both instruments
@@ -521,14 +524,38 @@ qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
 	if grid==131 & bd==1 & inrange(hour,11,15), robust
 predict uhat_both_131, residuals
 est store iv_both_131, title("P2SLS, both")
-reg uhat_both_131 $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
+qui reg uhat_both_131 wp wp_other $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
 estadd scalar nR2 = e(N)*e(r2) // .345
-estadd scalar p_value = 1-chi2(1, e(N)*e(r2)) // chi-sq with df=1: p-value: 0.55
-// we cannot reject H0: that at least one of wp and wp_other are not exogenous
+estadd scalar p_value = 1-chi2(1, e(N)*e(r2)) // chi-sq(1) = 5.9 (p = 0.015) (df = number of overidentifying restrictions)
+// we reject H0 (5% lvl): that at least one of wp and wp_other are not exogenous
 est store OLS_both_131, title("OLS, y = uhat(both)")
-test wp = wp_other = 0 // F-statistic: 0.16, p-value: 0.85
-// t- and F-tests cannot be rejected even at high confidence levels
-// i.e. both instruments are uncorrelated with uhat, thus are exogenous.
+test wp = wp_other = 0 // F(2, 3539) = 2.46 (p-val = 0.086)
+// t- and F-tests cannot be rejected at the 5 pct. confidence level
+// i.e. both instruments are likely uncorrelated with uhat => likely exogenous.
+
+*** Radius (DK2) ***
+* Each instrument individually
+qui foreach z of varlist wp wp_se {
+	ivregress 2sls e_w (p = `z') $x_w $x_11_15 ///
+		if grid==791 & bd==1 & inrange(hour,11,15), robust
+	predict uhat_`z'_791, residuals
+	est store iv_`z'_791, title("P2SLS, `z' only")
+	reg uhat_`z'_791 $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
+	est store OLS_`z'_791, title("POLS, y = uhat(`z')")
+}
+* Both instruments
+qui ivregress 2sls e_w (p = wp wp_se) $x_w $x_11_15 ///
+	if grid==791 & bd==1 & inrange(hour,11,15), robust
+predict uhat_both_791, residuals
+est store iv_both_791, title("P2SLS, both")
+qui reg uhat_both_791 wp wp_se $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
+estadd scalar nR2 = e(N)*e(r2) // .345
+estadd scalar p_value = 1-chi2(1, e(N)*e(r2)) // chi-sq(1) = 16 (p = 0.0001) (df = number of overidentifying restrictions)
+// we clearly rejects H0: that at least one of wp and wp_se are not exogenous
+est store OLS_both_791, title("OLS, y = uhat(both)")
+test wp = wp_se = 0 // F(2, 3539) = 7.47 (p-val = 0.006)
+// t- and F-tests are clearly rejected even at a 1 pct. confidence level
+// i.e. both instruments are NOT uncorrelated with uhat => one or both are endogenous.
 
 foreach i in 131 791 {
 estout *_`i' using "ws_overidentifying_`i'.xls", replace ///
@@ -540,21 +567,139 @@ estout *_`i' using $latex/ws_overidentifying_`i'.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
-	stats(nR2 p_value r2_a N, fmt(2 2 2 %12.0gc) labels("\(n\cdot R^2\)" "p-val" "Adj. \(R2\)" "Observations") ) ///
-	prehead("\begin{tabular}{lccc}\toprule") posthead("\midrule") ///
+	stats(nR2 p_value r2_a N, fmt(2 2 2 %12.0gc) labels("\(N\cdot R^2\)" "p-val" "Adj. \(R2\)" "Observations") ) ///
+	prehead("\begin{tabular}{lcccc}\toprule") posthead("\midrule") ///
 	prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
 }
-estout *_131 using $results/ws_overidentifying_791.md, style(html) replace ///
+estout *_131 using $results/ws_overidentifying_131.md, style(html) replace ///
 	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(nR2 p_value r2_a N, fmt(2 2 2 %12.0gc) labels("n*R&sup2" "p-val" "Adj. R&sup2" "Observations") ) ///
-	prehead("**Table:** Testing endogeneity of prices (wholesale, business days, hours 11-15)<br>*For grid company Radius (DK2)*<br><html><table>") ///
+	prehead("**Table:** Testing overidentifying assumptions (wholesale, business days, hours 11-15)<br>*For grid company EnergiMidt (DK1)*<br><html><table>") ///
+	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour on Fridays.</html>")
+estout *_791 using $results/ws_overidentifying_791.md, style(html) replace ///
+	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(nR2 p_value r2_a N, fmt(2 2 2 %12.0gc) labels("N*R&sup2" "p-val" "Adj. R&sup2" "Observations") ) ///
+	prehead("**Table:** Testing overidentifying assumptions (wholesale, business days, hours 11-15)<br>*For grid company Radius (DK2)*<br><html><table>") ///
+	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour on Fridays.</html>")
+
+drop uhat*
+
+
+********************************************************************************
+**** 	Testing both endogeneity and overidentifying restrictions			****
+********************************************************************************
+/*  Wooldridge's heteroscedasticity-robust score test of overidentifying restrictions:
+	H0: All instruments are valid at the 5% level.
+	p < .05 => test statistic is significant at the 5% level => reject H0
+			=> either instrument is invalid or the structural model is misspecified
+	Equivalently for the regression based F-test.
+*/
+est clear
+
+*** EnergiMidt (DK1) ***
+* Simple OLS for comparison (relevance of instrumenting)
+qui reg e_w p $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
+est store POLS_131, title("POLS")
+* Each instrument individually
+qui foreach z of varlist wp wp_other {
+	ivregress 2sls e_w (p = `z') $x_w $x_11_15 ///
+		if grid==131 & bd==1 & inrange(hour,11,15), robust
+	estat endogenous
+	estadd scalar endog = r(r_score) // robust score chi2
+	estadd scalar p_endog = r(p_r_score) // p-val
+	estadd scalar endog_reg = r(regF) // robust regression F
+	estadd scalar p_endog_reg = r(p_regF) // p-val
+	est store iv_`z'_131, title("P2SLS, `z'")
+}
+qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
+	if grid==131 & bd==1 & inrange(hour,11,15), robust
+estat endogenous // H0: the regressor (price) is exogenous
+/*	Robust score chi2(1)            =  8.08592  (p = 0.0045)
+	Robust regression F(1,3539)     =  7.71654  (p = 0.0055)
+	p < .05 => H0 clearly rejected => regressor is endogenous
+*/
+estadd scalar endog = r(r_score) // robust score chi2
+estadd scalar p_endog = r(p_r_score) // p-val
+estadd scalar endog_reg = r(regF) // robust regression F
+estadd scalar p_endog_reg = r(p_regF) // p-val
+estat firststage // H0: the set of instruments is weak
+/*	F(2, 3539) = 200, (p = 0.0000)
+	p < .05 => H0 clearly rejected => our instruments are not weak
+*/
+estadd scalar mineig = r(mineig)
+estat overid // chi-sq(1) = 5.1 (p = 0.024) (df = number of overidentifying restrictions)
+// Verdict: either or both of wp and wp_other are not exogenous
+estadd scalar overid = r(score) // Overid-score
+estadd scalar p_overid = r(p_score) // p-val (overid)
+est store iv_both_131, title("P2SLS, both")
+
+*** Radius (DK2) ***
+* Simple OLS for comparison (relevance of instrumenting)
+qui reg e_w p $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
+est store POLS_791, title("POLS")
+* Each instrument individually
+qui foreach z of varlist wp wp_se {
+	ivregress 2sls e_w (p = `z') $x_w $x_11_15 ///
+		if grid==791 & bd==1 & inrange(hour,11,15), robust
+	estat endogenous
+	estadd scalar endog = r(r_score) // robust score chi2
+	estadd scalar p_endog = r(p_r_score) // p-val
+	estadd scalar endog_reg = r(regF) // robust regression F
+	estadd scalar p_endog_reg = r(p_regF) // p-val
+	est store iv_`z'_791, title("P2SLS, `z'")
+}
+qui ivregress 2sls e_w (p = wp wp_se) $x_w $x_11_15 ///
+	if grid==791 & bd==1 & inrange(hour,11,15), robust
+estat endogenous // H0: the regressor (price) is exogenous
+/*	Robust score chi2(1)            =  8.08592  (p = 0.0045)
+	Robust regression F(1,3539)     =  7.71654  (p = 0.0055)
+	p < .05 => H0 clearly rejected => regressor is endogenous
+*/
+estadd scalar endog = r(r_score) // robust score chi2
+estadd scalar p_endog = r(p_r_score) // p-val
+estadd scalar endog_reg = r(regF) // robust regression F
+estadd scalar p_endog_reg = r(p_regF) // p-val
+estat firststage // H0: the set of instruments is weak
+/*	F(2, 3539) = 200, (p = 0.0000)
+	p < .05 => H0 clearly rejected => our instruments are not weak
+*/
+estadd scalar mineig = r(mineig)
+estat overid // chi-sq(1) = 5.1 (p = 0.024) (df = number of overidentifying restrictions)
+// Verdict: either or both of wp and wp_se are not exogenous
+estadd scalar overid = r(score) // Overid-score
+estadd scalar p_overid = r(p_score) // p-val (overid)
+est store iv_both_791, title("P2SLS, Both")
+
+estout _all using "ws_endog_overid.xls", replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	indicate("Time variables=*.*") drop(trend _cons) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(N nR2 p_value, fmt(%12.0gc 3 3) )
+estout *_`i' using $latex/ws_overidentifying_`i'.tex, style(tex) replace ///
+	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	indicate("Time variables=*.*") drop(trend _cons) ///
+	stats(nR2 p_value r2_a N, fmt(2 2 2 %12.0gc) labels("\(N\cdot R^2\)" "p-val" "Adj. \(R2\)" "Observations") ) ///
+	prehead("\begin{tabular}{lcccc}\toprule") posthead("\midrule") ///
+	prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
+}
+estout *_131 using $results/ws_overidentifying_131.md, style(html) replace ///
+	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(nR2 p_value r2_a N, fmt(2 2 2 %12.0gc) labels("n*R&sup2" "p-val" "Adj. R&sup2" "Observations") ) ///
+	prehead("**Table:** Testing overidentifying assumptions (wholesale, business days, hours 11-15)<br>*For grid company EnergiMidt (DK1)*<br><html><table>") ///
+	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour on Fridays.</html>")
+estout *_791 using $results/ws_overidentifying_791.md, style(html) replace ///
+	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(nR2 p_value r2_a N, fmt(2 2 2 %12.0gc) labels("N*R&sup2" "p-val" "Adj. R&sup2" "Observations") ) ///
+	prehead("**Table:** Testing endogeneity and overidentifying restrictions (wholesale, business days, hours 11-15)<br>*For grid company Radius (DK2)*<br><html><table>") ///
 	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour on Fridays.</html>")
 
 
-
-drop uhat
-
+prehead("**Table:** Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid 131 is EnergiMidt (DK1), grid 791 is Radius (DK2)*<br><html><table>") ///
 
 ********************************************************************************
 ////////////////////////////////////////////////////////////////////////////////
@@ -588,7 +733,7 @@ estout _all using $latex/r_radius_17-19.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
-	stats(N, labels("Observations") fmt(%12.0gc) ) ///	
+	stats(r2_a N, fmt(2 %12.0gc) labels("Adj. \(R^2\)" "Observations") ) ///	
 	prehead("\begin{tabular}{lccc}\toprule") posthead("\midrule") ///
 	prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
 
