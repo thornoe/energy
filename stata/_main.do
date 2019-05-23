@@ -296,7 +296,7 @@ Using the two biggest grids (one in each price region):
 */
 
 qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
-	if grid==`i' & bd==1 & inrange(hour,11,15), robust
+	if grid==131 & bd==1 & inrange(hour,11,15), robust
 est store peak_131, title("EnergiMidt (DK1)")
 
 qui ivregress 2sls e_w (p = wp wp_se) $x_w $x_11_15 ///
@@ -497,6 +497,15 @@ estout *_791 using $results/ws_endogeneity_791.md, style(html) replace ///
 
 drop vhat_*
 
+***
+qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
+	if grid==131 & bd==1 & inrange(hour,11,15), robust
+est store peak_131, title("EnergiMidt (DK1)")
+
+qui ivregress 2sls e_w (p = wp wp_se) $x_w $x_11_15 ///
+	if grid==791 & bd==1 & inrange(hour,11,15), robust
+est store peak_791, title("Radius (DK2)")
+
 
 ********************************************************************************
 **** 	Testing overidentifying restrictions 								****
@@ -506,7 +515,7 @@ drop vhat_*
    - holds for the main variables for Radius (DK2) but not for the overall model
 */
 est clear
-foreach z of varlist wp wp_other {
+foreach z of varlist wp wp_se {
 ivregress 2sls e_hh s_tout (p = `z') $x_hh $x_17_19 ///
 	if grid==791 & inrange(hour,17,19), vce(robust)
 predict uhat, residuals
@@ -518,35 +527,49 @@ estadd scalar cons = _b[_cons]
 est store OLS_`z', title("OLS, y = uhat(`z')")
 drop uhat
 }
+
+*** EnergiMidt (DK1) ***
+* Each instrument individually
+foreach z of varlist wp wp_other {
+	qui ivregress 2sls e_w (p = `z') $x_w $x_11_15 ///
+		if grid==131 & bd==1 & inrange(hour,11,15), robust
+	predict uhat_`v'_131, residuals
+	est store iv_`z'_131, title("P2SLS, `z' only")
+	reg uhat_`v'_131 $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
+	est store OLS_`z'_131, title("POLS, y = uhat(`z')")
+}
 * Both instruments
-ivregress 2sls e_hh s_tout (p = wp wp_other) $x_hh $x_17_19 ///
-	if grid==791 & inrange(hour,17,19), vce(robust)
-predict uhat, residuals
-estadd scalar cons = _b[_cons]
-est store iv_both, title("2SLS, both")
-reg uhat s_tout wp wp_other $x_hh $x_17_19 ///
-	if grid==791 & inrange(hour,17,19), vce(robust)
+qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
+	if grid==131 & bd==1 & inrange(hour,11,15), robust
+predict uhat_both_131, residuals
+est store iv_both_131, title("P2SLS, both")
+reg uhat_both_131 $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
 estadd scalar nR2 = e(N)*e(r2) // .345
 estadd scalar p_value = 1-chi2(1, e(N)*e(r2)) // chi-sq with df=1: p-value: 0.55
 // we cannot reject H0: that at least one of wp and wp_other are not exogenous
-estadd scalar cons = _b[_cons]
-est store OLS_both, title("OLS, y = uhat(both)")
+est store OLS_both_131, title("OLS, y = uhat(both)")
 test wp = wp_other = 0 // F-statistic: 0.16, p-value: 0.85
 // t- and F-tests cannot be rejected even at high confidence levels
 // i.e. both instruments are uncorrelated with uhat, thus are exogenous.
-drop uhat
 
-estout _all using "r_overidentifying.xls", replace ///
+foreach i in 131 791 {
+estout *_`i' using "ws_overidentifying_`i'.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	indicate("Time variables=*.*") drop(trend _cons) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N nR2 p_value, fmt(%12.0gc 3 3) )
-estout _all using $latex/r_overidentifying.tex, style(tex) replace ///
+estout *_`i' using $latex/ws_overidentifying_`i'.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
-	stats(cons N nR2 p_value, labels("Constant" "Observations" "n*R2" "p-value") fmt(1 %12.0gc 3 3) ) ///
-	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
+	stats(N nR2 p_value, labels("Constant" "Observations" "n*R2" "p-value") fmt(1 %12.0gc 3 3) ) ///
+	prehead("\begin{tabular}{lccc}\toprule") posthead("\midrule") ///
+	prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
+}
 
+
+
+drop uhat
 
 
 ********************************************************************************
