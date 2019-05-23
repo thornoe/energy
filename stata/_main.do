@@ -362,7 +362,7 @@ estout matrix(A, fmt(3 0 3 3)) using "$results/ws_homoscedasticity_bp.md", ///
 ********************************************************************************
 est clear
 * DK1:
-qui reg p wp wp_other wp_se $x_ws $x_17_19 if grid==131 & bd==1 & inrange(hour,11,15), robust
+qui reg p wp wp_other wp_se $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
 test wp = wp_other = wp_se = 0
 estadd scalar f3 = r(F)
 estadd scalar f3_p = r(p)
@@ -373,7 +373,7 @@ test wp_se = 0
 estadd scalar f1 = r(F)
 estadd scalar f1_p = r(p)
 est store a_DK1, title("Price DK1")
-qui reg p wp wp_other $x_ws $x_17_19 if grid==131 & bd==1 & inrange(hour,11,15), robust
+qui reg p wp wp_other $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
 test wp = wp_other = 0
 estadd scalar f2 = r(F)
 estadd scalar f2_p = r(p)
@@ -381,46 +381,50 @@ test wp_other = 0
 estadd scalar f1 = r(F)
 estadd scalar f1_p = r(p)
 est store b_DK1, title("Price DK1")
-qui reg p wp $x_ws $x_17_19 if grid==131 & bd==1 & inrange(hour,11,15), robust
+qui reg p wp $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
 test wp = 0
 estadd scalar f1 = r(F)
 estadd scalar f1_p = r(p)
 est store c_DK1, title("Price DK1")
+qui reg p $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
+est store d_DK1, title("Price DK1")
 * DK2:
-qui reg p wp wp_other wp_se $x_ws $x_17_19 if grid==791 & bd==1 & inrange(hour,11,15), robust
+qui reg p wp wp_other wp_se $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
 test wp = wp_other = wp_se = 0
 estadd scalar f3 = r(F)
 estadd scalar f3_p = r(p)
 test wp_other = wp_se = 0
 estadd scalar f2 = r(F)
 estadd scalar f2_p = r(p)
-test wp_se = 0
-estadd scalar f1 = r(F)
-estadd scalar f1_p = r(p)
-est store a_DK2, title("Price DK2")
-qui reg p wp wp_other $x_ws $x_17_19 if grid==791 & bd==1 & inrange(hour,11,15), robust
-test wp = wp_other = 0
-estadd scalar f2 = r(F)
-estadd scalar f2_p = r(p)
 test wp_other = 0
 estadd scalar f1 = r(F)
 estadd scalar f1_p = r(p)
+est store a_DK2, title("Price DK2")
+qui reg p wp wp_se $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
+test wp = wp_se = 0
+estadd scalar f2 = r(F)
+estadd scalar f2_p = r(p)
+test wp_se = 0
+estadd scalar f1 = r(F)
+estadd scalar f1_p = r(p)
 est store b_DK2, title("Price DK2")
-qui reg p wp $x_ws $x_17_19 if grid==791 & bd==1 & inrange(hour,11,15), robust
+qui reg p wp $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
 test wp = 0
 estadd scalar f1 = r(F)
 estadd scalar f1_p = r(p)
 est store c_DK2, title("Price DK2")
+qui reg p wp $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
+est store d_DK2, title("Price DK2")
 
 estout _all using "reduced_form.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	indicate("Control variables=*.*") drop($x_ws _cons) ///
+	indicate("Control variables=*.*") drop(n_w temp* trend _cons) ///
 	stats(f3 f3_p f2 f2_p f1 f1_p r2_a N, fmt(1 3 1 3 1 3 4 %12.0gc) labels("F statistic (df=3)" "p-val (F-test, df=3)" "F statistic (df=2)" "p-val (F-test, df=2)" "F statistic (df=1)" "p-val (F-test, df=1)" "Adj. R^2" "Observations") )
-estout _all using $latex/reduced_form.tex, style(tex) replace ///
+estout a_DK1 b_DK1 c_DK1 a_DK2 b_DK2 c_DK2 using $latex/reduced_form.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	indicate("Time variables=*.*") drop($x_ws _cons) ///
+	indicate("Time variables=*.*") drop(n_w temp* trend  _cons) ///
 	stats(f3 f3_p f2 f2_p f1 f1_p r2_a N, fmt(1 3 1 3 1 3 4 4 %12.0gc) labels("F statistic (df=3)" "p-val (F-test, df=3)" "F statistic (df=2)" "p-val (F-test, df=2)" "F statistic (df=1)" "p-val (F-test, df=1)" "Adj. \(R^2\)" "Observations") ) ///
 	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
 estout _all using $results/reduced_form.md, style(html) replace ///
@@ -435,47 +439,78 @@ estout _all using $results/reduced_form.md, style(html) replace ///
 **** 	Testing endogeneity (relevance of instrumenting)					****
 ********************************************************************************
 est clear
+
+*** EnergiMidt (DK1) ***
+* Simple OLS
+qui reg e_w p $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
+est store OLS_131, title("POLS")
+* 1st stage
+qui reg p wp wp_other $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
+predict vhat_131, residuals
+label variable vhat_131 "Estimated residuals, 1st stage"
+test wp = wp_other = 0 // F-statistics:
+// t- and F-test are strongly rejected: F(2,3539)= 221, 178 respectively
+// i.e instruments are strongly correlated with price, thus, are relevant
+est store first_131, title("Reduced form, y = log price")
+* 2nd stage
+qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
+	if grid==131 & bd==1 & inrange(hour,11,15), robust
+est store second_131, title("P2SLS")
+// Very different from OLS, thus p is likely to be endogenous
+* Endogeneity test (Hausman)
+qui reg e_w vhat_131 p $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
+est store endogeneity_131, title("Hausman-test: POLS")
+// We reject the t-test that vhat=0, thus p is endogenous and we prefer 2SLS.
+
+*** Radius (DK1) ***
+* Simple OLS
+qui reg e_w p $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
+est store OLS_791, title("POLS")
+* 1st stage
+qui reg p wp wp_se $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
+predict vhat_791, residuals
+label variable vhat_791 "Estimated residuals, 1st stage"
+test wp = wp_se = 0 // F-statistics:
+// t- and F-test are strongly rejected: F(2,3539)= 221, 178 respectively
+// i.e instruments are strongly correlated with price, thus, are relevant
+est store first_791, title("Reduced form, y = log price")
+* 2nd stage
+qui ivregress 2sls e_w (p = wp wp_se) $x_w $x_11_15 ///
+	if grid==791 & bd==1 & inrange(hour,11,15), robust
+est store second_791, title("P2SLS")
+// Very different from OLS, thus p is likely to be endogenous
+* Endogeneity test (Hausman)
+qui reg e_w vhat_791 p $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
+est store endogeneity_791, title("Hausman-test: POLS")
+// We reject the t-test that vhat=0, thus p is endogenous and we prefer 2SLS.
+
 foreach i in 131 791 {
-	* Simple OLS
-	qui reg e_w p $x_w $x_11_15 if grid==`i' & bd==1 & inrange(hour,11,15), robust
-	est store OLS_`i', title("POLS")
-
-	* 1st stage
-	qui reg p wp wp_other $x_w $x_11_15 if grid==`i' & bd==1 & inrange(hour,11,15), robust
-	predict vhat_`i', residuals
-	label variable vhat_`i' "Estimated residuals, 1st stage"
-	test wp = wp_other = 0 // F-statistics:
-	// t- and F-test are strongly rejected: F(2,3539)= 221, 178 respectively
-	// i.e instruments are strongly correlated with price, thus, are relevant
-	est store first_`i', title("Reduced form, y = log price")
-	* 2nd stage
-	qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
-		if grid==`i' & bd==1 & inrange(hour,11,15), robust
-	est store second_`i', title("P2SLS")
-	// Very different from OLS, thus p is likely to be endogenous
-
-	* Endogeneity test (Hausman)
-	qui reg e_w vhat_`i' p $x_w $x_11_15 if grid==`i' & bd==1 & inrange(hour,11,15), robust
-	est store endogeneity_`i', title("Hausman-test: POLS")
-	// We reject the t-test that vhat=0, thus p is endogenous and we prefer 2SLS.
-
 	estout *_`i' using $latex/ws_endogeneity_`i'.tex, style(tex) replace ///
-		label cells( b(star fmt(5)) se(par fmt(5)) ) ///
-		starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-		indicate("Time variables=*.*") drop(trend _cons) ///
-		stats(r2_a N, fmt(2 %12.0gc) labels("Adj. \(R^2\)" "Observations") ) ///	
-		posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
+			label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+			starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+			indicate("Time variables=*.*") drop(trend _cons) ///
+			stats(r2_a N, fmt(2 %12.0gc) labels("Adj. \(R^2\)" "Observations") ) ///	
+			posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule\end{tabular}")	
 }
 estout _all using "ws_endogeneity.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(r2_a N, fmt(2 %12.0gc) )
-estout _all using $results/ws_endogeneity.md, style(html) replace ///
+estout *_131 using $results/ws_endogeneity_131.md, style(html) replace ///
 	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_a N, fmt(2 %12.0gc) labels("Adj. R&sup2" "Observations") ) ///
-	prehead("**Table:** Testing endogeneity (wholesale, business days, hours 11-15)<br> <html><table>") ///
+	prehead("**Table:** Testing endogeneity of prices (wholesale, business days, hours 11-15)<br>*For grid company EnergiMidt (DK1)*<br><html><table>") ///
 	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour on Fridays.</html>")
+estout *_791 using $results/ws_endogeneity_791.md, style(html) replace ///
+	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(r2_a N, fmt(2 %12.0gc) labels("Adj. R&sup2" "Observations") ) ///
+	prehead("**Table:** Testing endogeneity of prices (wholesale, business days, hours 11-15)<br>*For grid company Radius (DK2)*<br><html><table>") ///
+	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour on Fridays.</html>")
+
+	
 drop vhat_*
 
 
