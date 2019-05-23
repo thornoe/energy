@@ -497,15 +497,6 @@ estout *_791 using $results/ws_endogeneity_791.md, style(html) replace ///
 
 drop vhat_*
 
-***
-qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
-	if grid==131 & bd==1 & inrange(hour,11,15), robust
-est store peak_131, title("EnergiMidt (DK1)")
-
-qui ivregress 2sls e_w (p = wp wp_se) $x_w $x_11_15 ///
-	if grid==791 & bd==1 & inrange(hour,11,15), robust
-est store peak_791, title("Radius (DK2)")
-
 
 ********************************************************************************
 **** 	Testing overidentifying restrictions 								****
@@ -514,19 +505,6 @@ est store peak_791, title("Radius (DK2)")
    - doesn't hold in general, and especially not for EnergiMidt (DK1)
    - holds for the main variables for Radius (DK2) but not for the overall model
 */
-est clear
-foreach z of varlist wp wp_se {
-ivregress 2sls e_hh s_tout (p = `z') $x_hh $x_17_19 ///
-	if grid==791 & inrange(hour,17,19), vce(robust)
-predict uhat, residuals
-estadd scalar cons = _b[_cons]
-est store iv_`z', title("2SLS, `z' only")
-reg uhat s_tout `z' $x_hh $x_17_19 ///
-	if grid==791 & inrange(hour,17,19), vce(robust)
-estadd scalar cons = _b[_cons]
-est store OLS_`z', title("OLS, y = uhat(`z')")
-drop uhat
-}
 
 *** EnergiMidt (DK1) ***
 * Each instrument individually
@@ -562,10 +540,16 @@ estout *_`i' using $latex/ws_overidentifying_`i'.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
-	stats(N nR2 p_value, labels("Constant" "Observations" "n*R2" "p-value") fmt(1 %12.0gc 3 3) ) ///
+	stats(nR2 p_value r2_a N, fmt(2 2 2 %12.0gc) labels("\(n\cdot R^2\)" "p-val" "Adj. \(R2\)" "Observations") ) ///
 	prehead("\begin{tabular}{lccc}\toprule") posthead("\midrule") ///
 	prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
 }
+estout *_131 using $results/ws_overidentifying_791.md, style(html) replace ///
+	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(nR2 p_value r2_a N, fmt(2 2 2 %12.0gc) labels("n*R&sup2" "p-val" "Adj. R&sup2" "Observations") ) ///
+	prehead("**Table:** Testing endogeneity of prices (wholesale, business days, hours 11-15)<br>*For grid company Radius (DK2)*<br><html><table>") ///
+	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour on Fridays.</html>")
 
 
 
