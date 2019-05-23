@@ -18,7 +18,7 @@ global figures	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\latex\03_figure
 global tables	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\latex\04_tables"
 
 *** Global directories, Cathrine ***
-cd 				"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\stata"
+cd 				"C:\Users\Cathrine Pedersen\Google Drive\The way to cand.polit\KA\Seminar - Energy Economics\Energy Economics\Data"
 global figures	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\latex\03_figures"
 global tables	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\latex\04_tables"
 
@@ -30,7 +30,7 @@ use "data_stata", clear
 
 xtset grid date, clocktime delta(1 hour) // strongly balanced
 
-*xtdescribe
+xtdescribe
 
 
 ////////////////////////////////////////////////////////////////////////////////
