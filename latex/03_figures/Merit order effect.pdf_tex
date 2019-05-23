@@ -51,7 +51,7 @@
   \begin{picture}(1,0.64789334)%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{Merit order effect.pdf}}%
     \put(0.7113314,0.01122791){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$Q,mWh$}}}%
-    \put(-0.00442831,0.60286744){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$€$}}}%
+    \put(-0.00442831,0.60286744){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\€$}}}%
     \put(0.03073908,0.59562708){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
   \end{picture}%
 \endgroup%
