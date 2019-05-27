@@ -28,12 +28,12 @@ global results	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\results"
 
 *** Global variable lists ***
 * Wholesale:
-global x_w "n_w temp* trend i.year i.week" // without daytime)
+global x_w "n_w temp* trend i.year i.week" // daytime only relevant shoulder or off-peak
 * Retail:
 global x_hh "n_hh temp* daytime trend i.year i.week"
-* Using pooled 2SLS (P2SLS) for the relevant hours ('omit' doesn't work):
-global x_11_15 "i(1 2 3 4).day_bd#i(11 12 13 14 15).hour i.month#i(11 12 13 14 15).hour" // baseline: i5.non_bd#i(11 12 13 14 15).hour
-global x_17_19 "i(1 2 3 4 5).day_bd#i(17 18 19).hour i.month#i(17 18 19).hour" // baseline: i1.non_bd#i(17 18 19).hour
+* Single-grid: Using pooled 2SLS (P2SLS) for the relevant hours ('omit' doesn't work):
+global x_11_15 "i(11 12 13 14 15).hour#i(1 2 3 4 5).day_bd i(11 12 13 14 15).hour#i(1 2 3 4 5 6 7 8 9 10 11).month" // baseline: i12.month#i(11 12 13 14 15).hour
+global x_17_19 "i(17 18 19).hour#i1.non_bd i(17 18 19).hour#i(1 2 3 4 5).day_bd i(17 18 19).hour#i(1 2 3 4 5 6 7 8 9 10 11).month" // baseline: i12.month#i(17 18 19).hour
 
 
 *** Load data ***
@@ -92,13 +92,11 @@ label variable s_radius "Share TOUT in Radius"
 **** 	Preferred specifications											****
 ********************************************************************************
 est clear
-qui xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
-	o0.day_bd#i.hour o12.month#i.hour ///
-	if bd==1 & inrange(hour,11,15), re vce(cluster grid)
+xtivreg e_w (p = c.wp#DK1) $x_w i.hour#o0.day_bd i.hour#o12.month ///
+	if bd==1 & inrange(hour,11,15), re vce(cluster grid) first
 est store peak, title("Peak: 11-15")
 
-qui xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
-	o0.day_bd#i.hour o12.month#i.hour ///
+qui xtivreg e_w (p = c.wp#DK1) $x_w i.hour#o0.day_bd i.hour#o12.month ///
 	if bd==1 & inrange(hour,0,4), re vce(cluster grid)
 est store off_peak, title("Off-peak: 00-04")
 
@@ -109,35 +107,47 @@ est store shoulder, title("Shoulder")
 
 qui xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w daytime ///
 	i.hour o12.month#i.hour ///
-	if non_bd==1, re vce(cluster grid) first
+	if non_bd==1, re vce(cluster grid)
 est store non_bd, title("Non-business days")
 
 estout _all using "ws_preferred.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(N, fmt(%12.0gc) )
+	stats(r2_a N, fmt(4 %12.0gc) )
 estout _all using $latex/ws_preferred.tex, style(tex) replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(N, labels("Observations") fmt(%12.0gc) ) ///
-	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
+	prehead("\begin{tabular}{lcccc}\toprule") posthead("\midrule") ///
+	prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
+estout _all using $results/ws_endog_overid_131.md, style(html) replace ///
+	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(endog p_endog endog_reg p_endog_reg overid p_overid r2_a N, fmt(1 4 1 4 1 4 4 %12.0gc) labels("Score test of exogeneity" "p-val, exogeneity" "Regression-based F-test" "p-val, regression-based" "Test of overidentifying restrictions" "p-val, overidentifying restrictions" "n*R&sup2" "p-val" "Adj. R&sup2" "Observations") ) ///
+	prehead("**Table:** Testing endogeneity and overidentifying restrictions (wholesale, business days, hours 11-15)<br>*For grid company EnergiMidt (DK1)*<br><html><table>") ///
+	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour in December.</html>")
 
-
+	
 ********************************************************************************
 **** 	Elasticity for each hour (business days joint)						****
 ********************************************************************************
 est clear
 qui foreach h of numlist 0/23 {
-	xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
-		o0.day_bd o12.month ///
-		if bd==1 & hour==`h', fe vce(cluster grid)
-	est store bd_h_`h'
+	qui xtivreg e_w (p = c.wp#DK1) $x_w i.hour#o0.day_bd i.hour#o12.month ///
+		if bd==1 & hour==`h', re vce(cluster grid)
+	est store h_`h'
 }
-estout _all using "ws_bd-hour.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+estout _all using "ws_hour.xls", replace ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(N, fmt(1 %12.0gc) )
+	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 0 %12.0gc) labels ("R-sq within" "R-sq between" "Number of groups" "Obs. per group") )
+estout _all using $results/ws_hour.md, style(html) replace ///
+	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 0 %12.0gc) labels ("R&sup2& within" "R&sup2& between" "Number of groups" "Obs. per group") ) ///
+	prehead("**Table:** log wholesale electricity consumption each hour (FEIV)<br>*Business days*<html><table>") ///
+	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour in December.</html>")
 
 
 ********************************************************************************
@@ -152,8 +162,8 @@ foreach d of numlist 1/5 {
 			if day_bd==`d' & hour==`h', fe vce(cluster grid)
 		est store bd_`d'_h_`h'
 	}
-	estout _all using "ws_bd`d'-hour.xls", replace ///
-		label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	estout _all using "ws_bd`d'_hour.xls", replace ///
+		label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 		starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 		stats(N, fmt(1 %12.0gc) )
 }
@@ -164,8 +174,8 @@ qui foreach h of numlist 0/23 {
 		if non_bd==1 & hour==`h', fe vce(cluster grid)
 	est store nbd_h_`h'
 }
-estout _all using "ws_non-bd-hour.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+estout _all using "ws_non-bd_hour.xls", replace ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(1 %12.0gc) )
 
@@ -191,11 +201,11 @@ forvalues y = 2016/2018 {
 	est store peak_`y', title("`y'")
 }
 estout _all using "ws_robustness_region_year.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(%12.0gc) )
 estout _all using $latex/ws_robustness_region_year.tex, style(tex) replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(N, labels("Observations") fmt(%12.0gc) ) ///
@@ -210,7 +220,7 @@ forvalues m = 1/12 {
 	est store peak_`m', title("Month `m'")
 }
 estout _all using "ws_robustness_month.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(%12.0gc) )
 
@@ -237,11 +247,11 @@ qui ivregress 2sls e_w (p = wp wp_se) $x_w $x_11_15 ///
 est store peak_791, title("Radius (DK2)")
 
 estout _all using "ws_robustness_grid.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(%12.0gc) )
 estout _all using $latex/ws_robustness_grid.tex, style(tex) replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(N, labels("Observations") fmt(%12.0gc) ) ///
@@ -272,12 +282,12 @@ estadd scalar cons = _b[_cons]
 est store feiv, title("FEIV")
 
 estout re fe reiv feiv, ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(1 %12.0gc) )
 
 estout re fe reiv feiv using "ws_fe-re-feiv-reiv-comparison.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(1 %12.0gc) )
 
@@ -336,15 +346,15 @@ qui foreach i in 131 791 {
 	*/
 }
 estout _all using "ws_homoscedasticity.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(hettest hetdf hetp r2 r2_a N, fmt(0 0 3 3 3 %12.0gc) )
 estout _all using "$results/ws_homoscedasticity.md", style(html) replace ///
-	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
+	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(hettest hetdf hetp r2 r2_a N, fmt(0 0 3 3 3 %12.0gc) labels("Chi&sup2" "DF" "Adj. p-val" "R&sup2" "Adj. R&sup2" "Observations") ) ///
 	prehead("**Table:** Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid 131 is EnergiMidt (DK1), grid 791 is Radius (DK2)*<br><html><table>") ///
-	postfoot("</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2, DF, and Adj. p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: Each hour on fridays.</html>")
+	postfoot("</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2, DF, and Adj. p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: Each hour in December.</html>")
 mat A1 = A_131[1..., 1]
 mat A2 = A_131[1..., 4]
 mat A3 = A_791[1..., 1]
@@ -358,7 +368,7 @@ estout matrix(A, fmt(3 0 3 3)) using "$results/ws_homoscedasticity_bp.md", ///
 
 
 ********************************************************************************
-**** 	Reducet form for log price (relevance of instruments)				****
+**** 	Reduced form for log price (relevance of instruments)				****
 ********************************************************************************
 est clear
 * DK1:
@@ -369,16 +379,16 @@ estadd scalar f3_p = r(p)
 test wp_other = wp_se = 0
 estadd scalar f2 = r(F)
 estadd scalar f2_p = r(p)
-est store a_DK1, title("Price DK1")
+est store a_131, title("Price DK1")
 qui reg p wp wp_other $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
 test wp = wp_other = 0
 estadd scalar f2 = r(F)
 estadd scalar f2_p = r(p)
-est store b_DK1, title("Price DK1")
+est store b_131, title("Price DK1")
 qui reg p wp $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
-est store c_DK1, title("Price DK1")
+est store c_131, title("Price DK1")
 qui reg p $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
-est store d_DK1, title("Price DK1")
+est store d_131, title("Price DK1")
 * DK2:
 qui reg p wp wp_other wp_se $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
 test wp = wp_other = wp_se = 0
@@ -387,34 +397,36 @@ estadd scalar f3_p = r(p)
 test wp_other = wp_se = 0
 estadd scalar f2 = r(F)
 estadd scalar f2_p = r(p)
-est store a_DK2, title("Price DK2")
+est store a_791, title("Price DK2")
 qui reg p wp wp_se $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
 test wp = wp_se = 0
 estadd scalar f2 = r(F)
 estadd scalar f2_p = r(p)
-est store b_DK2, title("Price DK2")
+est store b_791, title("Price DK2")
 qui reg p wp $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
-est store c_DK2, title("Price DK2")
+est store c_791, title("Price DK2")
 qui reg p wp $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
-est store d_DK2, title("Price DK2")
+est store d_791, title("Price DK2")
 
-estout _all using "reduced_form.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+estout _all using "reduced_form_price.xls", replace ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Control variables=*.*") drop(n_w temp* trend _cons) ///
 	stats(f3 f3_p f2 f2_p r2_a N, fmt(1 3 1 3 4 %12.0gc) labels("F statistic (df=3)" "p-val (F-test, df=3)" "F statistic (df=2)" "p-val (F-test, df=2)" "Adj. R^2" "Observations") )
-estout a_DK1 b_DK1 c_DK1 a_DK2 b_DK2 c_DK2 using $latex/reduced_form.tex, style(tex) replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+foreach i in 131 791 {
+	estout *_`i' using $latex/reduced_form_price_`i'.tex, style(tex) replace ///
+		label cells( b(star fmt(4)) se(par fmt(4)) ) ///
+		starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+		indicate("Time variables=*.*") drop(trend _cons) ///
+		stats(r2_a N, fmt(4 %12.0gc) labels("Adj. \(R^2\)" "Observations") ) ///
+		posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
+}
+estout _all using $results/reduced_form_price.md, style(html) replace ///
+	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	indicate("Time variables=*.*") drop(n_w temp* trend  _cons) ///
-	stats(f3 f3_p f2 f2_p f1 f1_p r2_a N, fmt(1 3 1 3 1 3 4 4 %12.0gc) labels("F statistic (df=3)" "p-val (F-test, df=3)" "F statistic (df=2)" "p-val (F-test, df=2)" "Adj. \(R^2\)" "Observations") ) ///
-	posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
-estout _all using $results/reduced_form.md, style(html) replace ///
-	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
-	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(f3 f3_p f2 f2_p f1 f1_p r2_a N, fmt(1 3 1 3 1 3 4 %12.0gc) labels("F statistic (df=3)" "p-val (F-test, df=3)" "F statistic (df=2)" "p-val (F-test, df=2)" "Adj. R&sup2" "Observations") ) ///
+	stats(r2_a N, fmt(4 %12.0gc) labels("Adj. R&sup2" "Observations") ) ///
 	prehead("**Table:** Reduced form of log spot price (business days, hours 11-15)<html><table>") ///
-	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>F-tests, col (1) and (6): Wind power prognosis other region = Wind power prognosis for Sweden = 0<br>Baseline: Each hour on Fridays.</html>")
+	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>F-tests, col (1) and (6): Wind power prognosis other region = Wind power prognosis for Sweden = 0<br>Baseline: Each hour in December.</html>")
 
 
 ********************************************************************************
@@ -471,7 +483,7 @@ est store endogeneity_791, title("Hausman-test: POLS")
 
 foreach i in 131 791 {
 	estout *_`i' using $latex/ws_endogeneity_`i'.tex, style(tex) replace ///
-			label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+			label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 			starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 			indicate("Time variables=*.*") drop(trend _cons) ///
 			stats(r2_a N, fmt(2 %12.0gc) labels("Adj. \(R^2\)" "Observations") ) ///	
@@ -479,22 +491,22 @@ foreach i in 131 791 {
 			prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
 }
 estout _all using "ws_endogeneity.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(r2_a N, fmt(2 %12.0gc) )
 estout *_131 using $results/ws_endogeneity_131.md, style(html) replace ///
-	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
+	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_a N, fmt(2 %12.0gc) labels("Adj. R&sup2" "Observations") ) ///
 	prehead("**Table:** Testing endogeneity of prices (wholesale, business days, hours 11-15)<br>*For grid company EnergiMidt (DK1)*<br><html><table>") ///
-	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour on Fridays.</html>")
+	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour in December.</html>")
 estout *_791 using $results/ws_endogeneity_791.md, style(html) replace ///
-	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
+	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_a N, fmt(2 %12.0gc) labels("Adj. R&sup2" "Observations") ) ///
 	prehead("**Table:** Testing endogeneity of prices (wholesale, business days, hours 11-15)<br>*For grid company Radius (DK2)*<br><html><table>") ///
-	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour on Fridays.</html>")
+	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour in December.</html>")
 
 drop vhat_*
 
@@ -559,12 +571,12 @@ test wp = wp_se = 0 // F(2, 3539) = 7.47 (p-val = 0.006)
 
 foreach i in 131 791 {
 estout *_`i' using "ws_overidentifying_`i'.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N nR2 p_value, fmt(%12.0gc 3 3) )
 estout *_`i' using $latex/ws_overidentifying_`i'.tex, style(tex) replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(nR2 p_value r2_a N, fmt(2 2 2 %12.0gc) labels("\(N\cdot R^2\)" "p-val" "Adj. \(R2\)" "Observations") ) ///
@@ -572,17 +584,17 @@ estout *_`i' using $latex/ws_overidentifying_`i'.tex, style(tex) replace ///
 	prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
 }
 estout *_131 using $results/ws_overidentifying_131.md, style(html) replace ///
-	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
+	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(nR2 p_value r2_a N, fmt(2 2 2 %12.0gc) labels("n*R&sup2" "p-val" "Adj. R&sup2" "Observations") ) ///
 	prehead("**Table:** Testing overidentifying assumptions (wholesale, business days, hours 11-15)<br>*For grid company EnergiMidt (DK1)*<br><html><table>") ///
-	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour on Fridays.</html>")
+	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour in December.</html>")
 estout *_791 using $results/ws_overidentifying_791.md, style(html) replace ///
-	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
+	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(nR2 p_value r2_a N, fmt(2 2 2 %12.0gc) labels("N*R&sup2" "p-val" "Adj. R&sup2" "Observations") ) ///
 	prehead("**Table:** Testing overidentifying assumptions (wholesale, business days, hours 11-15)<br>*For grid company Radius (DK2)*<br><html><table>") ///
-	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour on Fridays.</html>")
+	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour in December.</html>")
 
 drop uhat*
 
@@ -602,22 +614,30 @@ est clear
 * Simple OLS for comparison (relevance of instrumenting)
 qui reg e_w p $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
 est store POLS_131, title("POLS")
-* Each instrument individually
-qui foreach z of varlist wp wp_other {
-	ivregress 2sls e_w (p = `z') $x_w $x_11_15 ///
-		if grid==131 & bd==1 & inrange(hour,11,15), robust
-	estat endogenous
-	estadd scalar endog = r(r_score) // robust score chi2
-	estadd scalar p_endog = r(p_r_score) // p-val
-	estadd scalar endog_reg = r(regF) // robust regression F
-	estadd scalar p_endog_reg = r(p_regF) // p-val
-	est store iv_`z'_131, title("P2SLS, `z'")
-}
+* Each instrument individually: DK1
+qui ivregress 2sls e_w (p = wp) $x_w $x_11_15 ///
+	if grid==131 & bd==1 & inrange(hour,11,15), robust
+estat endogenous
+estadd scalar endog = r(r_score) // robust score chi2
+estadd scalar p_endog = r(p_r_score) // p-val
+estadd scalar endog_reg = r(regF) // robust regression F
+estadd scalar p_endog_reg = r(p_regF) // p-val
+est store iv_wp_131, title("P2SLS, wp DK1")
+* Each instrument individually: DK2
+qui ivregress 2sls e_w (p = wp_other) $x_w $x_11_15 ///
+	if grid==131 & bd==1 & inrange(hour,11,15), robust
+estat endogenous
+estadd scalar endog = r(r_score) // robust score chi2
+estadd scalar p_endog = r(p_r_score) // p-val
+estadd scalar endog_reg = r(regF) // robust regression F
+estadd scalar p_endog_reg = r(p_regF) // p-val
+est store iv_wp_other_131, title("P2SLS, wp DK2")
+* Both instruments
 qui ivregress 2sls e_w (p = wp wp_other) $x_w $x_11_15 ///
 	if grid==131 & bd==1 & inrange(hour,11,15), robust
 estat endogenous // H0: the regressor (price) is exogenous
-/*	Robust score chi2(1)            =  8.08592  (p = 0.0045)
-	Robust regression F(1,3539)     =  7.71654  (p = 0.0055)
+/*	Robust score chi2(1)            =  77.1  (p = 0.0000)
+	Robust regression F(1, 3539)    =  86.3  (p = 0.0000)
 	p < .05 => H0 clearly rejected => regressor is endogenous
 */
 estadd scalar endog = r(r_score) // robust score chi2
@@ -628,9 +648,14 @@ estat firststage // H0: the set of instruments is weak
 /*	F(2, 3539) = 200, (p = 0.0000)
 	p < .05 => H0 clearly rejected => our instruments are not weak
 */
-estadd scalar mineig = r(mineig)
-estat overid // chi-sq(1) = 5.1 (p = 0.024) (df = number of overidentifying restrictions)
-// Verdict: either or both of wp and wp_other are not exogenous
+estadd scalar mineig = r(mineig) // doesn't work somehow
+estat overid // H0: Our instruments are valid at the 5% level.
+/* 	chi-sq(1) = 5.1 (p = 0.024) (df = number of overidentifying restrictions).
+	p < .05 => reject H0, thus, either or all of the instruments are invalid.
+	i.e. instruments are either not exogenous or the model is misspecified.
+	However, each instrument was found to be endogenous when tested individually
+	=> Model is overspecified
+*/
 estadd scalar overid = r(score) // Overid-score
 estadd scalar p_overid = r(p_score) // p-val (overid)
 est store iv_both_131, title("P2SLS, both")
@@ -639,64 +664,78 @@ est store iv_both_131, title("P2SLS, both")
 * Simple OLS for comparison (relevance of instrumenting)
 qui reg e_w p $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
 est store POLS_791, title("POLS")
-* Each instrument individually
-qui foreach z of varlist wp wp_se {
-	ivregress 2sls e_w (p = `z') $x_w $x_11_15 ///
-		if grid==791 & bd==1 & inrange(hour,11,15), robust
-	estat endogenous
-	estadd scalar endog = r(r_score) // robust score chi2
-	estadd scalar p_endog = r(p_r_score) // p-val
-	estadd scalar endog_reg = r(regF) // robust regression F
-	estadd scalar p_endog_reg = r(p_regF) // p-val
-	est store iv_`z'_791, title("P2SLS, `z'")
-}
+* Each instrument individually: DK2
+qui ivregress 2sls e_w (p = wp) $x_w $x_11_15 ///
+	if grid==131 & bd==1 & inrange(hour,11,15), robust
+estat endogenous
+estadd scalar endog = r(r_score) // robust score chi2
+estadd scalar p_endog = r(p_r_score) // p-val
+estadd scalar endog_reg = r(regF) // robust regression F
+estadd scalar p_endog_reg = r(p_regF) // p-val
+est store iv_wp_791, title("P2SLS, wp DK2")
+* Each instrument individually: SE
+qui ivregress 2sls e_w (p = wp_se) $x_w $x_11_15 ///
+	if grid==131 & bd==1 & inrange(hour,11,15), robust
+estat endogenous
+estadd scalar endog = r(r_score) // robust score chi2
+estadd scalar p_endog = r(p_r_score) // p-val
+estadd scalar endog_reg = r(regF) // robust regression F
+estadd scalar p_endog_reg = r(p_regF) // p-val
+est store iv_wp_se_791, title("P2SLS, wp SE")
+* Both instruments
 qui ivregress 2sls e_w (p = wp wp_se) $x_w $x_11_15 ///
 	if grid==791 & bd==1 & inrange(hour,11,15), robust
 estat endogenous // H0: the regressor (price) is exogenous
-/*	Robust score chi2(1)            =  8.08592  (p = 0.0045)
-	Robust regression F(1,3539)     =  7.71654  (p = 0.0055)
-	p < .05 => H0 clearly rejected => regressor is endogenous
+/*	Robust score chi2(1)            =  5.0	(p = 0.0249)
+	Robust regression F(1,3539)     =  4.8	(p = 0.0285)
+	p < .05 => H0 rejected => regressor is endogenous
 */
 estadd scalar endog = r(r_score) // robust score chi2
 estadd scalar p_endog = r(p_r_score) // p-val
 estadd scalar endog_reg = r(regF) // robust regression F
 estadd scalar p_endog_reg = r(p_regF) // p-val
 estat firststage // H0: the set of instruments is weak
-/*	F(2, 3539) = 200, (p = 0.0000)
+/*	F(2, 3539) = 249, (p = 0.0000)
 	p < .05 => H0 clearly rejected => our instruments are not weak
 */
-estadd scalar mineig = r(mineig)
-estat overid // chi-sq(1) = 5.1 (p = 0.024) (df = number of overidentifying restrictions)
-// Verdict: either or both of wp and wp_se are not exogenous
+estadd scalar mineig = r(mineig) // doesn't work somehow
+estat overid // H0: Our instruments are valid at the 5% level.
+/* 	chi-sq(1) = 15.5 (p = 0.0001) (df = number of overidentifying restrictions).
+	p < .05 => reject H0, thus, either or all of the instruments are invalid.
+	i.e. instruments are either not exogenous or the model is misspecified.
+	However, each instrument was found to be endogenous when tested individually
+	=> Model is overspecified
+*/
 estadd scalar overid = r(score) // Overid-score
 estadd scalar p_overid = r(p_score) // p-val (overid)
-est store iv_both_791, title("P2SLS, Both")
+est store iv_both_791, title("P2SLS, both")
 
 estout _all using "ws_endog_overid.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(endog p_endog endog_reg p_endog_reg overid p_overid nR2 N, fmt(2 2 2 2 2 2 2 %12.0gc) )
-estout *_`i' using $latex/ws_overidentifying_`i'.tex, style(tex) replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
-	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	indicate("Time variables=*.*") drop(trend _cons) ///
-	stats(nR2 p_value r2_a N, fmt(2 2 2 %12.0gc) labels("\(N\cdot R^2\)" "p-val" "Adj. \(R2\)" "Observations") ) ///
-	prehead("\begin{tabular}{lcccc}\toprule") posthead("\midrule") ///
-	prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
+	stats(endog p_endog endog_reg p_endog_reg overid p_overid r2_a N, fmt(1 4 1 4 1 4 4 %12.0gc) )
+foreach i in 131 791 {
+	estout *_`i' using $latex/ws_endog_overid_`i'.tex, style(tex) replace ///
+		label cells( b(star fmt(4)) se(par fmt(4)) ) ///
+		starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+		indicate("Time variables=*.*") drop(trend _cons) ///
+		stats(endog p_endog endog_reg p_endog_reg overid p_overid r2_a N, fmt(1 4 1 4 1 4 4 %12.0gc) labels("Score test of exogeneity" "p-val, exogeneity" "Regression-based F-test" "p-val, regression-based" "Test of overidentifying restrictions" "p-val, overidentifying restrictions" "Adj. \(R^2\)" "Observations") ) ///
+		prehead("\begin{tabular}{lcccc}\toprule") posthead("\midrule") ///
+		prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
 }
-estout *_131 using $results/ws_overidentifying_131.md, style(html) replace ///
-	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
+estout *_131 using $results/ws_endog_overid_131.md, style(html) replace ///
+	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(nR2 p_value r2_a N, fmt(2 2 2 %12.0gc) labels("n*R&sup2" "p-val" "Adj. R&sup2" "Observations") ) ///
-	prehead("**Table:** Testing overidentifying assumptions (wholesale, business days, hours 11-15)<br>*For grid company EnergiMidt (DK1)*<br><html><table>") ///
-	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour on Fridays.</html>")
-estout *_791 using $results/ws_overidentifying_791.md, style(html) replace ///
-	label cells( b(star fmt(5)) & se(par fmt(5)) ) incelldelimiter(<br>) ///
+	stats(endog p_endog endog_reg p_endog_reg overid p_overid r2_a N, fmt(1 4 1 4 1 4 4 %12.0gc) labels("Score test of exogeneity" "p-val, exogeneity" "Regression-based F-test" "p-val, regression-based" "Test of overidentifying restrictions" "p-val, overidentifying restrictions" "n*R&sup2" "p-val" "Adj. R&sup2" "Observations") ) ///
+	prehead("**Table:** Testing endogeneity and overidentifying restrictions (wholesale, business days, hours 11-15)<br>*For grid company EnergiMidt (DK1)*<br><html><table>") ///
+	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour in December.</html>")
+estout *_791 using $results/ws_endog_overid_791.md, style(html) replace ///
+	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(nR2 p_value r2_a N, fmt(2 2 2 %12.0gc) labels("N*R&sup2" "p-val" "Adj. R&sup2" "Observations") ) ///
+	stats(endog p_endog endog_reg p_endog_reg overid p_overid r2_a N, fmt(1 4 1 4 1 4 4 %12.0gc) labels("Score test of exogeneity" "p-val, exogeneity" "Regression-based F-test" "p-val, regression-based" "Test of overidentifying restrictions" "p-val, overidentifying restrictions" "N*R&sup2" "p-val" "Adj. R&sup2" "Observations") ) ///
 	prehead("**Table:** Testing endogeneity and overidentifying restrictions (wholesale, business days, hours 11-15)<br>*For grid company Radius (DK2)*<br><html><table>") ///
-	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour on Fridays.</html>")
+	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour in December.</html>")
 
 
 prehead("**Table:** Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid 131 is EnergiMidt (DK1), grid 791 is Radius (DK2)*<br><html><table>") ///
@@ -725,12 +764,12 @@ qui ivregress 2sls e_hh s_tout (p = wp wp_other wp_se) $x_hh ///
 est store nbd, title("Non-business days")
 
 estout _all using "r_radius_17-19.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(%12.0gc) )
 
 estout _all using $latex/r_radius_17-19.tex, style(tex) replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(r2_a N, fmt(2 %12.0gc) labels("Adj. \(R^2\)" "Observations") ) ///	
@@ -757,7 +796,7 @@ reg e_hh s_tout p $x_hh $x_17_19 ///
 est store robust, title("OLS, robust s.e.")
 
 estout _all using "r_homoscedasticity.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(%12.0gc) )
 
@@ -795,11 +834,11 @@ est store endogeneity, title("Endogeneity")
 // We reject the t-test that vhat=0, thus p is endogenous and we prefer 2SLS.
 
 estout _all using "r_endogeneity.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(1 %12.0gc) )
 estout _all using $latex/r_endogeneity.tex, style(tex) replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(cons N, labels("Constant" "Observations") fmt(1 %12.0gc) ) ///	
@@ -843,11 +882,11 @@ test wp = wp_other = 0 // F-statistic: 0.16, p-value: 0.85
 drop uhat
 
 estout _all using "r_overidentifying.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N nR2 p_value, fmt(%12.0gc 3 3) )
 estout _all using $latex/r_overidentifying.tex, style(tex) replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(cons N nR2 p_value, labels("Constant" "Observations" "n*R2" "p-value") fmt(1 %12.0gc 3 3) ) ///
@@ -868,7 +907,7 @@ qui forvalues i = 23/911 {
 	est store grid_`i', title("Grid `i'")
 }
 estout _all using "r_robustness.xls", replace ///
-	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
+	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(N, fmt(%12.0gc 3 3) )
 

@@ -1,4 +1,4 @@
-%% Creator: Inkscape inkscape 0.92.1, www.inkscape.org
+%% Creator: Inkscape inkscape 0.92.3, www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'merit.pdf' (pdf, eps, ps)
 %%
@@ -35,8 +35,10 @@
     \renewcommand\transparent[1]{}%
   }%
   \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{512.72568306bp}%
+    \setlength{\unitlength}{377.67901402bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,10 +50,11 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.64789334)%
+  \begin{picture}(1,0.80073046)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{merit.pdf}}%
-    \put(0.7113314,0.01122791){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$Q,mWh$}}}%
-    \put(-0.00442831,0.60286744){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\€$}}}%
-    \put(0.03073908,0.59562708){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(0.86401447,0.00532653){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Q (mWh)\end{tabular}}}}%
+    \put(-0.00258569,0.77385444){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}P (€)\end{tabular}}}}%
   \end{picture}%
 \endgroup%

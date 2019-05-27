@@ -15,27 +15,33 @@ os.chdir('C:/Users/thorn/Onedrive/Dokumenter/GitHub/energy/') # one level up
 ##############################################################################
 wide = pd.read_excel('python/background.xlsx', header=[5,6], index_col=[0,1]).fillna(0).astype(int)
 
-### Mergers ##
+
+### Mergers ###
 # Grid company 085 'Læsø' merged with (took over) 014 'Hornum' by oct-2017
-# wide.loc['085']
-# pd.DataFrame(wide.loc[['014', '085']].sum(axis=0)).T
-# wide.loc['085'] = pd.DataFrame(wide.loc[['014', '085']].sum(axis=0)).T
+læsø = pd.DataFrame(wide.loc[['014', '085']].sum(axis=0)).T
 
 # 143, 144, 145, 232 (Brabrand, Viby, GE, Østjysk) merged to Dinel by apr-2017
-# wide.loc[233]=wide.loc['143']+wide.loc['144']+wide.loc['145']+wide.loc['232']
-wide.drop(['085', 233], inplace=True)
+dinel = pd.DataFrame(wide.loc[['143', '144', '145', '232', 233]].sum(axis=0)).T
+
+# Let 085 and 233 represent the sum of future mergers for all years
+for col in range(0,len(wide.columns)):
+    wide.iloc[9,col] = læsø.iloc[0,col]
+    wide.iloc[24,col] = dinel.iloc[0,col]
+wide.loc[['085', 233]]
+
 
 ### Drop thoose with <10 total meters by dec-2018 ###
 # wide[wide.iloc[:,-1] < 10] # 21 dropped
 wide = wide[wide.iloc[:,-1] >= 10]
 # wide[wide.iloc[:,-1] == 0] # none without hourly metering (presence of companies)
 
+
 ### Drop aggregate row ###
 wide.drop('Hovedtotal', inplace=True) # 52 grids in total without Dinel+Læsø
-
 wide.to_excel('python/grids.xlsx', index=True)
 
 wide.tail(2)
+
 
 ### Long format ###
 meters = wide.stack(level=0).fillna(0) # set no. flex-settled to 0, not None
@@ -43,6 +49,7 @@ meters = meters.reorder_levels([2, 1, 0], axis=0).reset_index()
 meters.columns = ['date', 'name', 'grid', 'n_f', 'n_r', 'n_w', 'n_t']
 meters['n_hh'] = meters[['n_f', 'n_r']].sum(axis=1, skipna=True)
 meters['grid'] = meters['grid'].astype(int)
+
 
 ### Time format ###
 meters['date'] = pd.to_datetime(meters['date'])
@@ -59,6 +66,29 @@ meters.tail(2)
 cons = pd.read_csv('python/cons.csv').fillna(0) # set flex-settled to 0, not None
 cons['date'] = pd.to_datetime(cons['date'])
 
+### Merger: Læsø ###
+# Grid company 85 'Læsø' merged with (took over) 14 'Hornum' by oct-2017
+læsø = pd.merge(cons[cons.grid==85], cons[cons.grid==14], how='left',\
+                on=['date','hour'], suffixes=['', '_r']).fillna(0)
+for var in ['hourly', 'flex', 'residual']:
+    læsø[var] = læsø[var] + læsø[str(var+'_r')]
+læsø = læsø[['date', 'hour', 'grid', 'hourly', 'flex', 'residual']]
+cons.drop(cons[cons.grid==85].index, inplace=True)
+cons = pd.concat([cons, læsø], sort=False, ignore_index=True)
+
+### Merger: Dinel ###
+# 143, 144, 145, 232 (Brabrand, Viby, GE, Østjysk) merged to Dinel by apr-2017
+dinel = cons[cons.grid==233].copy()
+for i in [143, 144, 145, 232]:
+    dinel = pd.merge(dinel, cons[cons.grid==143], how='outer',\
+                    on=['date','hour'], suffixes=['', '_r']).fillna(0)
+    for var in ['hourly', 'flex', 'residual']:
+        dinel[var] = dinel[var] + dinel[str(var+'_r')]
+    dinel = dinel[['date', 'hour', 'grid', 'hourly', 'flex', 'residual']]
+dinel['grid'] = 233
+cons.drop(cons[cons.grid==233].index, inplace=True)
+cons = pd.concat([cons, dinel], sort=False, ignore_index=True)
+
 ### Create aggregates of households and total ###
 cons['households'] = cons[['flex', 'residual']].sum(axis=1, skipna=True)
 cons['total'] = cons[['hourly', 'households']].sum(axis=1, skipna=True)
@@ -71,10 +101,6 @@ cons.columns = ['date', 'hour', 'grid', 'e_w', 'e_f', 'e_r', 'e_hh', 'e_t']
 for var in ['e_w', 'e_f', 'e_r', 'e_hh', 'e_t']:
     cons[var] = cons[var].apply(lambda kWh: kWh/1000) # transformed to MWh, same name
 
-### 'Dinel' og 'Læsø' ###
-# for date in cons['date'].unique():
-#         for hour cons['hour'].unique():
-
 
 ##############################################################################
 #   MERGE WITH SPOT PRICES, WIND POWER PROGNOSIS AND NO. METERS              #
@@ -86,8 +112,8 @@ wind = pd.read_csv('python/wind.csv') # WIND POWER PROGNOSIS
 wind['date'] = pd.to_datetime(wind['date'])
 
 ### Merging ###
-grids = pd.merge(cons, spot, how='inner', on=['date', 'hour'], copy=False)
-grids = pd.merge(grids, wind, how='inner', on=['date', 'hour'], copy=False)
+grids = pd.merge(cons, spot, how='inner', on=['date', 'hour'])
+grids = pd.merge(grids, wind, how='inner', on=['date', 'hour'])
 
 ### Dummy for being in price area DK1 ###
 grids['DK1'] = grids['grid'] < 700
@@ -103,7 +129,7 @@ grids['wp_se'] = grids['wp_SE']
 grids['month'], grids['year'] = grids['date'].dt.month, grids['date'].dt.year
 
 ### Merge with background grids on no. meters ###
-grids = pd.merge(grids, meters, how='inner', on=['month', 'year', 'grid'], copy=False)
+grids = pd.merge(grids, meters, how='inner', on=['month', 'year', 'grid'])
 
 ### Drop columns ###
 grids.drop(['P_DK1','P_DK2','wp_SE','month','year'], axis=1, inplace=True)
@@ -157,7 +183,7 @@ W.head(2)
 #   CREATING THE JOINT DATASET                                               #
 ##############################################################################
 ### Merging ###
-data = pd.merge(grids, W, how='left', on=['date', 'hour'], copy=False)
+data = pd.merge(grids, W, how='left', on=['date', 'hour'])
 
 ### Temperature and temperature squared in the relevant price area ###
 data['temp'] = (data['temp_årh']*data['DK1']+data['temp_kbh']*(1-data['DK1']))

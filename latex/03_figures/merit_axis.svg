@@ -15,7 +15,7 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="merit.svg">
+   sodipodi:docname="merit_axis.svg">
   <defs
      id="defs2">
     <marker
@@ -56,7 +56,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.4142136"
      inkscape:cx="483.19956"
-     inkscape:cy="724.05693"
+     inkscape:cy="780.62547"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -103,26 +103,26 @@
        inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.52777767px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="145.49077"
-       y="156.40009"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="164.26384"
+       y="152.56754"
        id="text4809"><tspan
          sodipodi:role="line"
          id="tspan4807"
-         x="145.49077"
-         y="156.40009"
-         style="font-size:3.52777767px;stroke-width:0.26458332">Q (mWh)</tspan></text>
+         x="164.26384"
+         y="152.56754"
+         style="stroke-width:0.26458332">$Q,mWh$</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="30.027767"
-       y="54.003914"
+       x="39.841667"
+       y="46.424072"
        id="text4813"><tspan
          sodipodi:role="line"
          id="tspan4811"
-         x="30.027767"
-         y="54.003914"
-         style="font-size:3.52777767px;stroke-width:0.26458332">P (€)</tspan></text>
+         x="39.841667"
+         y="46.424072"
+         style="stroke-width:0.26458332">€</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
