@@ -676,7 +676,7 @@ estout _all using "ws_endog_overid.xls", replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(N nR2 p_value, fmt(%12.0gc 3 3) )
+	stats(endog p_endog endog_reg p_endog_reg overid p_overid nR2 N, fmt(2 2 2 2 2 2 2 %12.0gc) )
 estout *_`i' using $latex/ws_overidentifying_`i'.tex, style(tex) replace ///
 	label cells( b(star fmt(5)) se(par fmt(5)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
