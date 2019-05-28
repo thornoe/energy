@@ -82,6 +82,8 @@ label variable temp "Temperature"
 label variable daytime "Daytime"
 label variable s_tout "Share time-of-use tariff"
 label variable s_radius "Share TOUT in Radius"
+label variable bd "Business day"
+label variable non_bd "Non-business day"
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -92,41 +94,44 @@ label variable s_radius "Share TOUT in Radius"
 **** 	Preferred specifications											****
 ********************************************************************************
 est clear
-xtivreg e_w (p = c.wp#DK1) $x_w i.hour#o0.day_bd i.hour#o12.month ///
+xtivreg e_w (p = c.wp#DK1) $x_w $x_11_15 ///
 	if bd==1 & inrange(hour,11,15), re vce(cluster grid) first
 est store peak, title("Peak: 11-15")
 
-qui xtivreg e_w (p = c.wp#DK1) $x_w i.hour#o0.day_bd i.hour#o12.month ///
+qui xtivreg e_w (p = c.wp#DK1) $x_w ///
+	i(0 1 2 3 4).hour#i(1 2 3 4 5).day_bd ///
+	i(0 1 2 3 4).hour#i(1 2 3 4 5 6 7 8 9 10 11).month ///
 	if bd==1 & inrange(hour,0,4), re vce(cluster grid)
 est store off_peak, title("Off-peak: 00-04")
 
-qui xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w  daytime ///
-	o0.day_bd#i.hour o12.month#i.hour ///
+qui xtivreg e_w (p = c.wp#DK1) $x_w daytime ///
+	i(5 6 7 8 9 10 16 17 18 19 20 21 22 23).hour#i(1 2 3 4 5).day_bd ///
+	i(5 6 7 8 9 10 16 17 18 19 20 21 22 23).hour#i(1 2 3 4 5 6 7 8 9 10 11).month ///
 	if bd==1 & inrange(hour,5,10)|inrange(hour,16,23), re vce(cluster grid)
 est store shoulder, title("Shoulder")
 
-qui xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w daytime ///
-	i.hour o12.month#i.hour ///
+qui xtivreg e_w (p = c.wp#DK1) $x_w daytime ///
+	i.hour#i(1 2 3 4 5 6 7 8 9 10 11).month ///
 	if non_bd==1, re vce(cluster grid)
-est store non_bd, title("Non-business days")
+est store non_bd, title("Non-business day")
 
 estout _all using "ws_preferred.xls", replace ///
 	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(r2_a N, fmt(4 %12.0gc) )
+	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 0 %12.0gc) labels ("R-sq within" "R-sq between" "Number of groups" "Obs. per group") )
 estout _all using $latex/ws_preferred.tex, style(tex) replace ///
 	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
-	stats(N, labels("Observations") fmt(%12.0gc) ) ///
+	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 0 %12.0gc) labels ("\(R^2\) within" "R&sup2 between" "Number of groups" "Obs. per group") ) ///
 	prehead("\begin{tabular}{lcccc}\toprule") posthead("\midrule") ///
 	prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
-estout _all using $results/ws_endog_overid_131.md, style(html) replace ///
+estout _all using $results/ws_preferred.md, style(html) replace ///
 	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(endog p_endog endog_reg p_endog_reg overid p_overid r2_a N, fmt(1 4 1 4 1 4 4 %12.0gc) labels("Score test of exogeneity" "p-val, exogeneity" "Regression-based F-test" "p-val, regression-based" "Test of overidentifying restrictions" "p-val, overidentifying restrictions" "n*R&sup2" "p-val" "Adj. R&sup2" "Observations") ) ///
-	prehead("**Table:** Testing endogeneity and overidentifying restrictions (wholesale, business days, hours 11-15)<br>*For grid company EnergiMidt (DK1)*<br><html><table>") ///
-	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour in December.</html>")
+	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 0 %12.0gc) labels ("R&sup2 within" "R&sup2 between" "Number of groups" "Obs. per group") ) ///
+	prehead("**Table:** log wholesale electricity consumption (FEIV)<br>*Business days (col. 1-3) and non-business days (col. 4). Baseline: Each hour in December.*<br><html><table>") ///
+	postfoot("</table>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>")
 
 	
 ********************************************************************************
@@ -134,20 +139,21 @@ estout _all using $results/ws_endog_overid_131.md, style(html) replace ///
 ********************************************************************************
 est clear
 qui foreach h of numlist 0/23 {
-	qui xtivreg e_w (p = c.wp#DK1) $x_w i.hour#o0.day_bd i.hour#o12.month ///
+	qui xtivreg e_w (p = c.wp#DK1) $x_w daylight ///
+		i(1 2 3 4 5).day_bd i(1 2 3 4 5 6 7 8 9 10 11).month ///
 		if bd==1 & hour==`h', re vce(cluster grid)
 	est store h_`h'
 }
 estout _all using "ws_hour.xls", replace ///
-	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
-	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	label cells( b(fmt(4)) se(par fmt(4)) ) ///
+	indicate("Control variables=*.*") drop(n_w temp* daylight trend _cons) ///
 	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 0 %12.0gc) labels ("R-sq within" "R-sq between" "Number of groups" "Obs. per group") )
 estout _all using $results/ws_hour.md, style(html) replace ///
 	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 0 %12.0gc) labels ("R&sup2& within" "R&sup2& between" "Number of groups" "Obs. per group") ) ///
-	prehead("**Table:** log wholesale electricity consumption each hour (FEIV)<br>*Business days*<html><table>") ///
-	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: Each hour in December.</html>")
+	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 0 %12.0gc) labels ("R&sup2 within" "R&sup2 between" "Number of groups" "Obs. per group") ) ///
+	prehead("**Table:** log wholesale electricity consumption for each hour (FEIV)<br>*Business days. Baseline: December.*<br><html><table>") ///
+	postfoot("</table>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>")
 
 
 ********************************************************************************
@@ -157,15 +163,15 @@ est clear
 foreach d of numlist 1/5 {
 	est clear
 	qui foreach h of numlist 0/23 {
-		xtivreg e_w (p = c.wp#i.DK1 c.wp_other#i.DK1 DK1) $x_w ///
-			o0.hour o12.month ///
+		xtivreg e_w (p = c.wp#DK1) $x_w daylight ///
+			i(1 2 3 4 5 6 7 8 9 10 11).month ///
 			if day_bd==`d' & hour==`h', fe vce(cluster grid)
-		est store bd_`d'_h_`h'
+		est store bd`d'_h`h'
 	}
 	estout _all using "ws_bd`d'_hour.xls", replace ///
-		label cells( b(star fmt(4)) se(par fmt(4)) ) ///
-		starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-		stats(N, fmt(1 %12.0gc) )
+		label cells( b(fmt(4)) se(par fmt(4)) ) ///
+		indicate("Control variables=*.*") drop(n_w temp* daylight trend _cons) ///
+		stats(r2_w r2_b N_g g_avg, fmt(4 4 0 0 %12.0gc) labels ("R-sq within" "R-sq between" "Number of groups" "Obs. per group") )
 }
 est clear
 qui foreach h of numlist 0/23 {
