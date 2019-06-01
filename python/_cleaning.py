@@ -41,9 +41,9 @@ for col in range(0,len(wide.columns)):
     wide.iloc[33,col] = se.iloc[0,col]
     wide.iloc[35,col] = rah.iloc[0,col]
 wide.loc[['031', '085', '131', 233, '344', '348']]
-
+len(wide)
 ### Drop thoose with <10 total meters by dec-2018 ###
-# wide[wide.iloc[:,-1] == 0] # 19 dropped with 0 meters
+wide[wide.iloc[:,-1] == 0] # 19 dropped with 0 meters
 # wide[(wide.iloc[:,-1] > 0) & (wide.iloc[:,-1] < 10)] # 2 more dropped: Vestjyske Net (2 meters) & FynsNet (7 meters)
 wide = wide[wide.iloc[:,-1] >= 10]
 # wide[wide.iloc[:,-1] == 0] # none left without hourly metering (wholesale meters)

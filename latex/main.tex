@@ -1,29 +1,15 @@
 \input{01_preamble/documentclass}
-
 \input{01_preamble/packages}
-
 \input{01_preamble/koma_packages}
-
 \input{01_preamble/commands}
-
 \input{01_preamble/geometry}
-
 \input{01_preamble/colours}
-
 \input{01_preamble/floating_toc_headings}
-
 \input{01_preamble/header_footer}
-
 \input{01_preamble/paragraph_optimization}
-
 \input{01_preamble/hyperlink}
-
 \input{01_preamble/math_operators}
-
 \input{01_preamble/title_page}
-
-%\input{abbreviations}
-
 \input{01_preamble/ref_commands}
 
 \addbibresource{bib_energy.bib}
@@ -31,26 +17,19 @@
 \numberwithin{equation}{section}
 
 \begin{document}
-\setstretch{1.2}
 
 \maketitle
-
-\thispagestyle{empty}
-
+\pagestyle{empty}
 \clearpage
-
-\pagestyle{scrheadings}
 
 \small {
 \tableofcontents
-\clearpage
 \listoffigures
 \listoftables
-\clearpage
 %\printacronyms[include-classes=abbrev,name=Abbreviations, heading=chapter*]
 }
 \clearpage
-\normalsize
+\pagestyle{scrheadings}
 
 \section{Introduction}
 \input{02_chapters/01_introduction}
@@ -83,8 +62,11 @@
 \setcounter{page}{1}
 \pagenumbering{roman}
 
-% \input{02_chapters/A_appendix}
-% \input{02_chapters/B_appendix}
+\input{02_chapters/A_appendix}
 \clearpage
+\input{02_chapters/B_appendix}
+\clearpage
+\input{02_chapters/C_appendix}
+
 
 \end{document}

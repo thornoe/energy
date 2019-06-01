@@ -55,7 +55,7 @@ bd.plot(kind='line', ax=ax1, y='e_t', label='Total consumption, business day (LH
 nbd.plot(kind='line', ax=ax1, y='e_t', label='Total consumption, non-business day (LHS)', linestyle='dashed', color='#6baed6')
 ax1.set_ylabel('mean total electricity consumption, MWh', color=color_left)
 ax1.tick_params(axis='y', labelcolor=color_left)
-ax1.set_ylim([50,90])
+ax1.set_ylim([55,95])
 ax1.set_xticks(np.arange(0, 24, 2))
 ax1.grid(axis='both')
 plt.legend(bbox_to_anchor=(.0, 1.02, .49, 1), # bbox=(x, y, width, height)
@@ -73,7 +73,7 @@ plt.legend(bbox_to_anchor=(.51, 1.02, .49, 1), # bbox=(x, y, width, height)
 # ax2.legend(loc='upper right')
 ## Finish:
 ax1.set_xlabel(xlabel='hour')
-fig.savefig('latex/03_figures/hours.png', bbox_inches='tight')
+fig.savefig('latex/03_figures/total_hours.png', bbox_inches='tight')
 plt.show()
 
 
@@ -160,15 +160,15 @@ plt.show()
 #   PLOTS by WEEKDAY, WEEK, MONTH, and TIME SERIES                           #
 ##############################################################################
 ### Setting up the data ###
-weekdays = data[['day', 'e_w', 'e_f', 'e_r', 'e_hh', 'p']].groupby('day').mean()
-weekdays_bd = business_days[['day', 'e_w', 'e_f', 'e_r', 'e_hh', 'p']].groupby('day').mean()
-weeks = data[['week', 'e_w', 'e_f', 'e_r', 'e_hh', 'p']].groupby('week').mean()
-weeks_bd = business_days[['week', 'e_w', 'e_f', 'e_r', 'e_hh', 'p']].groupby('week').mean()
-months = data[['month', 'e_w', 'e_f', 'e_r', 'e_hh', 'p']].groupby('month').mean()
-months_bd = business_days[['month', 'e_w', 'e_f', 'e_r', 'e_hh', 'p']].groupby('month').mean()
-time_series = data[['date', 'e_w', 'e_f', 'e_r', 'e_hh', 'year', 'p']].groupby('date').mean()
-time_series_bd = business_days[['date', 'e_w', 'e_f', 'e_r', 'e_hh', 'year', 'p']].groupby('date').mean()
-time_series_tt = tue_thu[['date', 'e_w', 'e_f', 'e_r', 'e_hh', 'year', 'p']].groupby('date').mean()
+weekdays = data[['day', 'e_w', 'e_t', 'e_hh', 'p']].groupby('day').mean()
+weekdays_bd = business_days[['day', 'e_w', 'e_t', 'e_hh', 'p']].groupby('day').mean()
+weeks = data[['week', 'e_w', 'e_t', 'e_hh', 'p']].groupby('week').mean()
+weeks_bd = business_days[['week', 'e_w', 'e_t', 'e_hh', 'p']].groupby('week').mean()
+months = data[['month', 'e_w', 'e_t', 'e_hh', 'p']].groupby('month').mean()
+months_bd = business_days[['month', 'e_w', 'e_t', 'e_hh', 'p']].groupby('month').mean()
+time_series = data[['date', 'e_w', 'e_t', 'e_hh', 'year', 'p']].groupby('date').mean()
+time_series_bd = business_days[['date', 'e_w', 'e_t', 'e_hh', 'year', 'p']].groupby('date').mean()
+time_series_tt = tue_thu[['date', 'e_w', 'e_t', 'e_hh', 'year', 'p']].groupby('date').mean()
 
 weekdays.name, weekdays_bd.name = 'weekdays', 'weekdays, business days'
 weeks.name, weeks_bd.name = 'weeks', 'weeks, business days'
@@ -177,7 +177,7 @@ time_series.name, time_series_bd.name, time_series_tt.name = 'time series', 'tim
 
 df_list = [weekdays, weekdays_bd, weeks, weeks_bd, months, months_bd, time_series, time_series_bd, time_series_tt]
 
-### Weekday, week, month ###
+### Wholesale, retail and spot price by Weekday, week, month ###
 for df in df_list:
     fig, ax1 = plt.subplots(figsize=(12,7.4)) # create new figure
     color_left, color_right = '#3182bd', '#e6550d'
@@ -201,6 +201,32 @@ for df in df_list:
     fig.savefig('latex/03_figures/'+df.name+'.png', bbox_inches='tight')
     print(df.name)
     plt.show()
+
+
+### Time series for consumption and spot price ###
+for df in [time_series, time_series_bd, time_series_tt]:
+    fig, ax1 = plt.subplots(figsize=(12,7.4)) # create new figure
+    color_left, color_right = '#3182bd', '#e6550d'
+    ## Left axis
+    ax1.set_ylabel('mean electricity consumption, MWh', color=color_left)
+    df.plot(kind='line', ax=ax1, y='e_t', label='Total consumption (LHS)', linestyle='solid', color=color_left, )
+    ax1.tick_params(axis='y', labelcolor=color_left)
+    plt.legend(bbox_to_anchor=(.0, 1.02, .49, 1), # bbox=(x, y, width, height)
+               loc='lower left', ncol=2, mode="expand", borderaxespad=0.)
+    ## Right axis
+    ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
+    ax2.set_ylabel('spot price, DKK/MWh', color=color_right)
+    df.plot(kind='line', ax=ax2, y='p', label='Spot price (RHS)', linestyle='dotted', color=color_right)
+    ax2.tick_params(axis='y', labelcolor=color_right)
+    ax2.legend(loc='upper right')
+    plt.legend(bbox_to_anchor=(.51, 1.02, .49, 1), # bbox=(x, y, width, height)
+               loc='lower left', ncol=2, mode="expand", borderaxespad=0.)
+
+    ax1.set_xlabel(xlabel=df.name)
+    fig.savefig('latex/03_figures/total_'+df.name+'.png', bbox_inches='tight')
+    print(df.name)
+    plt.show()
+
 
 ### Time series for consumption only ###
 for df in [time_series, time_series_bd, time_series_tt]:

@@ -18,25 +18,29 @@
 % Language support for 'english' (alternatives: british,UKenglish,USenglish,american)
 % CTAN: http://www.ctan.org/pkg/babel
 \usepackage[english]{babel} %
-\usepackage{csquotes}
 
 % Extended graphics support
-% There is also a package named 'graphics' - watch out!
-% CTAN: http://www.ctan.org/pkg/graphicx
+% There is also a package named 'graphics' - watch out! CTAN: http://www.ctan.org/pkg/graphicx
 \usepackage{graphicx}
+\usepackage[space]{grffile} % for file names with spaces
 
 %customized line spacing
 \usepackage{setspace}
-\onehalfspacing
-\usepackage{dirtytalk}
+\setstretch{1.5} % line spacing
+\usepackage{enumitem} % e.g. Less space: \begin{itemize}[noitemsep]
+
 %Inclusion of pdf's
 \usepackage{pdfpages}
+
+%quotations
+\usepackage{csquotes}
+\usepackage{dirtytalk}
 
 %Create random text
 \usepackage{lipsum} % \lipsum[1] or \lipsum[1-3]
 
 % biblatex is used for creating bibliography
-\usepackage[style=authoryear, backend=bibtex8, natbib=true, maxcitenames=2]{biblatex}
+\usepackage[backend=bibtex8, style=authoryear, natbib=true, maxcitenames=2]{biblatex}
 
 % More comprehensive math typing
 \usepackage{amssymb}
