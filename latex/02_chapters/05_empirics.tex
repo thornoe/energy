@@ -4,18 +4,18 @@
 % Strategy for the estimation of the parameters of interest and test of the hypothesis
 \subsection{Baseline model}
 \label{subsec:e_model}
-Our baseline model is a Random Effects (RE) model to be estimated using feasible Generalized Least Squares (fGLS). Electricity consumption $e$ for grid company $i$ at time $t$ (date by hour) is given by:
+Our baseline model is a Random Effects (RE) model to be estimated using feasible Generalized Least Squares (fGLS) where electricity consumption $e$ for grid company $i$ at time $t$ (date by hour) is given by:
 \begin{equation}
   \begin{split}
   \ln e_{it}=&\ \varepsilon \hat{\ln p_{rt}}+\delta\ln n_{im}+\bm{w}^{'}_{rt}\lambda+\gamma\ days\\
-  &+\eta_{year}+\eta_{week}+\eta_{month}\cdot\eta_{hour}+\eta_{day}\cdot\eta_{hour}+\psi_i+u_{it}
+  &+\eta_{year}+\eta_{week}+\eta_{hour}\cdot\eta_{month}+\eta_{hour}\cdot\eta_{day}+c_i+u_{it}
   \end{split}
   \label{eq:baseline}
 \end{equation}
-Where $p$ is the electricity spot price in price region $r$ at time $t$, $n$ is the number of meters at the beginning of the month $m$, $\bm{w}$ is a vector of weather variables for the given price region $r$ at time $t$. Time variables include the time trend $days$. The $\eta$'s' represent dummies for each year and each ISO week number, as well as dummies for hour of the day interacted with each month and each day of the week respectively. $\psi_i$ is the grid-specific time-invariant constant term that is treated as random and $u_{it}$ is the idiosyncratic error term.
-\par\vspace{-1em}
+Where $p$ is the electricity spot price in price region $r$ at time $t$, $n$ is the number of meters at the beginning of the month $m$, $\bm{w}$ is a vector of weather variables for the given price region $r$ at time $t$. Time variables include the time trend $days$ and the $\eta$'s representing dummies for each year and each ISO week number, as well as dummies for hour of the day interacted with each month and each day of the week respectively. The error term consists of the grid-specific time-constant unobserved effect $c_i$ and the idiosyncratic error $u_{it}$.
+\par
 We use a log-log specification for electricity consumption, the spot price, and the number of meters as it allows us to model demand responses across grid areas of different size. Furthermore, log-log is the more standard specification which allows for a more direct comparison to the results in other studies \citep{burke2017price}. Other attractive properties include that the estimation provides the elasticity directly and does not predict non-positive electricity consumption, furthermore, the specification reduces the impact of outliers and are found to reduce systematic patterns in the estimated residuals \citep{burke2017price}.
-\par\vspace{-1em}
+\par
 The specification is first estimated for each hour of the days to identify peak-hours, off-peak, and the shoulder-period.
 
 \subsection{Instrumenting for prices}
@@ -36,7 +36,7 @@ Since 2018 flex-settled consumers in the Copenhagen metropolitan area are charge
   \beta\frac{nf_{month}}{nr_{month}}\tau_{year,month}
   \label{eq:tout}
 \end{align}
-Where $nf$ is the number of flex-settled meters by month, $nr$ is the total number of meters for retail customers, and $\tau$ is a dummy for being in January-March or October-December in 2018. To isolate the effect of the TOU tariff we need to assume that residual consumers do not react on the tariff, on the contrary their consumption is assumed to follow the same hour-by-day, hour-by-month, and week patterns as the previous years and the effect of year dummies and the time trend to be evenly distributed across the year.\par\vspace{-1em}
+Where $nf$ is the number of flex-settled meters by month, $nr$ is the total number of meters for retail customers, and $\tau$ is a dummy for being in January-March or October-December in 2018. To isolate the effect of the TOU tariff we need to assume that residual consumers do not react on the tariff, on the contrary their consumption is assumed to follow the same hour-by-day, hour-by-month, and week patterns as the previous years and the effect of year dummies and the time trend to be evenly distributed across the year.\par
 As Figure \ref{fig:cons_meters_time_series} shows, a weakness is that the monthly records for the number of flex-settled meters provides a lack which can result in an upward bias of $\hat{\beta}$.
 
 

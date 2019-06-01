@@ -311,6 +311,7 @@ for df in df_list:
     ax2.set_ylabel('spot price, DKK/MWh', color=color_right)
     df.plot(kind='line', ax=ax2, y='p_DK1', label='Spot price, DK1 (RHS)', linestyle='solid', color=color_right)
     df.plot(kind='line', ax=ax2, y='p_DK2', label='Spot price, DK2 (RHS)', linestyle='dashed', color='#fd8d3c')
+    ax2.set_ylim(0)
     ax2.tick_params(axis='y', labelcolor=color_right)
     plt.legend(bbox_to_anchor=(.51, 1.02, .49, 1), # bbox=(x, y, width, height)
                loc='lower left', ncol=1, mode="expand", borderaxespad=0.)
