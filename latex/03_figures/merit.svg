@@ -14,7 +14,7 @@
    viewBox="0 0 210 297"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.1 r15371"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="merit.svg">
   <defs
      id="defs2">
@@ -55,13 +55,18 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4142136"
+<<<<<<< HEAD
      inkscape:cx="531.16006"
      inkscape:cy="808.90974"
+=======
+     inkscape:cx="483.19956"
+     inkscape:cy="724.05693"
+>>>>>>> 6081e05717007a2329190b536c4173f1edf9de69
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="997"
+     inkscape:window-height="1001"
      inkscape:window-x="-9"
      inkscape:window-y="-9"
      inkscape:window-maximized="1" />
@@ -103,26 +108,32 @@
        inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="164.26384"
-       y="152.56754"
+       style="font-style:normal;font-weight:normal;font-size:3.52777767px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="145.49077"
+       y="156.40009"
        id="text4809"><tspan
          sodipodi:role="line"
          id="tspan4807"
-         x="164.26384"
-         y="152.56754"
-         style="stroke-width:0.26458332">$Q,mWh$</tspan></text>
+         x="145.49077"
+         y="156.40009"
+         style="font-size:3.52777767px;stroke-width:0.26458332">Q (mWh)</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="34.798492"
-       y="45.552826"
+       x="30.027767"
+       y="54.003914"
        id="text4813"><tspan
          sodipodi:role="line"
          id="tspan4811"
+<<<<<<< HEAD
          x="34.798492"
          y="45.552826"
          style="stroke-width:0.26458332">P,€</tspan></text>
+=======
+         x="30.027767"
+         y="54.003914"
+         style="font-size:3.52777767px;stroke-width:0.26458332">P (€)</tspan></text>
+>>>>>>> 6081e05717007a2329190b536c4173f1edf9de69
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"

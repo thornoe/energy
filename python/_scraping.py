@@ -136,9 +136,8 @@ spot.to_csv('elspot.csv', index=False)
 
 
 ##############################################################################
-#   WIND POWER PROGNOSIS (takes around 20 seconds to download)              x #
+#   WIND POWER PROGNOSIS (takes around 15 seconds to download and set up)    #
 ##############################################################################
-%timeit
 wind_dk, wind_se = [], []
 
 # Denmark
@@ -167,10 +166,6 @@ wind_se = pd.concat(wind_se, axis=0)
 wind = pd.concat([wind_dk, wind_se[['SE']]], axis=1)
 wind['hour'] = wind['hour'].str.slice(0,2)
 wind.columns = ['date', 'hour', 'wp_DK1', 'wp_DK2', 'wp_SE']
-
-### From MWh to GWh ###
-for var in ['wp_DK1', 'wp_DK2', 'wp_SE']:
-    wind[var] = wind[var].apply(lambda MWh: MWh/1000) # transformed to GWh, same name
 
 wind.to_csv('wind.csv', index=False)
 
