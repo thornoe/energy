@@ -26,17 +26,27 @@ For the grid company Radius operating in the Copenhagen metropolitan area flex-s
   \vspace{-0.0cm}
   \centering
   \caption{log retail electricity consumption in Radius, hours 17-19 (P2SLS)}
+  \label{tab:r_radius}
   \footnotesize
         \input{04_tables/r_radius}
     \text{Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.}
     \text{Log spot price is instrumented for by wind power prognosis.}
-  \label{tab:r_radius}
   \vspace{-0.0cm}
 \end{table}
 
 
 \subsection{The validity of instruments}
 \label{subsec:r_validity}
+
+\begin{table}[H]
+  \centering
+  \caption{Reduced form of log spot price for DK1 (POLS)}
+  \label{tab:reduced_form_price_dk1}
+  \footnotesize
+        \input{04_tables/reduced_form_price_131}
+    \text{Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.}
+    \text{Business days, hours 11-15. Baseline: year 2016 and each hour for December.}
+\end{table}
 Test for endogeneity (Appendix \ref{app:endogeneity}) and overidentifying restrictions (Appendix \ref{app:overidentifying}). \citep{statacorp2017stata}.
 \medskip\\
 

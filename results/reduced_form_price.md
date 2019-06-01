@@ -145,4 +145,4 @@
 <tr><td>_cons               </td><td>10.8638<br>(8.5408)   </td><td>10.5091<br>(8.5035)   </td><td>14.0120*<br>(8.1876)   </td><td>23.9114***<br>(8.7322)   </td><td>6.4732<br>(5.7707)   </td><td>6.7326<br>(5.7474)   </td><td>8.5838<br>(5.7550)   </td><td>8.5838<br>(5.7550)   </td></tr>
 <tr><td>Adj. R&sup2         </td><td>      0.4604   </td><td>      0.4605   </td><td>      0.4550   </td><td>      0.3666   </td><td>      0.4691   </td><td>      0.4691   </td><td>      0.4674   </td><td>      0.4674   </td></tr>
 <tr><td>Observations        </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td></tr>
-</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>F-tests, col (1) and (6): Wind power prognosis other region = Wind power prognosis for Sweden = 0<br>Baseline: year 2016 and each hour for December.</html>
+</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>

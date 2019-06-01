@@ -20,11 +20,12 @@ The specification is first estimated for each hour of the days to identify peak-
 
 \subsection{Instrumenting for prices}
 \label{subsec:e_instrumenting}
-To circumvent the simultaneity problem described in section \ref{subsec:b_endogeneity} we consider using lagged prices or wind-power production as price instruments. The latter makes sense as the marginal cost of production is close to zero, such that a high expected wind-power production will increase the overall supply capacity and drive down the prices. As an over-production of wind power will lead to transmission to neighboring bidding areas, the wind-power production prognosis for the other bidding area in Denmark is also included as an instrument.
+To circumvent the simultaneity problem described in section \ref{subsec:b_endogeneity} we consider using lagged prices or wind-power production as price instruments. This makes sense as the marginal cost of production is close to zero, such that a high expected wind-power production will increase the overall supply capacity and drive down the prices as seen in figure \ref{fig:wp_price_dk1_week} (and figure \ref{fig:wp_price_dk1_week} in appendix \ref{app:data} for DK2).
+% As an over-production of wind power will lead to transmission to neighboring bidding areas, the wind-power production prognosis for the other bidding area in Denmark is also included as an instrument.
 \begin{figure}[H]
   \centering
   \caption{Wind power prognosis and spot price by week (DK1)}
-  \label{fig:wp_price_DK1_week}
+  \label{fig:wp_price_dk1_week}
     \includegraphics[width=1 \textwidth]{03_figures/wp_DK1_weeks}
 \end{figure}
 
@@ -41,13 +42,35 @@ As Figure \ref{fig:cons_meters_time_series} shows, a weakness is that the monthl
 
 \subsection{Random Effects estimation}
 \label{subsec:e_re}
-\textit{Why Random Effects estimation is more efficient for the present data than both Least Squares Dummy Variables (LSDV) estimation, Fixed Effects (FE) estimation, Generalized Methods of Moments (GMM).}
-%\citet{burke2017price}  also discuss various models and their econometric disadvantages regarding yearly data, e.g. that Generalized Methods of Moments (GMM) is prone to non-stationary data.
-
-\subsection{Tests for endogeneity and overidentifying restrictions}
-\label{subsec:e_re}
-
-
+Different candidates for panel data estimation
+\begin{itemize}
+    \item Least Squares Dummy Variables estimation (LSDV)
+    \begin{itemize}
+        \item Unobserved heterogeneity, $\psi_i>0$, leads to serial correlation
+    \end{itemize}
+    \item Fixed Difference estimation (FD)
+    \begin{itemize}
+        \item Strict exogeneity assumption, $cov(u_{it},\bm{x}_{it})=0$, is violated by hourly-patterns
+    \end{itemize}
+    \item Fixed Effects estimation (FE)
+    \begin{itemize}
+        \item Time-demeaned, too extreme
+    \end{itemize}
+    \item Dynamic Panel Estimation using Generalized Methods of Moments (GMM)
+    \begin{itemize}
+        \item Only necessary if including lagged prices as instruments
+    \end{itemize}
+\end{itemize}
+We choose the \textbf{Random Effects estimator (RE)} for wholesale consumption
+\begin{itemize}
+    \item Critical assumption for RE: No endogeneity, i.e. $cov(\psi_i,\bm{x}_{it})=0$.
+    \item Hausman test: $\hat{\beta_{RE}}=\hat{\beta_{FE}}$ no endogeneity, thus both RE and FE are consistent, but RE is more efficient.
+\end{itemize}
+Estimate RE estimation using \textbf{feasible Generalized Least Squares (fGLS)}
+\begin{itemize}
+    \item[\nth{1} stage:] Estimate eq. (\ref{eq:baseline}) using LSDV estimation $\rightarrow$ store $\hat{\lambda}=1-\left(\frac{\sigma^2_u}{\sigma^2_u+T\sigma^2_\alpha}\right)^\frac{1}{2}$
+    \item[\nth{2} stage:] LSDV using $\hat{\lambda}$ to estimate the quasi-time demeaned system of the form: $y_{it}-\hat{\lambda}\bar{y_i}=\beta_0(1-\hat{\lambda})+\beta_1(\bm{x}_{it}-\hat{\lambda}\bar{\bm{x}_i})+\psi_i(1-\hat{\lambda})+u_{it}-\hat{\lambda}u_{it}$.
+\end{itemize}
 
 \subsection{Robustness checks}
 \label{subsec:e_robustness}
