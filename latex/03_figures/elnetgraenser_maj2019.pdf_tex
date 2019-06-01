@@ -1,0 +1,128 @@
+%% Creator: Inkscape inkscape 0.92.3, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'elnetgraenser_maj2019.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{553.7771561bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,1.17816215)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{elnetgraenser_maj2019.pdf}}%
+    \put(0.23854403,0.70286578){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}N1\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{elnetgraenser_maj2019.pdf}}%
+    \put(0.23464413,0.30147808){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Evonet\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{elnetgraenser_maj2019.pdf}}%
+    \put(0.77136822,0.35445477){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Cerius\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{elnetgraenser_maj2019.pdf}}%
+    \put(0.87097823,0.49388417){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Radius\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{elnetgraenser_maj2019.pdf}}%
+    \put(0.09278517,0.59073725){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}RAH\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{elnetgraenser_maj2019.pdf}}%
+    \put(0.41550211,0.30667826){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Vores Elnet\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{elnetgraenser_maj2019.pdf}}%
+    \put(0.40900227,0.58813716){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Dinel\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{elnetgraenser_maj2019.pdf}}%
+    \put(0.40363992,1.05842702){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Nord Energi\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{elnetgraenser_maj2019.pdf}}%
+    \put(0.26356841,0.38078059){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}TREFOR\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{elnetgraenser_maj2019.pdf}}%
+    \put(0.50243743,0.66353954){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}KONSTANT\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{elnetgraenser_maj2019.pdf}}%
+    \put(0.12138447,0.89559687){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Thy-Mors\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{elnetgraenser_maj2019.pdf}}%
+    \put(0.56548586,0.16237369){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Veksel\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=13]{elnetgraenser_maj2019.pdf}}%
+    \put(0.52843679,0.35575481){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Ravdex\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=14]{elnetgraenser_maj2019.pdf}}%
+    \put(0.53119922,0.21827547){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}FLOW\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=15]{elnetgraenser_maj2019.pdf}}%
+    \put(0.59424765,1.00252526){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Læsø\end{tabular}}}}%
+    \put(0.25463114,0.58146048){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Ikast\end{tabular}}}}%
+    \put(0.07767306,0.41538023){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Aal\end{tabular}}}}%
+    \put(0.17565811,0.71958985){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}L-Net\end{tabular}}}}%
+    \put(0.280143,0.7052894){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}NET8800\end{tabular}}}}%
+    \put(0.50714982,0.27692584){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Midtfyns\end{tabular}}}}%
+    \put(0.50097497,1.06540078){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Elinord\end{tabular}}}}%
+    \put(0.11780955,0.51190828){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Tarm\end{tabular}}}}%
+    \put(0.21953202,0.61916167){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Sunds\end{tabular}}}}%
+    \put(0.77754307,0.2782259){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}NKE\end{tabular}}}}%
+    \put(0.20230744,0.46088168){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}GEV\end{tabular}}}}%
+    \put(0.14657134,0.63541218){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Vildbjerg\end{tabular}}}}%
+    \put(0.3799155,0.63963731){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Hammel\end{tabular}}}}%
+    \put(0.86886578,0.5379091){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Hillerød\end{tabular}}}}%
+    \put(0.13275917,0.71666476){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Struer\end{tabular}}}}%
+    \put(0.64722132,0.13652141){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Nakskov\end{tabular}}}}%
+    \put(0.68605784,0.34355295){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Zealand\end{tabular}}}}%
+    \put(0.92151446,0.57658533){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Elektrus\end{tabular}}}}%
+    \put(0.29054273,0.64678755){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Kjellerup\end{tabular}}}}%
+    \put(0.31832954,0.8320434){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Aars\end{tabular}}}}%
+    \put(0.09782256,0.8131928){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Hurup\end{tabular}}}}%
+    \put(0.13048423,0.57918541){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Videbæk\end{tabular}}}}%
+    \put(0.18313292,0.55740972){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Kibæk\end{tabular}}}}%
+    \put(0.41501462,0.86194434){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Kongerslev\end{tabular}}}}%
+    \put(0.07946052,0.37735402){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Hjerting\end{tabular}}}}%
+    \put(0.79021775,0.20444855){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Vordingborg\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=16]{elnetgraenser_maj2019.pdf}}%
+    \put(0.87276568,1.05842702){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Øst\end{tabular}}}}%
+    \put(0.91306467,1.13235289){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Ertholmene\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=17]{elnetgraenser_maj2019.pdf}}%
+    \put(0.01088723,0.03217597){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}0\end{tabular}}}}%
+    \put(0.16525837,0.03217597){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}50\end{tabular}}}}%
+    \put(0.3199545,0.03217597){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}100\end{tabular}}}}%
+    \put(0.08531036,0.03217597){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}25\end{tabular}}}}%
+    \put(0.36009099,0.03217597){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Kilometers\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=18]{elnetgraenser_maj2019.pdf}}%
+    \put(0.32076698,0.95089433){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Evonet\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=19]{elnetgraenser_maj2019.pdf}}%
+    \put(0.33636659,0.4627289){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}KONSTANT\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=20]{elnetgraenser_maj2019.pdf}}%
+    \put(0.2322067,0.51213045){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}RAH\end{tabular}}}}%
+    \put(0.40477738,0.72789285){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}EL-NET Randers\end{tabular}}}}%
+  \end{picture}%
+\endgroup%

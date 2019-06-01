@@ -15,33 +15,48 @@ os.chdir('C:/Users/thorn/Onedrive/Dokumenter/GitHub/energy/') # one level up
 ##############################################################################
 wide = pd.read_excel('python/background.xlsx', header=[5,6], index_col=[0,1]).fillna(0).astype(int)
 
+wide.loc[[233, '143', '144', '145', '232']]
+wide.iloc[24,0]
 
 ### Mergers ###
-# Grid company 085 'Læsø' merged with (took over) 014 'Hornum' by oct-2017
-læsø = pd.DataFrame(wide.loc[['014', '085']].sum(axis=0)).T
+# Nord Energi '031' took over Taars by dec-17 and Hirtshals by jan-18:
+nord = pd.DataFrame(wide.loc[['031', '096', '095']].sum(axis=0)).T
+# Læsø '085' took over Hornum by oct-17:
+læsø = pd.DataFrame(wide.loc[['085', '014']].sum(axis=0)).T
+# EnergiMidt '131' merged with HEF, AKE, Bjerringbro, ELRO, EnergiMidt Vest, Borris, and Sdr. Felding by jan-18 and Nibe by apr-18, becoming 'Eniig' and later 'N1':
+n1 = pd.DataFrame(wide.loc[['131', '044', '052', '146', '149', '353', '392', '397', '015']].sum(axis=0)).T
+# Dinel 233 was founded as a merge of Brabrand, Viby, GE, and Østjysk by apr-17:
+dinel = pd.DataFrame(wide.loc[[233, '143', '144', '145', '232']].sum(axis=0)).T
+# SE '344' took over VOS and Ærø by jan-18
+se = pd.DataFrame(wide.loc[['248', '344', '443']].sum(axis=0)).T
+# RAH Net '348' took over RAH Net 2 by dec-17 and MES Net by mar-18.
+rah = pd.DataFrame(wide.loc[['348', '359', '246']].sum(axis=0)).T
 
-# 143, 144, 145, 232 (Brabrand, Viby, GE, Østjysk) merged to Dinel by apr-2017
-dinel = pd.DataFrame(wide.loc[['143', '144', '145', '232', 233]].sum(axis=0)).T
-
-# Let 085 and 233 represent the sum of future mergers for all years
+# Applying the sum of grids included in a future merge to each prior month:
 for col in range(0,len(wide.columns)):
+    wide.iloc[3,col] = nord.iloc[0,col]
     wide.iloc[9,col] = læsø.iloc[0,col]
+    wide.iloc[12,col] = n1.iloc[0,col]
     wide.iloc[24,col] = dinel.iloc[0,col]
-wide.loc[['085', 233]]
-
+    wide.iloc[33,col] = se.iloc[0,col]
+    wide.iloc[35,col] = rah.iloc[0,col]
+wide.loc[['031', '085', '131', 233, '344', '348']]
 
 ### Drop thoose with <10 total meters by dec-2018 ###
-# wide[wide.iloc[:,-1] < 10] # 21 dropped
+# wide[wide.iloc[:,-1] == 0] # 19 dropped with 0 meters
+# wide[(wide.iloc[:,-1] > 0) & (wide.iloc[:,-1] < 10)] # 2 more dropped: Vestjyske Net (2 meters) & FynsNet (7 meters)
 wide = wide[wide.iloc[:,-1] >= 10]
-# wide[wide.iloc[:,-1] == 0] # none without hourly metering (presence of companies)
+# wide[wide.iloc[:,-1] == 0] # none left without hourly metering (wholesale meters)
 
+### Drop the six grids with zero wholesale consumption throughout 2016-2018 ###
+#   ie. Aal El-net, Hjerting Transformatorforening, Paarup Elforsyning,
+#       Brenderup Netselskab, Nr. Broby-Vøjstrup Netselskab, Midtfyns Elforsyning
+for i in ['370', '371', '587', '588', '590', '591']:
+    wide.drop(i, level=0, inplace=True)
 
-### Drop aggregate row ###
-wide.drop('Hovedtotal', inplace=True) # 52 grids in total without Dinel+Læsø
+### Drop aggregate row and save ###
+wide.drop('Hovedtotal', level=0, inplace=True) # 48 grids in total without Dinel+Læsø
 wide.to_excel('python/grids.xlsx', index=True)
-
-wide.tail(2)
-
 
 ### Long format ###
 meters = wide.stack(level=0).fillna(0) # set no. flex-settled to 0, not None
@@ -49,7 +64,6 @@ meters = meters.reorder_levels([2, 1, 0], axis=0).reset_index()
 meters.columns = ['date', 'name', 'grid', 'n_f', 'n_r', 'n_w', 'n_t']
 meters['n_hh'] = meters[['n_f', 'n_r']].sum(axis=1, skipna=True)
 meters['grid'] = meters['grid'].astype(int)
-
 
 ### Time format ###
 meters['date'] = pd.to_datetime(meters['date'])
@@ -66,28 +80,26 @@ meters.tail(2)
 cons = pd.read_csv('python/cons.csv').fillna(0) # set flex-settled to 0, not None
 cons['date'] = pd.to_datetime(cons['date'])
 
-### Merger: Læsø ###
-# Grid company 85 'Læsø' merged with (took over) 14 'Hornum' by oct-2017
-læsø = pd.merge(cons[cons.grid==85], cons[cons.grid==14], how='left',\
-                on=['date','hour'], suffixes=['', '_r']).fillna(0)
-for var in ['hourly', 'flex', 'residual']:
-    læsø[var] = læsø[var] + læsø[str(var+'_r')]
-læsø = læsø[['date', 'hour', 'grid', 'hourly', 'flex', 'residual']]
-cons.drop(cons[cons.grid==85].index, inplace=True)
-cons = pd.concat([cons, læsø], sort=False, ignore_index=True)
-
-### Merger: Dinel ###
-# 143, 144, 145, 232 (Brabrand, Viby, GE, Østjysk) merged to Dinel by apr-2017
-dinel = cons[cons.grid==233].copy()
-for i in [143, 144, 145, 232]:
-    dinel = pd.merge(dinel, cons[cons.grid==143], how='outer',\
-                    on=['date','hour'], suffixes=['', '_r']).fillna(0)
-    for var in ['hourly', 'flex', 'residual']:
-        dinel[var] = dinel[var] + dinel[str(var+'_r')]
-    dinel = dinel[['date', 'hour', 'grid', 'hourly', 'flex', 'residual']]
-dinel['grid'] = 233
-cons.drop(cons[cons.grid==233].index, inplace=True)
-cons = pd.concat([cons, dinel], sort=False, ignore_index=True)
+### Mergers ###
+mergers = np.array([[31, [96, 95]], # Nord Energi '031' took over Taars by dec-17 and Hirtshals by jan-18:
+                    [85, [14]], # Læsø '085' took over Hornum by oct-17:
+                    [131, [44, 52, 146, 149, 353, 392, 397, 15]], # EnergiMidt '131' merged with HEF, AKE, Bjerringbro, ELRO, EnergiMidt Vest, Borris, and Sdr. Felding by jan-18 and Nibe by apr-18, becoming 'Eniig' and later 'N1':
+                    [233, [143, 144, 145, 232]], # Dinel 233 was founded as a merge of Brabrand, Viby, GE, and Østjysk by apr-17:
+                    [344, [248, 443]], # SE '344' took over VOS and Ærø by jan-18
+                    [348, [359, 246]]]) # RAH Net '348' took over RAH Net 2 by dec-17 and MES Net by mar-18.
+for row in range(len(mergers)):
+    m = mergers[row][0]
+    overtaken = mergers[row][1]
+    df = cons[cons.grid==m]
+    for i in overtaken:
+        df = pd.merge(df, cons[cons.grid==i], how='outer',\ # 'outer' as 'Dinel' lacks early observations
+                        on=['date','hour'], suffixes=['', '_r']).fillna(0)
+        for var in ['hourly', 'flex', 'residual']:
+            df[var] = df[var] + df[str(var+'_r')]
+        df = df[['date', 'hour', 'grid', 'hourly', 'flex', 'residual']]
+    df['grid'] = m # 'Dinel' lacking  grid number for observations prior to formation
+    cons.drop(cons[cons.grid==m].index, inplace=True)
+    cons = pd.concat([cons, df], sort=False, ignore_index=True)
 
 ### Create aggregates of households and total ###
 cons['households'] = cons[['flex', 'residual']].sum(axis=1, skipna=True)
@@ -231,7 +243,13 @@ data['s_tout'] = np.select(\
      (data['grid']==791) & (np.isin(data['hour'], [17,18,19])) & (data['month']<4)],
     [data['n_f']/data['n_hh'], data['n_f']/data['n_hh']])
 
-data.iloc[:,list(range(-13,0))].describe()
+### Oct-Mar and net company 'Radius' as a control for the above ###
+data['oct_mar'] = np.select(\
+    [(data['grid']==791) & (np.isin(data['hour'], [17,18,19])) & (data['month']>9),
+     (data['grid']==791) & (np.isin(data['hour'], [17,18,19])) & (data['month']<4)],
+    [1, 1])
+
+data.iloc[:,list(range(-14,0))].describe()
 
 
 ##############################################################################
@@ -248,7 +266,7 @@ data.iloc[:,list(range(-13,0))].describe()
 data = data.drop_duplicates(['date', 'hour', 'grid'])\
     .sort_values(by=['date', 'hour', 'grid']).reset_index(drop=True)
 
-### Rows with missing data is already removed due to 'inner'-merge ###
+### Rows with missing data is removed due to 'inner'-merge ###
 # data['date'].value_counts().nsmallest(5)
 # data['date'].value_counts().describe()
 
@@ -260,11 +278,11 @@ full_rank = 24*len(pd.date_range('2016-01-01', '2018-12-31', freq='D'))-1-3
 print('Full rank:',
       full_rank, 'obs. per grid',
       '\nMissing observations:',
-      full_rank-data['grid'].value_counts(dropna=False).mean())
+      full_rank - data['grid'].value_counts(dropna=False).mean())
 
 
 ##############################################################################
-#   DATASETS FOR STATA                                                       #
+#   DATA SET FOR STATA                                                       #
 ##############################################################################
 ### Copy of df ###
 ds = data.drop(['e_f', 'e_r', 'e_t', 'n_t', 'name'], axis=1)
@@ -277,12 +295,16 @@ for var in ['e_w', 'e_hh', 'n_w', 'n_hh', 'n_f', 'n_r', 'p']:
     ds['_'+var] = ds[var] # non-log values
     ds[var] = ds[var].apply(log_apply) # transformed to log values, same name
 
+### Wind power prognosis from MWh to GWh ###
+for var in ['wp_DK1', 'wp_DK2', 'wp', 'wp_other', 'wp_se']:
+    ds[var] = ds[var].apply(lambda MWh: MWh/1000) # transformed to GWh, same names
+
 ### Datetime format including hours ###
 ds['date'] = pd.to_datetime(ds['date'].astype(str)+' '+ds['hour'].astype(str)+':00:00')
 
 ds.describe().T
 
-### Applying share TOUT in Radius to all grid companies for robustness check
+### Applying share TOUT in Radius to all grid companies for robustness check ###
 ds2 = ds[ds.loc[:,'grid'] == 791]
 ds2 = ds2[['date', 's_tout']]
 ds2.columns = ['date', 's_radius']
@@ -292,10 +314,10 @@ ds = pd.merge(ds, ds2, how='inner', on='date')
 ##############################################################################
 #   EXPORT READY DATASETS                                                    #
 ##############################################################################
-### .dta for STATA ###
+### To DTA for STATA ###
 ds.to_stata('D:/Google Drev/KU Thor/Energy Economics/Data/data_stata.dta', write_index=False) # too big for GitHub
 ds.columns.values
 
 
-### CSV for plots ###
+### To CSV for plots ###
 data.to_csv('python/data.csv', index=False)
