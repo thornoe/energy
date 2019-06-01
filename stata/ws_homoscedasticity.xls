@@ -1,4 +1,4 @@
-	(1) 131: POLS, non-robust s.e.	(2) 131: POLS, robust s.e.	(3) 791: POLS, non-robust s.e.	(4) 791: POLS, robust s.e.
+	(1) 131: non-robust s.e.	(2) 131: robust s.e.	(3) 791: non-robust s.e.	(4) 791: robust s.e.
 	b/se	b/se	b/se	b/se
 log spot price	-0.0089***	-0.0089***	-0.0039***	-0.0039***
 	(0.0014)	(0.0017)	(0.0010)	(0.0009)

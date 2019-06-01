@@ -136,7 +136,7 @@ qui foreach h of numlist 0/23 {
 	qui xtivreg e_w (p = c.wp#DK1) $x_w daytime ///
 		i(1 2 3 4 5).day_bd i(1 2 3 4 5 6 7 8 9 10 11).month ///
 		if bd==1 & hour==`h', re vce(cluster grid)
-	est store h_`h'
+	est store h_`h', title("`h'")
 }
 estout _all using "ws_hour.xls", replace ///
 	cells( b(fmt(4)) se(par fmt(4)) ) ///
@@ -159,7 +159,7 @@ foreach d of numlist 1/5 {
 		xtivreg e_w (p = c.wp#DK1) $x_w daytime ///
 			i(1 2 3 4 5 6 7 8 9 10 11).month ///
 			if day_bd==`d' & hour==`h', fe vce(cluster grid)
-		est store bd`d'_h`h'
+		est store bd`d'_h`h', title("`h'")
 	}
 	estout _all using "ws_bd`d'_hour.xls", replace ///
 		cells( b(fmt(4)) se(par fmt(4)) ) ///
@@ -170,7 +170,7 @@ qui foreach h of numlist 0/23 {
 	xtivreg e_w (p = c.wp#i.DK1) $x_w daytime ///
 		i(1 2 3 4 5 6 7 8 9 10 11).month ///
 		if non_bd==1 & hour==`h', fe vce(cluster grid)
-	est store nbd_h_`h'
+	est store nbd_h_`h', title("`h'")
 }
 estout _all using "ws_non-bd_hour.xls", replace ///
 	cells( b(fmt(4)) se(par fmt(4)) ) ///
@@ -375,19 +375,26 @@ qui foreach i in 131 791 {
 	qui reg e_w p $x_w $x_11_15 if grid==`i' & bd==1 & inrange(hour,11,15), robust
 	est store robust_`i', title("`i': POLS, robust s.e.")
 	/*
-	The differences between non-robust s.e. and robust s.e. are
-	- Relatively large for N1 (DK1)
-	- Relatively small for Radius (DK2)
+	The differences between non-robust s.e. and robust s.e. are:
+	 - Relatively large for N1 (DK1)
+	 - Relatively small for Radius (DK2)
 	*/
 }
 estout _all using "ws_homoscedasticity.xls", replace ///
 	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(hettest hetdf hetp r2 r2_a N, fmt(0 0 3 3 3 %12.0gc) )
+estout *_`i' using $latex/reduced_form_price_`i'.tex, style(tex) replace ///
+		label cells( b(star fmt(4)) se(par fmt(4)) ) ///
+		starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+		indicate("Time variables=*.*") drop(trend _cons) ///
+		stats(hettest hetdf hetp r2 r2_a N, fmt(1 0 3 3 3 %12.0gc) labels("Chi&sup2" "DF" "Adj. p-val" "R&sup2" "Adj. R&sup2" "Observations") ) ///
+		prehead("\begin{tabular}{lcccc}\toprule") posthead("\midrule") ///
+		prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
 estout _all using "$results/ws_homoscedasticity.md", style(html) replace ///
 	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
-	stats(hettest hetdf hetp r2 r2_a N, fmt(0 0 3 3 3 %12.0gc) labels("Chi&sup2" "DF" "Adj. p-val" "R&sup2" "Adj. R&sup2" "Observations") ) ///
+	stats(hettest hetdf hetp r2 r2_a N, fmt(1 0 3 3 3 %12.0gc) labels("\(\chi^2\)" "DF" "Adj. p-val" "\(R^2\)" "Adj. \(R^2\)" "Observations") ) ///
 	prehead("**Table:** Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid 131 is N1 (DK1), grid 791 is Radius (DK2)*<br><html><table>") ///
 	postfoot("</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2, DF, and Adj. p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: year 2016 and each hour for December.</html>")
 mat A1 = A_131[1..., 1]
@@ -454,14 +461,15 @@ foreach i in 131 791 {
 		starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 		indicate("Time variables=*.*") drop(trend _cons) ///
 		stats(r2_a N, fmt(4 %12.0gc) labels("Adj. \(R^2\)" "Observations") ) ///
-		posthead("\midrule") prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
+		prehead("\begin{tabular}{lcccc}\toprule") posthead("\midrule") ///
+		prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
 }
 estout _all using $results/reduced_form_price.md, style(html) replace ///
 	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_a N, fmt(4 %12.0gc) labels("Adj. R&sup2" "Observations") ) ///
 	prehead("**Table:** Reduced form of log spot price (POLS)<br>*Business days, hours 11-15. Baseline: year 2016 and each hour for December.*<html><table>") ///
-	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>F-tests, col (1) and (6): Wind power prognosis other region = Wind power prognosis for Sweden = 0<br>Baseline: year 2016 and each hour for December.</html>")
+	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>")
 
 
 ********************************************************************************

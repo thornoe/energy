@@ -6,38 +6,53 @@
 \label{subsec:e_model}
 Our baseline model is a Random Effects (RE) model to be estimated using feasible Generalized Least Squares (fGLS) where electricity consumption $e$ for grid company $i$ at time $t$ (date by hour) is given by:
 \begin{equation}
-  \begin{split}
-  \ln e_{it}=&\ \varepsilon \hat{\ln p_{rt}}+\delta\ln n_{im}+\bm{w}^{'}_{rt}\lambda+\gamma\ days\\
-  &+\eta_{year}+\eta_{week}+\eta_{hour}\cdot\eta_{month}+\eta_{hour}\cdot\eta_{day}+c_i+u_{it}
-  \end{split}
   \label{eq:baseline}
+  \begin{split}
+  \ln e_{it}=&\ \varepsilon \widehat{\ln p_{rt}}+\delta\ln n_{im}+\bm{w}^{'}_{rt}\lambda\\
+  &+\gamma\ days+\eta_{year}+\eta_{week}+\eta_{hour}\cdot\eta_{month}+\eta_{hour}\cdot\eta_{day}+c_i+u_{it}
+  \end{split}
 \end{equation}
-Where $p$ is the electricity spot price in price region $r$ at time $t$, $n$ is the number of meters at the beginning of the month $m$, $\bm{w}$ is a vector of weather variables for the given price region $r$ at time $t$. Time variables include the time trend $days$ and the $\eta$'s representing dummies for each year and each ISO week number, as well as dummies for hour of the day interacted with each month and each day of the week respectively. The error term consists of the grid-specific time-constant unobserved effect $c_i$ and the idiosyncratic error $u_{it}$.
-\par
-We use a log-log specification for electricity consumption, the spot price, and the number of meters as it allows us to model demand responses across grid areas of different size. Furthermore, log-log is the more standard specification which allows for a more direct comparison to the results in other studies \citep{burke2017price}. Other attractive properties include that the estimation provides the elasticity directly and does not predict non-positive electricity consumption, furthermore, the specification reduces the impact of outliers and are found to reduce systematic patterns in the estimated residuals \citep{burke2017price}.
-\par
-The specification is first estimated for each hour of the days to identify peak-hours, off-peak, and the shoulder-period.
+Where $p$ is the electricity spot price in price region $r$ at time $t$, $n$ is the number of meters at the beginning of the month $m$, $\bm{w}$ is a vector of weather variables for the given price region $r$ at time $t$ (see section \ref{subsec:d_weather}). The time variables in the second line include the time trend $days$ and the $\eta$'s representing dummies for each year and each ISO week number, as well as dummies for hour of the day interacted with each month and each day of the week respectively. The error term consists of the grid-specific time-constant unobserved effect $c_i$ that is treated as random and the idiosyncratic error $u_{it}$.
+\medskip\\
+We use a log-log specification for electricity consumption, the spot price, and the number of meters as it allows us to model demand responses across grid areas of different size. Furthermore, log-log is the more standard specification which allows for a more direct comparison to the results in other studies \citep{burke2017price}. Other attractive properties include that the estimation provides the elasticity directly and prevents predicting non-positive electricity consumption. Furthermore, the specification reduces the impact of outliers and is found to reduce systematic patterns in the estimated residuals \citep{burke2017price}.
+
 
 \subsection{Instrumenting for prices}
 \label{subsec:e_instrumenting}
-To circumvent the simultaneity problem described in section \ref{subsec:b_endogeneity} we consider using lagged prices or wind-power production as price instruments. This makes sense as the marginal cost of production is close to zero, such that a high expected wind-power production will increase the overall supply capacity and drive down the prices as seen in figure \ref{fig:wp_price_dk1_week} (and figure \ref{fig:wp_price_dk1_week} in appendix \ref{app:data} for DK2).
-% As an over-production of wind power will lead to transmission to neighboring bidding areas, the wind-power production prognosis for the other bidding area in Denmark is also included as an instrument.
+To circumvent the simultaneity problem that higher expected consumption reflects in higher demand in the day-ahead-market which drives the spot price up, we instrument for the price using the wind-power production. This makes sense as the marginal cost of production is close to zero, such that a higher expected wind-power production will drive down the price due to the merit order effect as illustrated in figure \ref{fig:merit}. This inverse relationship is consistent with what we observe in our data as seen in figure \ref{fig:wp_price_dk1_week} for DK1 and in figure \ref{fig:wp_price_dk2_week} for DK2 (appendix \ref{app:data}).
+\medskip\\
+As the general level of wind power production is very different between the two price regions, we expect different slopes as well which we get by interacting it with dummies for each price region, thus, we estimate the reduced form for log price $\widehat{\ln p}$ in region $r$ at time $t$ by wind power prognosis $wind$ for the same price region and time as well as using the same controls as in equation (\ref{eq:baseline}) though we expect $\underline{\delta}$ to be insignificant.
+\par
+Thus, estimating electricity consumption by a Random Effects Instrumental Variables (REIV) estimation is a three-stage approach starting by estimating the reduced form for log price using a Generalized IV (GIV) estimator for the pooled sample:
+\begin{equation}
+  \label{eq:reduced}
+  \begin{split}
+    \ln p_{r} &= (\pi_1 DK1+\pi_2 DK2)\cdot wind_{rt} +\underline{\delta}\ln n_{im}+\bm{w}^{'}_{r}\underline{\lambda}\\
+  &+\underline{\gamma}\ days+\underline{\eta_{year}}+\underline{\eta_{week}}+\underline{\eta_{hour}\cdot\eta_{month}}+\underline{\eta_{hour}\cdot\eta_{day}}+v_{i}
+  \end{split}
+\end{equation}
+\vspace{-1em}
 \begin{figure}[H]
   \centering
   \caption{Wind power prognosis and spot price by week (DK1)}
   \label{fig:wp_price_dk1_week}
     \includegraphics[width=1 \textwidth]{03_figures/wp_DK1_weeks}
 \end{figure}
+\noindent
+An overproduction of wind power in one price region leads to transmission of cheap electricity to connected price regions, thus, as additional instruments we also consider the wind power prognosis for the other price region as well as for all of Sweden.
 
 \subsection{Effect of Time-of-use tariff}
 \label{subsec:e_tout}
-Since 2018 flex-settled consumers in the Copenhagen metropolitan area are charged a time-of-use (TOU) tariff for the hours 17-19. To estimate this effect the baseline specification (\ref{eq:baseline}) is estimated for the hours 17-19 solely for the grid company Radius using 2SLS, thus, without the grid-area random effect $\psi_i$ but including a term for the effect of the TOU tariff:
+To estimate the effect of the time-of-use (TOU) tariff (see subsection \ref{subsec:d_tout}) the baseline specification (\ref{eq:baseline}) is estimated for the hours 17-19 solely for the grid company Radius using Pooled 2SLS (P2SLS), thus, without the grid-area unobserved effect $c_i$ but including a term for the effect of the TOU tariff:
 \begin{align}
-  \beta\frac{nf_{month}}{nr_{month}}\tau_{year,month}
+  \alpha\frac{nf_{month}}{nr_{month}}\tau_{year,month}
   \label{eq:tout}
 \end{align}
-Where $nf$ is the number of flex-settled meters by month, $nr$ is the total number of meters for retail customers, and $\tau$ is a dummy for being in January-March or October-December in 2018. To isolate the effect of the TOU tariff we need to assume that residual consumers do not react on the tariff, on the contrary their consumption is assumed to follow the same hour-by-day, hour-by-month, and week patterns as the previous years and the effect of year dummies and the time trend to be evenly distributed across the year.\par
-As Figure \ref{fig:cons_meters_time_series} shows, a weakness is that the monthly records for the number of flex-settled meters provides a lack which can result in an upward bias of $\hat{\beta}$.
+Where $nf$ is the number of flex-settled meters by month, $nr$ is the total number of meters for retail customers, and $\tau$ is a dummy for being in October-March in 2018.
+\par
+To isolate the effect of the TOU tariff we need to assume that residual consumers do not react on the tariff, on the contrary their consumption is assumed to follow the same hour-by-day, hour-by-month, and week patterns as the previous years and the effect of year dummies and the time trend to be evenly distributed across the year.
+\par
+One weakness is that the monthly records for the number of flex-settled meters provides a lack which can result in an downward bias of $\widehat{\alpha}$ (if there is a negative effect of the tariff). This could possibly be improved by assuming a linear daily growth between $nf_{month}$ and $nf_{month+1}$.
 
 
 \subsection{Random Effects estimation}
@@ -64,16 +79,18 @@ Different candidates for panel data estimation
 We choose the \textbf{Random Effects estimator (RE)} for wholesale consumption
 \begin{itemize}
     \item Critical assumption for RE: No endogeneity, i.e. $cov(\psi_i,\bm{x}_{it})=0$.
-    \item Hausman test: $\hat{\beta_{RE}}=\hat{\beta_{FE}}$ no endogeneity, thus both RE and FE are consistent, but RE is more efficient.
+    \item Hausman test: $\widehat{\beta_{RE}}=\widehat{\beta_{FE}}$ no endogeneity, thus both RE and FE are consistent, but RE is more efficient.
 \end{itemize}
 Estimate RE estimation using \textbf{feasible Generalized Least Squares (fGLS)}
 \begin{itemize}
-    \item[\nth{1} stage:] Estimate eq. (\ref{eq:baseline}) using LSDV estimation $\rightarrow$ store $\hat{\lambda}=1-\left(\frac{\sigma^2_u}{\sigma^2_u+T\sigma^2_\alpha}\right)^\frac{1}{2}$
-    \item[\nth{2} stage:] LSDV using $\hat{\lambda}$ to estimate the quasi-time demeaned system of the form: $y_{it}-\hat{\lambda}\bar{y_i}=\beta_0(1-\hat{\lambda})+\beta_1(\bm{x}_{it}-\hat{\lambda}\bar{\bm{x}_i})+\psi_i(1-\hat{\lambda})+u_{it}-\hat{\lambda}u_{it}$.
+    \item[\nth{1} stage:] Estimate eq. (\ref{eq:baseline}) using LSDV estimation $\rightarrow$ store $\widehat{\lambda}=1-\left(\frac{\sigma^2_u}{\sigma^2_u+T\sigma^2_\alpha}\right)^\frac{1}{2}$
+    \item[\nth{2} stage:] LSDV using $\widehat{\lambda}$ to estimate the quasi-time demeaned system of the form: $y_{it}-\widehat{\lambda}\underline{y_i}=\beta_0(1-\widehat{\lambda})+\beta_1(\bm{x}_{it}-\widehat{\lambda}\underline{\bm{x}_i})+\psi_i(1-\widehat{\lambda})+u_{it}-\widehat{\lambda}u_{it}$.
 \end{itemize}
 
 \subsection{Robustness checks}
 \label{subsec:e_robustness}
-The robustness of the elasticity for wholesale electricity demand in the peak-hours 12-15 is tested by splitting the sample by region, year, and month respectively to look for heterogeneous effects. Furthermore, we run do the estimation for each grid area and for the mean of each price region using 2SLS. As the FE estimates are identical, however less efficient, we also try to weight the estimates by the number of wholesale meters in each grid.
+Robustness of the elasticity for wholesale electricity demand in the peak-hours 11-15 is tested by splitting the sample by price region, year, and month to look for heterogeneous effects. Furthermore, we estimate the equation (\ref{eq:baseline}) for each grid area \todo{and for the mean of each price region. As the FE estimates are identical, however less efficient, we also try to weight the estimates by the number of wholesale meters in each grid.} using P2SLS.
+\par
+Likewise, we estimate the elasticity for retail electricity demand in the peak-hours 17-19 by price region and year, though consumers have no price incentive to react to hourly prices except for those that become flex-settled by 2018.
 \medskip\\
 Tests of the robustness of the effect of the TOU tariff is less straight forward. We try including the dummy constructed for Radius in estimation of retail electricity demand in different grids.

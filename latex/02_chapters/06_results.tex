@@ -2,7 +2,9 @@
 % Consequences and implications for the public policy from different expected results.
 \subsection{Results for wholesale}
 \label{subsec:r_wholesale}
-For the peak-hours 11-15 on business days wholesale of electricity is estimated to decrease with 5.5 pct. when the spot price doubles, other things equal (Table \ref{tab:ws_preferred}).
+For wholesale the specification (\ref{eq:baseline}) is first estimated separately for each hour of business days to identify peak-hours, off-peak, and the shoulder. Thus, we define the peak-period as the five consecutive hours 11-15 for which the estimated elasticity $\hat{\varepsilon}<-.045$, the off-peak as the five consecutive hours 00-04 where $\hat{\varepsilon}\geq-.030$, and the hours on each side as the shoulder. For non-business days all of the hours are included as for all observations $\hat{\varepsilon}\geq-.03$ and even is insignificant for several hours.
+\par
+For the peak-hours 11-15 on business days wholesale of electricity is estimated to decrease with 5 pct. when the spot price doubles, other things equal (Table \ref{tab:ws_preferred}).
 \begin{table}[H]
   \vspace{-0.0cm}
   \centering
@@ -13,7 +15,7 @@ For the peak-hours 11-15 on business days wholesale of electricity is estimated 
         \input{04_tables/ws_preferred}
     \end{tabular}
     \text{Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.}
-    \text{Log spot price is instrumented for by wind power prognosis for the same and the other region.}
+    \text{Log spot price is instrumented for by wind power prognosis for the same region.}
   \label{tab:ws_preferred}
   \vspace{-0.0cm}
 \end{table}
@@ -40,12 +42,11 @@ For the grid company Radius operating in the Copenhagen metropolitan area flex-s
 
 \begin{table}[H]
   \centering
-  \caption{Reduced form of log spot price for DK1 (POLS)}
+  \caption{Reduced form of log spot price for DK1, business days, hours 11-15 (POLS)}
   \label{tab:reduced_form_price_dk1}
   \footnotesize
         \input{04_tables/reduced_form_price_131}
     \text{Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.}
-    \text{Business days, hours 11-15. Baseline: year 2016 and each hour for December.}
 \end{table}
 Test for endogeneity (Appendix \ref{app:endogeneity}) and overidentifying restrictions (Appendix \ref{app:overidentifying}). \citep{statacorp2017stata}.
 \medskip\\
