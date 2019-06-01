@@ -36,7 +36,7 @@
   }%
   \providecommand\rotatebox[2]{#2}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{591.45777621bp}%
+    \setlength{\unitlength}{422.8484063bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,13 +48,13 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.56164881)%
+  \begin{picture}(1,0.77562046)%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{merit.pdf}}%
-    \put(0.61664229,0.0097333){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$Q,mWh$}}}%
-    \put(-0.00383883,0.52261654){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$P,€$}}}%
-    \put(0.02664724,0.51633999){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
-    \put(0.61350407,0.35673646){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$S_{Wind}$}}}%
-    \put(0.61126242,0.4562645){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$S_{NoWind}$}}}%
-    \put(0.20059714,0.45178122){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$D$}}}%
+    \put(0.86252632,0.00363051){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$Q, MWh$}}}%
+    \put(-0.00536955,0.72102421){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$P$, €}}}%
+    \put(0.03727274,0.7122449){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(0.85813674,0.489){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$S_{Wind}$}}}%
+    \put(0.85500123,0.62821452){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$S_{NoWind}$}}}%
+    \put(0.28058457,0.62194354){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$D$}}}%
   \end{picture}%
 \endgroup%
