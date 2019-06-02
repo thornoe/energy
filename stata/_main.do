@@ -751,7 +751,7 @@ estout _all using $latex/r_year.tex, style(tex) replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 %12.0gc) labels("\(R^2\) within" "\(R^2\) between" "Number of groups" "Obs. per group") ) ///
-	prehead("\begin{tabular}{lccc}\toprule") posthead("\midrule") ///
+	prehead("\begin{tabular}{lccccc}\toprule") posthead("\midrule") ///
 	prefoot("\midrule") postfoot("\bottomrule\end{tabular}")	
 estout _all using $results/r_year.md, style(html) replace ///
 	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
