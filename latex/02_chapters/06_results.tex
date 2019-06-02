@@ -9,9 +9,7 @@ For wholesale consumers the baseline specification (\ref{eq:baseline}) is first 
   \centering
   \caption{log wholesale electricity consumption (REIV)}
   \footnotesize
-    \begin{tabular}{lcccc}
         \input{04_tables/ws_preferred}
-    \end{tabular}
     \begin{tablenotes}
     \item Standard errors are clustered at grid level and reported in parentheses. * p<0.10, ** p<0.05, *** p<0.01.
     \item Log spot price is instrumented for by wind power prognosis for the same region.
@@ -23,7 +21,7 @@ For wholesale consumers the baseline specification (\ref{eq:baseline}) is first 
 For the peak-hours 11-15 on business days wholesale of electricity is estimated to decrease with 5 percent when the spot price doubles all other things equal, as can be noted from column 1 in table \ref{tab:ws_preferred}. The difference between business and non-business days is quite outspoken; wholesale consumers are 1,5 times as responsive at peak on business-days compared to the average on non-business days. Weather and daytime controls also have significant effect on energy consumption. An increase in temperature of  $1^{\circ}$C translates into a small decrease of 0.3 percent lower electricity consumption - except at extreme temperatures (cold or warm) where consumption increases slightly.   
 
 \subsection{Results for households and small companies}
-The estimation of \eqref{eq:baseline} is reported below in table \ref{tab:r_region}. Pooling across all days we find that a 100 percent increase in the spot price causes a decrease consumption of about 2.75 percent - which appears to be driven by reductions on business days. This suggests that people are either may be less. oive on .. The overall electricity elasticity is
+The estimation of \eqref{eq:baseline} is reported below in table \ref{tab:r_region}. Pooling across all days we find that a 100 percent increase in the spot price causes a decrease consumption of about 2.75 percent - which appears to be driven by reductions on business days. This suggests that people may be less willing to shift  either may be less. oive on .. The overall electricity elasticity is
 \label{subsec:r_households}
 \begin{table}[H]
 \begin{threeparttable}
@@ -38,9 +36,12 @@ The estimation of \eqref{eq:baseline} is reported below in table \ref{tab:r_regi
   \end{tablenotes}
 \end{threeparttable}
 \end{table}
-%It may be surprising that 
+%It may be surprising that we find such
+%Kommenter - clustering på 9 grids er måske lidt lidt... 
+Daytime => leisurely activities very weather dependent and the part of consumption that may most easily be altered . 
+\medskip
 
-We examine the grid company Radius seperately. Radius operates in the Copenhagen metropolitan and its flex-settled customers (households and small companies) are charged a Time-of-Use (TOU) tariff of 0.835 DKK (0.112 EUR) for the hours 17-19 from October until March and 0.3236 DKK (0.043 EUR) otherwise. The estimated effect of this tariff is found to be a decrease in electricity demand of 1.9 percent when the spot price doubles. However, on business days the smaller effect of 1.4 percent is only statistically significant at the 10\% level while the decrease is 4.4 percent. on non-business days. Table \ref{tab:r_radius} shows pooled 2SLS estimates of electricity consumption for households and small companies in Radius for the hours 17, 18, and 19. The estimation results also show a small elasticity for the hourly spot price which is instrumented for by wind power prognosis for DK2 and DK1. This is despite that for two of the three years none of the consumers pay the spot market price rather than a fixed price. %Jeg har ændret da man jo betaler for andet end bare gennemsnitsprisen ligesom det er forskelligt om du betaler gns. af kvartal eller året. 
+We examine the grid company Radius separately. Radius operates in the Copenhagen metropolitan and its flex-settled customers (households and small companies) are charged a Time-of-Use (TOU) tariff of 0.835 DKK (0.112 EUR) for the hours 17-19 from October until March and 0.3236 DKK (0.043 EUR) otherwise. The estimated effect of this tariff is found to be a decrease in electricity demand of 1.9 percent when the spot price doubles. However, on business days the smaller effect of 1.4 percent is only statistically significant at the 10\% level while the decrease is 4.4 percent. on non-business days. Table \ref{tab:r_radius} shows pooled 2SLS estimates of electricity consumption for households and small companies in Radius for the hours 17, 18, and 19. The estimation results also show a small elasticity for the hourly spot price which is instrumented for by wind power prognosis for DK2 and DK1. This is despite that for two of the three years none of the consumers pay the spot market price rather than a fixed price. %Jeg har ændret da man jo betaler for andet end bare gennemsnitsprisen ligesom det er forskelligt om du betaler gns. af kvartal eller året. 
 \begin{table}[H]
 \begin{threeparttable}
   \vspace{-0.0cm}
