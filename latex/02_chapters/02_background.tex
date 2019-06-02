@@ -35,3 +35,5 @@ Estimating demands-side responses to shifting electricity prices is associated w
 When data is limited to total electricity demand it is common to apply a pooled two-stage-least-squares (P2SLS) regression and either include a time trend \citep{lijesen2007real} or estimate the elasticity year-by-year \citep{bonte2015price}.
 \par
 For more dis-aggregated data different methods can be utilized. Unobserved heterogeneity must be accounted for, usually by including unit-specific fixed-effects. On household level data one option is to use Seemingly Unrelated Regression Equations (SUR/SURE) \citep{vesterberg2014residential}, however, \citet{alberini2019response} still use P2SLS with a rich set of background variables.
+\par
+Lastly, identification strategies that rely on using past prices as instruments often rely on Dynamic Panel Estimation using Generalized Methods of Moments (GMM) \citep{genc2016measuring}.

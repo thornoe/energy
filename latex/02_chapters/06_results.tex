@@ -2,38 +2,48 @@
 % Consequences and implications for the public policy from different expected results.
 \subsection{Results for wholesale}
 \label{subsec:r_wholesale}
-For wholesale the specification (\ref{eq:baseline}) is first estimated separately for each hour of business days to identify peak-hours, off-peak, and the shoulder. Thus, we define the peak-period as the five consecutive hours 11-15 for which the estimated elasticity $\hat{\varepsilon}<-.045$, the off-peak as the five consecutive hours 00-04 where $\hat{\varepsilon}\geq-.030$, and the hours on each side as the shoulder. For non-business days all of the hours are included as for all observations $\hat{\varepsilon}\geq-.03$ and even is insignificant for several hours.
-\par
-For the peak-hours 11-15 on business days wholesale of electricity is estimated to decrease with 5 pct. when the spot price doubles, other things equal (Table \ref{tab:ws_preferred}).
+For wholesale consumers the baseline specification (\ref{eq:baseline}) is first estimated separately for each hour of the business day to identify peak, off-peak, and the shoulder hours. Based on these the peak-period is defined as the five consecutive hours 11am-3pm for which the estimated elasticity $\hat{\varepsilon}$ is below $-.045$, wile the off-peak period is defined as the five consecutive hours 12am-4am where $\hat{\varepsilon}$ is greater than $-.030$. The hours on each side of these intervals are classified as shoulder periods. For non-business days none of these classifications are used because the estimated elasticities do not vary much, they are all of small small magnitude ($\hat{\varepsilon}\geq-.03$)  and even insignificant for several hours of the day.
+
 \begin{table}[H]
-  \vspace{-0.0cm}
+\begin{threeparttable}
   \centering
   \caption{log wholesale electricity consumption (REIV)}
   \footnotesize
     \begin{tabular}{lcccc}
-      \toprule
         \input{04_tables/ws_preferred}
     \end{tabular}
-    \text{Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.}
-    \text{Log spot price is instrumented for by wind power prognosis for the same region.}
+    \begin{tablenotes}
+    \item Standard errors are clustered at grid level and reported in parentheses. * p<0.10, ** p<0.05, *** p<0.01.
+    \item Log spot price is instrumented for by wind power prognosis for the same region.
+     \end{tablenotes}
   \label{tab:ws_preferred}
-  \vspace{-0.0cm}
+\end{threeparttable}
 \end{table}
-
+\noindent
+For the peak-hours 11-15 on business days wholesale of electricity is estimated to decrease with 5 percent when the spot price doubles all other things equal, as can be noted from column 1 in table \ref{tab:ws_preferred}. The difference between business and non-business days is quite outspoken; wholesale consumers are 1,5 times as responsive at peak on business-days compared to the average on non-business days. Weather and daytime controls also have significant effect on energy consumption. An increase in temperature of  $1^{\circ}$C translates into a small decrease of 0.3 percent lower electricity consumption - except at extreme temperatures (cold or warm) where consumption increases slightly.   
 
 \subsection{Results for households and small companies}
 \label{subsec:r_households}
-For the grid company Radius operating in the Copenhagen metropolitan area flex-settled customers (households and small companies) are charged a Time-of-Use (TOU) tariff of 0.835 DKK (0.112 EUR) for the hours 17-19 from October-March as opposed to 0.3236 DKK otherwise (0.043 EUR). The estimated effect of this tariff is found to be a decrease in electricity demand of 1.9 pct. However, on business days the smaller effect of 1.4 pct. is only statistically significant at the 10\% level while the decrease is 4.4 pct. on non-business days. Table \ref{tab:r_radius} shows pooled 2SLS estimates of electricity consumption for households and small companies in Radius for the hours 17, 18, and 19. The estimation results also show a small elasticity for the hourly spot price which is instrumented for by wind power prognosis for DK2 and DK1. This is despite that for two of the three years none of the consumers pay the spot market price rather than a quarterly average.
+
+*Her noget for alle husholdninger og ikke kun Radius*
+
+We examine the grid company Radius seperately. Radius operates in the Copenhagen metropolitan and its flex-settled customers (households and small companies) are charged a Time-of-Use (TOU) tariff of 0.835 DKK (0.112 EUR) for the hours 17-19 from October until March and 0.3236 DKK (0.043 EUR) otherwise. The estimated effect of this tariff is found to be a decrease in electricity demand of 1.9 percent when the spot price doubles. However, on business days the smaller effect of 1.4 percent is only statistically significant at the 10\% level while the decrease is 4.4 percent. on non-business days. Table \ref{tab:r_radius} shows pooled 2SLS estimates of electricity consumption for households and small companies in Radius for the hours 17, 18, and 19. The estimation results also show a small elasticity for the hourly spot price which is instrumented for by wind power prognosis for DK2 and DK1. This is despite that for two of the three years none of the consumers pay the spot market price rather than a fixed price. %Jeg har ændret da man jo betaler for andet end bare gennemsnitsprisen ligesom det er forskelligt om du betaler gns. af kvartal eller året. 
 \begin{table}[H]
+\begin{threeparttable}
   \vspace{-0.0cm}
   \centering
   \caption{log retail electricity consumption in Radius, hours 17-19 (P2SLS)}
   \label{tab:r_radius}
-  \footnotesize
+      \footnotesize
+  \begin{tabular}{lccc}
         \input{04_tables/r_radius}
-    \text{Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.}
-    \text{Log spot price is instrumented for by wind power prognosis.}
+  \end{tabular}
+    \begin{tablenotes}
+        \item  Standard errors are clustered at grid level and reported in parentheses. * p<0.10, ** p<0.05, *** p<0.01.
+         \item Log spot price is instrumented using the wind power prognosis.
+    \end{tablenotes}
   \vspace{-0.0cm}
+  \end{threeparttable}
 \end{table}
 
 
@@ -41,15 +51,21 @@ For the grid company Radius operating in the Copenhagen metropolitan area flex-s
 \label{subsec:r_validity}
 
 \begin{table}[H]
+\begin{threeparttable}
   \centering
   \caption{Reduced form of log spot price for DK1, business days, hours 11-15 (POLS)}
   \label{tab:reduced_form_price_dk1}
   \footnotesize
-        \input{04_tables/reduced_form_price_131}
-    \text{Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.}
+  \begin{tabular}{lcccc}
+         \input{04_tables/reduced_form_price_131}
+  \end{tabular}
+    \begin{tablenotes}
+        \item Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.
+    \end{tablenotes}
+\end{threeparttable}
 \end{table}
 
-Test for endogeneity (\ref{app:endogeneity}) and overidentifying restrictions (\ref{app:overidentifying}). \citep{statacorp2017stata}.
+Test for endogeneity and overidentifying restrictions as shown in in appendix \ref{app:statistical_tests}). \citep{statacorp2017stata}.
 \medskip\\
 
 
@@ -102,7 +118,7 @@ Increased market integration may satisfy many of these requirements. In section 
 Technology has thus far prevented "smart" solutions but an increasing number of countries are rolling out smart meters that allow for integration into a smart grid. A smart meter can allows for remote metering and can show current consumption. In similar fashion a smart device is one where its electricity consumption can be changed automatically in response to the electricity price.
 \cite{biggar2014economics} reports how end-of-use consumers are committing to make heir devices capable of being responsive to the wholesale market. This implies more integration of retail consumers into the wholesale market which according to out results suggests could be a way get higher elasticity. The current system is build to over cater to peak demand without load shedding. \todo{God sætning, men skal den være her? }
 
-** LILLE KONLKUSION HER **
+** LILLE KONKLUSION HER **
 
 
 *. %Add section with how other kinds of demand has shifted in response to the climate crisis - increased focus on name some food..
