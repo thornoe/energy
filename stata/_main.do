@@ -125,7 +125,7 @@ estout _all using $results/ws_preferred.md, style(html) replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 %12.0gc) labels("R&sup2 within" "R&sup2 between" "Number of groups" "Obs. per group") ) ///
 	prehead("**Table:** log wholesale electricity consumption (REIV)<br>*Business days (col. 1-3) and non-business days (col. 4). Baseline: year 2016 and each hour for December.*<br><html><table>") ///
-	postfoot("</table>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>")
+	postfoot("</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>")
 
 	
 ********************************************************************************
@@ -139,14 +139,14 @@ qui foreach h of numlist 0/23 {
 	est store h_`h', title("`h'")
 }
 estout _all using "ws_hour.xls", replace ///
-	cells( b(fmt(4)) se(par fmt(4)) ) ///
+	label cells( b(fmt(4)) se(par fmt(4)) ) ///
 	drop(*.* n_w temp* trend _cons)
 estout _all using $results/ws_hour.md, style(html) replace ///
 	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 %12.0gc) labels("R&sup2 within" "R&sup2 between" "Number of groups" "Obs. per group") ) ///
 	prehead("**Table:** log wholesale electricity consumption by hour (REIV)<br>*Business days. Baseline: December.*<br><html><table>") ///
-	postfoot("</table>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>")
+	postfoot("</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>")
 
 
 ********************************************************************************
@@ -162,7 +162,7 @@ foreach d of numlist 1/5 {
 		est store bd`d'_h`h', title("`h'")
 	}
 	estout _all using "ws_bd`d'_hour.xls", replace ///
-		cells( b(fmt(4)) se(par fmt(4)) ) ///
+		label cells( b(fmt(4)) se(par fmt(4)) ) ///
 		drop(*.* n_w temp* daytime trend _cons)
 }
 est clear
@@ -173,7 +173,7 @@ qui foreach h of numlist 0/23 {
 	est store nbd_h_`h', title("`h'")
 }
 estout _all using "ws_non-bd_hour.xls", replace ///
-	cells( b(fmt(4)) se(par fmt(4)) ) ///
+	label cells( b(fmt(4)) se(par fmt(4)) ) ///
 	drop(*.* n_w temp* daytime trend _cons)
 
 
@@ -204,12 +204,12 @@ estout _all using $latex/ws_region_year.tex, style(tex) replace ///
 	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 %12.0gc) labels("\(R^2\) within" "\(R^2\) between" "Number of groups" "Obs. per group") ) ///
 	prehead("\begin{tabular}{lccccc}\toprule") posthead("\midrule") ///
 	prefoot("\midrule") postfoot("\bottomrule\end{tabular}")	
-estout _all using $results/ws_month.md, style(html) replace ///
+estout _all using $results/ws_region_year.md, style(html) replace ///
 	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 %12.0gc) labels("R&sup2 within" "R&sup2 between" "Number of groups" "Obs. per group") ) ///
 	prehead("**Table:** log wholesale electricity consumption by region and year (REIV)<br>*Business days, hours 11-15. Baseline: Each hour for December.*<br><html><table>") ///
-	postfoot("</table>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>")
+	postfoot("</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>")
 
 *** For each month ***
 est clear
@@ -217,17 +217,17 @@ qui forvalues m = 1/12 {
 	qui xtivreg e_w (p = wp) $x_w ///
 		i(11 12 13 14 15).hour#i(1 2 3 4).day_bd ///
 		if month==`m' & bd==1 & inrange(hour,11,15), re vce(cluster grid)
-	est store peak_`m', title("Month `m'")
+	est store peak_`m', title("`m'")
 }
 estout _all using "ws_month.xls", replace ///
-	cells( b(fmt(4)) se(par fmt(4)) ) ///
+	label cells( b(fmt(4)) se(par fmt(4)) ) ///
 	drop(*.* n_w temp* trend _cons)
 estout _all using $results/ws_month.md, style(html) replace ///
 	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 %12.0gc) labels("R&sup2 within" "R&sup2 between" "Number of groups" "Obs. per group") ) ///
 	prehead("**Table:** log wholesale electricity consumption by month (REIV)<br>*Business days, hours 11-15. Baseline: year 2016 and each hour for December.*<br><html><table>") ///
-	postfoot("</table>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>")
+	postfoot("</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>")
 
 
 ********************************************************************************
@@ -267,7 +267,7 @@ estout _all using $results/ws_grids_large.md, style(html) replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_a N, fmt(4 %12.0gc) labels("Adj. R&sup2" "Observations") ) ///
 	prehead("**Table:** log wholesale electricity consumption by grid company (P2SLS)<br>*Business days, hours 11-15. Baseline: year 2016 and each hour for December.*<br><html><table>") ///
-	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>")
+	postfoot("</table>Robust standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>")
 
 	
 *** For all 48 grid companies - using P2SLS ***
@@ -283,7 +283,7 @@ forvalues i = 23/592 {
 	est store DK1_`i', title("`i'")
 }
 estout DK1* using "ws_grids_DK1.xls", replace ///
-	cells( b(fmt(4)) se(par fmt(4)) ) ///
+	label cells( b(fmt(4)) se(par fmt(4)) ) ///
 	drop(*.* n_w temp* trend _cons)
 * 9 grid companies in Eastern DK
 qui forvalues i = 740/911 {
@@ -296,7 +296,7 @@ qui forvalues i = 740/911 {
 	est store DK2_`i', title("`i'")
 }
 estout DK2* using "ws_grids_DK2.xls", replace ///
-	cells( b(fmt(4)) se(par fmt(4)) ) ///
+	label cells( b(fmt(4)) se(par fmt(4)) ) ///
 	drop(*.* n_w temp* trend _cons)
 
 
@@ -333,7 +333,7 @@ estout _all using $results/ws_fe.md, style(html) replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 %12.0gc) labels("R&sup2 within" "R&sup2 between" "Number of groups" "Obs. per group") ) ///
 	prehead("**Table:** log wholesale electricity consumption by FE, RE, FEIV, and REIV<br>*Business days, hours 11-15. Baseline: year 2016 and each hour for December.*<br><html><table>") ///
-	postfoot("</table>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>")
+	postfoot("</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>")
 
 	
 ********************************************************************************
@@ -359,7 +359,7 @@ qui foreach i in 131 791 {
 	estadd scalar hettest = r(chi2)
 	estadd scalar hetdf = r(df)
 	estadd scalar hetp = r(p)
-	est store non_robust_`i', title("`i': POLS, non-robust s.e.")
+	est store non_robust_`i', title("`i': non-robust s.e.")
 	matrix A_`i' = r(mtest)
 	/*
 	The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity
@@ -373,7 +373,7 @@ qui foreach i in 131 791 {
 	*/
 	* OLS w. robust s.e.
 	qui reg e_w p $x_w $x_11_15 if grid==`i' & bd==1 & inrange(hour,11,15), robust
-	est store robust_`i', title("`i': POLS, robust s.e.")
+	est store robust_`i', title("`i': robust s.e.")
 	/*
 	The differences between non-robust s.e. and robust s.e. are:
 	 - Relatively large for N1 (DK1)
@@ -384,7 +384,7 @@ estout _all using "ws_homoscedasticity.xls", replace ///
 	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(hettest hetdf hetp r2 r2_a N, fmt(0 0 3 3 3 %12.0gc) )
-estout *_`i' using $latex/reduced_form_price_`i'.tex, style(tex) replace ///
+estout _all using $latex/reduced_form_price_`i'.tex, style(tex) replace ///
 		label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 		starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 		indicate("Time variables=*.*") drop(trend _cons) ///
@@ -395,8 +395,8 @@ estout _all using "$results/ws_homoscedasticity.md", style(html) replace ///
 	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(hettest hetdf hetp r2 r2_a N, fmt(1 0 3 3 3 %12.0gc) labels("\(\chi^2\)" "DF" "Adj. p-val" "\(R^2\)" "Adj. \(R^2\)" "Observations") ) ///
-	prehead("**Table:** Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid 131 is N1 (DK1), grid 791 is Radius (DK2)*<br><html><table>") ///
-	postfoot("</table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2, DF, and Adj. p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: year 2016 and each hour for December.</html>")
+	prehead("**Table:** Testing for homoscedasticity, log wholesale electricity consumption, business days, hours 11-15 (POLS)<br>*Grid 131 is N1 (DK1), grid 791 is Radius (DK2)*<br>Baseline: year 2016 and each hour for December.<br><html><table>") ///
+	postfoot("</table>Standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2, DF, and Adj. p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.</html>")
 mat A1 = A_131[1..., 1]
 mat A2 = A_131[1..., 4]
 mat A3 = A_791[1..., 1]
@@ -469,7 +469,7 @@ estout _all using $results/reduced_form_price.md, style(html) replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_a N, fmt(4 %12.0gc) labels("Adj. R&sup2" "Observations") ) ///
 	prehead("**Table:** Reduced form of log spot price (POLS)<br>*Business days, hours 11-15. Baseline: year 2016 and each hour for December.*<html><table>") ///
-	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>")
+	postfoot("</table>Robust standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.</html>")
 
 
 ********************************************************************************
@@ -609,13 +609,13 @@ estout *_131 using $results/ws_endog_overid_131.md, style(html) replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(endog p_endog endog_reg p_endog_reg overid p_overid r2_a N, fmt(1 4 1 4 1 4 4 %12.0gc) labels("Score test of exogeneity" "p-val, exogeneity" "Regression-based F-statistic" "p-val, regression-based" "Test of overidentifying restrictions" "p-val, overidentifying restrictions" "n*R&sup2" "p-val" "Adj. R&sup2" "Observations") ) ///
 	prehead("**Table:** Testing endogeneity and overidentifying restrictions (wholesale, business days, hours 11-15)<br>*For grid company N1 (DK1)*<br><html><table>") ///
-	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: year 2016 and each hour for December.</html>")
+	postfoot("</table>Robust standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: year 2016 and each hour for December.</html>")
 estout *_791 using $results/ws_endog_overid_791.md, style(html) replace ///
 	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(endog p_endog endog_reg p_endog_reg overid p_overid r2_a N, fmt(1 4 1 4 1 4 4 %12.0gc) labels("Score test of exogeneity" "p-val, exogeneity" "Regression-based F-statistic" "p-val, regression-based" "Test of overidentifying restrictions" "p-val, overidentifying restrictions" "N*R&sup2" "p-val" "Adj. R&sup2" "Observations") ) ///
 	prehead("**Table:** Testing endogeneity and overidentifying restrictions (wholesale, business days, hours 11-15)<br>*For grid company Radius (DK2)*<br><html><table>") ///
-	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: year 2016 and each hour for December.</html>")
+	postfoot("</table>Robust standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: year 2016 and each hour for December.</html>")
 
 
 ********************************************************************************
@@ -657,7 +657,7 @@ estout _all using $results/r_radius.md, style(html) replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_a N, fmt(4 %12.0gc) labels("Adj. R&sup2" "Observations") ) ///
 	prehead("**Table:** log retail electricity consumption in Radius (P2SLS)<br>*Hours 17-19. Baseline: year 2016 and each hour for December.*<br><html><table>") ///
-	postfoot("</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>")
+	postfoot("</table>Robust standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for DK2.</html>")
 
 
 ********************************************************************************
@@ -674,7 +674,7 @@ qui forvalues i = 23/592 {
 	est store DK1_`i', title("`i'")
 }
 estout DK1* using "r_grids_DK1.xls", replace ///
-	cells( b(fmt(4)) se(par fmt(4)) ) ///
+	label cells( b(fmt(4)) se(par fmt(4)) ) ///
 	drop(*.* n_hh temp* daytime trend _cons)
 
 qui forvalues i = 740/911 {
@@ -687,7 +687,7 @@ qui forvalues i = 740/911 {
 	est store DK2_`i', title("`i'")
 }
 estout DK2* using "r_grids_DK2.xls", replace ///
-	cells( b(fmt(4)) se(par fmt(4)) ) ///
+	label cells( b(fmt(4)) se(par fmt(4)) ) ///
 	drop(*.* n_hh temp* daytime trend _cons)
 
 
@@ -722,19 +722,18 @@ estout _all using $results/r_region.md, style(html) replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 %12.0gc) labels("R&sup2 within" "R&sup2 between" "Number of groups" "Obs. per group") ) ///
 	prehead("**Table:** log retail electricity consumption by region (REIV)<br>*Hours 17-19. Baseline: year 2016 and each hour for December.*<br><html><table>") ///
-	postfoot("</table>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>")
+	postfoot("</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>")
 
-	
 *** by year ***
 est clear
 qui forvalues y = 2016/2017 {
 	xtivreg e_hh (p = c.wp#DK1) n_hh temp* daytime trend i.week $x_17_19 ///
 		if year==`y' & inrange(hour,17,19), re vce(cluster grid)
-	est store y`y', title("`y'")
+	est store y`y', title("Year `y'")
 }
 xtivreg e_hh (p = c.wp#DK1) s_tout n_hh temp* daytime trend i.week $x_17_19 ///
 		if year==2018 & inrange(hour,17,19), re vce(cluster grid)
-	est store y2018, title("`y'")
+	est store y2018, title("Year `y'")
 
 estout _all using "r_year.xls", replace ///
 	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
@@ -752,4 +751,4 @@ estout _all using $results/r_year.md, style(html) replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 %12.0gc) labels("R&sup2 within" "R&sup2 between" "Number of groups" "Obs. per group") ) ///
 	prehead("**Table:** log retail electricity consumption by year (REIV)<br>*Hours 17-19. Baseline: Each hour for December.*<br><html><table>") ///
-	postfoot("</table>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>")
+	postfoot("</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>")

@@ -23,7 +23,7 @@ To circumvent the simultaneity problem that higher expected consumption reflects
 \medskip\\
 As the general level of wind power production is very different between the two price regions, we expect different slopes as well which we get by interacting it with dummies for each price region, thus, we estimate the reduced form for log price $\widehat{\ln p}$ in region $r$ at time $t$ by wind power prognosis $wind$ for the same price region and time as well as using the same controls as in equation (\ref{eq:baseline}) though we expect $\underline{\delta}$ to be insignificant.
 \par
-Thus, estimating electricity consumption by a Random Effects Instrumental Variables (REIV) estimation is a three-stage approach starting by estimating the reduced form for log price using a Generalized IV (GIV) estimator for the pooled sample:
+Thus, estimating electricity consumption by a Random Effects Instrumental Variables (REIV) estimation is a three-stage approach starting by estimating the reduced form for log price using a Generalized IV (GIV) estimator for the pooled sample (see subsection \ref{subsec:e_re} below):
 \begin{equation}
   \label{eq:reduced}
   \begin{split}
@@ -66,7 +66,25 @@ then POLS would still result in serial correlation given that $c_i\neq0$ which i
 \medskip\\
 Though it is a common way to handle serial correlation, we hardly consider the \textbf{first-difference (FD)} estimation as the great presence of heteroscedasticity in terms of seasonality and daily and weekly patterns with occasional holidays underlines that there is no obvious suggestion for the length of $t-s$ that would not violate the critical assumption (\ref{eq:exogeneity}). Furthermore, we see no signs of electricity consumption acting as a unit root process in figure \ref{fig:cons_hours}.
 \medskip\\
-The consistent but somewhat inefficient approach is the \textbf{fixed effects (FE)} estimation where we time-demean all variables. While the loss of time constant variables is a common flaw, we do not have any in our specification (\ref{eq:baseline}).
+The consistent but somewhat inefficient approach is the \textbf{fixed effects (FE)} estimation as it does not assume strict exogeneity (\ref{eq:exogeneity}) due to performing a within transformation of all variables before estimating by POLS. Equivalently, \textbf{fixed effects instrumental variables (FEIV)} estimation is simply performed by within transforming both equation (\ref{eq:baseline}) and (\ref{eq:reduced}) and estimating this time-demeaned system by P2SLS. While the loss of time constant variables is a common flaw, we do not have any in our specification (\ref{eq:baseline}) except for $c_i$ that causes the serial correlation.
+\medskip\\
+A less extreme approach is the \textbf{random effects (RE)} estimator that first within-transform our model (\ref{eq:baseline}) to run a FE estimation in order to compute:
+\begin{equation}
+  \widehat{\lambda}=1-\left(\frac{\sigma^2_u}{\sigma^2_u+T\sigma^2_c}\right)^\frac{1}{2}
+\end{equation}
+Next we use the stored $\widehat{\lambda}$ to estimate the quasi-time demeaned system of the form:
+
+
+Using the
+
+quasi-time-demeaned system
+
+The strict exogeneity assumption (\ref{eq:eq:exogeneity}) can be tested by the Hausman test:
+\begin{equation}
+  \widehat{\beta_{RE}}=\widehat{\beta_{FE}}
+  \label{eq:hausman}
+\end{equation}
+If it holds RE is indeed more efficient than FE estimation.
 
 26,300
 
@@ -91,7 +109,7 @@ The consistent but somewhat inefficient approach is the \textbf{fixed effects (F
 We choose the \textbf{Random Effects estimator (RE)} for wholesale consumption
 \begin{itemize}
     \item Critical assumption for RE: No endogeneity, i.e. $cov(\psi_i,\bm{x}_{it})=0$.
-    \item Hausman test: $\widehat{\beta_{RE}}=\widehat{\beta_{FE}}$ no endogeneity, thus both RE and FE are consistent, but RE is more efficient.
+    \item Hausman test: $\widehat{\beta_{RE}{*}}=\widehat{\beta_{FE}^{*}}$ no endogeneity, thus both RE and FE are consistent, but RE is more efficient.
 \end{itemize}
 Estimate RE estimation using \textbf{feasible Generalized Least Squares (fGLS)}
 \begin{itemize}
