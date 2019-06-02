@@ -452,4 +452,4 @@
 <tr><td>R&sup2 between      </td><td>      0.9492   </td><td>      0.9140   </td><td>      0.9375   </td><td>      0.9250   </td></tr>
 <tr><td>Number of groups    </td><td>          48   </td><td>          48   </td><td>          48   </td><td>          48   </td></tr>
 <tr><td>Obs. per group      </td><td>       3,675   </td><td>       3,675   </td><td>      13,178   </td><td>       8,660   </td></tr>
-</table>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>
+</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>

@@ -4,76 +4,98 @@
 % Strategy for the estimation of the parameters of interest and test of the hypothesis
 \subsection{Baseline model}
 \label{subsec:e_model}
-Our baseline model is a Random Effects (RE) model to be estimated using feasible Generalized Least Squares (fGLS). Electricity consumption $e$ for grid company $i$ at time $t$ (date by hour) is given by:
+Our baseline model is a Random Effects (RE) model to be estimated using feasible Generalized Least Squares (fGLS) where electricity consumption $e$ for grid company $i$ at time $t$ (date by hour) is given by:
 \begin{equation}
-  \begin{split}
-  \ln e_{it}=&\ \varepsilon \hat{\ln p_{rt}}+\delta\ln n_{im}+\bm{w}^{'}_{rt}\lambda+\gamma\ days\\
-  &+\eta_{year}+\eta_{week}+\eta_{month}\cdot\eta_{hour}+\eta_{day}\cdot\eta_{hour}+\psi_i+u_{it}
-  \end{split}
   \label{eq:baseline}
+  \begin{split}
+  \ln e_{it}=&\ \varepsilon \widehat{\ln p_{rt}}+\delta\ln n_{im}+\bm{w}^{'}_{rt}\lambda\\
+  &+\gamma\ days+\eta_{year}+\eta_{week}+\eta_{hour}\cdot\eta_{month}+\eta_{hour}\cdot\eta_{day}+c_i+u_{it}
+  \end{split}
 \end{equation}
-Where $p$ is the electricity spot price in price region $r$ at time $t$, $n$ is the number of meters at the beginning of the month $m$, $\bm{w}$ is a vector of weather variables for the given price region $r$ at time $t$. Time variables include the time trend $days$. The $\eta$'s' represent dummies for each year and each ISO week number, as well as dummies for hour of the day interacted with each month and each day of the week respectively. $\psi_i$ is the grid-specific time-invariant constant term that is treated as random and $u_{it}$ is the idiosyncratic error term.
-\par\vspace{-1em}
-We use a log-log specification for electricity consumption, the spot price, and the number of meters as it allows us to model demand responses across grid areas of different size. Furthermore, log-log is the more standard specification which allows for a more direct comparison to the results in other studies \citep{burke2017price}. Other attractive properties include that the estimation provides the elasticity directly and does not predict non-positive electricity consumption, furthermore, the specification reduces the impact of outliers and are found to reduce systematic patterns in the estimated residuals \citep{burke2017price}.
-\par\vspace{-1em}
-The specification is first estimated for each hour of the days to identify peak-hours, off-peak, and the shoulder-period.
+where $p$ is the electricity spot price in price region $r$ at time $t$, $n$ is the number of meters at the beginning of the month $m$, $\bm{w}$ is a vector of weather variables for the given price region $r$ at time $t$ (see section \ref{subsec:d_weather}). The time variables in the second line include the time trend $days$ and the $\eta$'s representing dummies for each year and each ISO week number, as well as dummies for hour of the day interacted with month and day of the week respectively. The composite error term consists of the grid-specific time-constant unobserved effect $c_i$ that is treated as random and the idiosyncratic error $u_{it}$.
+\bigskip\par
+We use a log-log specification for electricity consumption, the spot price, and the number of meters as it allows us to model demand responses across grid areas of different size. Furthermore, log-log is the more standard specification which allows for a more direct comparison to the results in other studies \citep{burke2017price}. Other attractive properties include that the estimation provides the elasticity directly and prevents predicting non-positive electricity consumption. Furthermore, the specification reduces the impact of outliers and is found to reduce systematic patterns in the estimated residuals \citep{burke2017price}.
+
 
 \subsection{Instrumenting for prices}
 \label{subsec:e_instrumenting}
-To circumvent the simultaneity problem described in section \ref{subsec:b_endogeneity} we consider using lagged prices or wind-power production as price instruments. This makes sense as the marginal cost of production is close to zero, such that a high expected wind-power production will increase the overall supply capacity and drive down the prices as seen in figure \ref{fig:wp_price_dk1_week} (and figure \ref{fig:wp_price_dk1_week} in appendix \ref{app:data} for DK2).
-% As an over-production of wind power will lead to transmission to neighboring bidding areas, the wind-power production prognosis for the other bidding area in Denmark is also included as an instrument.
+To circumvent the simultaneity problem that higher expected consumption reflects in higher demand in the day-ahead-market which drives the spot price up, we instrument for the price using the wind-power production. This makes sense as the marginal cost of wind-power production is close to zero, such that a higher expected wind-power production will drive down the price due to the merit order effect as illustrated in figure \ref{fig:merit}. This inverse relationship is consistent with what we observe in our data as seen in figure \ref{fig:wp_price_dk1_week} for DK1 and in figure \ref{fig:wp_price_dk2_week} for DK2 (appendix \ref{app:data}). This insinuates that it is a relevant instrument. The instrument is also likely to be a valid one; weather is exogenous and it seems unlikely that consumption of electricity responds to wind weather through other channels than through the price of electricity conditional on temperatures and daytimes. These assumptions are tested formally in section \ref{subsec:r_validity}.
+\bigskip\par
+As the general level of wind power production is very different between the two price regions, we expect different slopes as well which we get by interacting it with dummies for each price region, thus, we estimate the reduced form for log price $\widehat{\ln p}$ in region $r$ at time $t$ by wind power prognosis $wind$ for the same price region and time as well as using the same controls as in equation (\ref{eq:baseline}) though we expect $\underline{\delta}$ to be insignificant.
+\par
+Thus, estimating electricity consumption by a Random Effects Instrumental Variables (REIV) estimation is a three-stage approach starting by estimating the reduced form for log price using a Generalized IV (GIV) estimator for the pooled sample (see subsection \ref{subsec:e_re} below):
+\begin{equation}
+  \label{eq:reduced}
+  \begin{split}
+    \ln p_{r} &= (\pi_1 DK1+\pi_2 DK2)\cdot wind_{rt} +\underline{\delta}\ln n_{im}+\bm{w}^{'}_{r}\underline{\lambda}\\
+  &+\underline{\gamma}\ days+\underline{\eta_{year}}+\underline{\eta_{week}}+\underline{\eta_{hour}\cdot\eta_{month}}+\underline{\eta_{hour}\cdot\eta_{day}}+v_{i}
+  \end{split}
+\end{equation}
+\vspace{-1em}
 \begin{figure}[H]
   \centering
   \caption{Wind power prognosis and spot price by week (DK1)}
   \label{fig:wp_price_dk1_week}
     \includegraphics[width=1 \textwidth]{03_figures/wp_DK1_weeks}
 \end{figure}
+\noindent
+An overproduction of wind power in one price region leads to transmission of cheap electricity to connected price regions, thus, as additional instruments we also consider the wind power prognosis for the other price region as well as for all of Sweden.
 
 \subsection{Effect of Time-of-use tariff}
 \label{subsec:e_tout}
-Since 2018 flex-settled consumers in the Copenhagen metropolitan area are charged a time-of-use (TOU) tariff for the hours 17-19. To estimate this effect the baseline specification (\ref{eq:baseline}) is estimated for the hours 17-19 solely for the grid company Radius using 2SLS, thus, without the grid-area random effect $\psi_i$ but including a term for the effect of the TOU tariff:
+To estimate the effect of the time-of-use (TOU) tariff (see subsection \ref{subsec:d_tout}) the baseline specification (\ref{eq:baseline}) is estimated for the hours 17-19 solely for the grid company Radius using pooled 2SLS (P2SLS), thus, without the grid-area unobserved effect $c_i$ but including a term for the effect of the TOU tariff:
 \begin{align}
-  \beta\frac{nf_{month}}{nr_{month}}\tau_{year,month}
+  \alpha\frac{nf_{month}}{nr_{month}}\tau_{year,month}
   \label{eq:tout}
 \end{align}
-Where $nf$ is the number of flex-settled meters by month, $nr$ is the total number of meters for retail customers, and $\tau$ is a dummy for being in January-March or October-December in 2018. To isolate the effect of the TOU tariff we need to assume that residual consumers do not react on the tariff, on the contrary their consumption is assumed to follow the same hour-by-day, hour-by-month, and week patterns as the previous years and the effect of year dummies and the time trend to be evenly distributed across the year.\par\vspace{-1em}
-As Figure \ref{fig:cons_meters_time_series} shows, a weakness is that the monthly records for the number of flex-settled meters provides a lack which can result in an upward bias of $\hat{\beta}$.
+Where $nf$ is the number of flex-settled meters by month, $nr$ is the total number of meters for retail customers, and $\tau$ is a dummy for being in October-March in 2018.
+\bigskip\par
+To isolate the effect of the TOU tariff we need to assume that residual consumers do not react to the tariff so their consumption, on the contrary, is assumed to follow the same hour-by-day, hour-by-month, and week patterns as in previous years and that the effects of year dummies and the time trend are evenly distributed across the year.
+\par
+One weakness is that the monthly records for the number of flex-settled meters provides a lag which can result in an downward bias of $\widehat{\alpha}$ (if there is a negative effect of the tariff). This could possibly be improved by assuming a linear daily growth between $nf_{month}$ and $nf_{month+1}$.
 
 
 \subsection{Random Effects estimation}
 \label{subsec:e_re}
-Different candidates for panel data estimation
-\begin{itemize}
-    \item Least Squares Dummy Variables estimation (LSDV)
-    \begin{itemize}
-        \item Unobserved heterogeneity, $\psi_i>0$, leads to serial correlation
-    \end{itemize}
-    \item Fixed Difference estimation (FD)
-    \begin{itemize}
-        \item Strict exogeneity assumption, $cov(u_{it},\bm{x}_{it})=0$, is violated by hourly-patterns
-    \end{itemize}
-    \item Fixed Effects estimation (FE)
-    \begin{itemize}
-        \item Time-demeaned, too extreme
-    \end{itemize}
-    \item Dynamic Panel Estimation using Generalized Methods of Moments (GMM)
-    \begin{itemize}
-        \item Only necessary if including lagged prices as instruments
-    \end{itemize}
-\end{itemize}
-We choose the \textbf{Random Effects estimator (RE)} for wholesale consumption
-\begin{itemize}
-    \item Critical assumption for RE: No endogeneity, i.e. $cov(\psi_i,\bm{x}_{it})=0$.
-    \item Hausman test: $\hat{\beta_{RE}}=\hat{\beta_{FE}}$ no endogeneity, thus both RE and FE are consistent, but RE is more efficient.
-\end{itemize}
-Estimate RE estimation using \textbf{feasible Generalized Least Squares (fGLS)}
-\begin{itemize}
-    \item[\nth{1} stage:] Estimate eq. (\ref{eq:baseline}) using LSDV estimation $\rightarrow$ store $\hat{\lambda}=1-\left(\frac{\sigma^2_u}{\sigma^2_u+T\sigma^2_\alpha}\right)^\frac{1}{2}$
-    \item[\nth{2} stage:] LSDV using $\hat{\lambda}$ to estimate the quasi-time demeaned system of the form: $y_{it}-\hat{\lambda}\bar{y_i}=\beta_0(1-\hat{\lambda})+\beta_1(\bm{x}_{it}-\hat{\lambda}\bar{\bm{x}_i})+\psi_i(1-\hat{\lambda})+u_{it}-\hat{\lambda}u_{it}$.
-\end{itemize}
+Different candidates exists for panel data estimation with unobserved effects \citep{wooldridge2010econometric}. The simplest method is \textbf{pooled ordinary least squares (POLS)} and the corresponding \textbf{pooled two stage least squares} for instrumental variables (IV) estimation in he case of endogeneity issues, which we will use for one-grid estimations of our model (\ref{eq:baseline}). The number of meters is , however, the only grid-specific background variable we have available. Thus, for full-sample estimation it is likely that the presence of unobserved heterogeneity is not controlled for and therefore correlates with the set of controls such as having different industries or firm sizes regarding wholesale or different daily patterns for retail consumers. Even if the strict exogeneity condition holds:
+\begin{equation}
+  cov(c_i, x_{it})=0
+  \label{eq:exogeneity}
+\end{equation}
+then POLS would still result in serial correlation given that $c_i\neq0$, which is present in the composite error for each time period i.e. $cov(c_i+u_{it},c_i+u_{is})=\sigma_c^2>0$. Though we would still need to handle the serial correlation, a first step is to note that we regardless of estimation technique would need to use cluster robust standard errors for the full-sample estimation.
+\bigskip\par
+Though it is a common way to handle serial correlation, we hardly consider the \textbf{first-difference (FD)} estimation as the great presence of heteroscedasticity in terms of seasonality and daily and weekly patterns with occasional holidays underlines that there is no obvious suggestion for the length of $t-s$ that would not violate the critical assumption of \eqref{eq:exogeneity}. Furthermore, we see no signs of electricity consumption acting as a unit root process in figure \ref{fig:cons_hours}.
+\bigskip\par
+The consistent but somewhat inefficient approach is the \textbf{fixed effects (FE)} estimation as it does not assume strict exogeneity (\ref{eq:exogeneity}) due to performing a within transformation of all variables before estimating by POLS. Equivalently, \textbf{fixed effects instrumental variables (FEIV)} estimation is simply performed by within transforming both equation (\ref{eq:baseline}) and (\ref{eq:reduced}) and estimating this time-demeaned system by P2SLS. While the loss of time constant variables is a common flaw of FE estimation, we do not have any in our specification (\ref{eq:baseline}) except for $c_i$ that causes the serial correlation.
+\bigskip\par
+A less extreme approach is the \textbf{random effects (RE)} estimator that first within-transform our model (\ref{eq:baseline}) to run a FE estimation in order to compute:
+\begin{equation}
+  \widehat{\lambda}=1-\left(\frac{\sigma^2_u}{\sigma^2_u+T\sigma^2_c}\right)^\frac{1}{2}
+  \label{eq:lambda}
+\end{equation}
+Next we use the stored size of $\widehat{\lambda}$ to estimate the quasi-time demeaned system by \textbf{feasible Generalized Least Squares (fGLS)} estimation where $\overline{\bm{x}_i}$ is a vector with the time-average for each regressor:
+\begin{equation}
+    \begin{split}
+        y_{it}-\widehat{\lambda}\overline{y_i}&=\beta_0\left(1-\widehat{\lambda}\right)+\beta_1\left(\bm{x}_{it}-\widehat{\lambda}\overline{\bm{x}_i}\right)+\left(c_i-\widehat{\lambda}\overline{c_i}\right)+\left(u_{it}-\widehat{\lambda}\overline{u_i}\right) \\
+        &=\beta_0\left(1-\widehat{\lambda}\right)+\beta_1\left(\bm{x}_{it}-\widehat{\lambda}\overline{\bm{x}_i}\right)+c_i\left(1-\widehat{\lambda}\right)+u_{it}
+    \end{split}
+    \label{eq:fGLS}
+\end{equation}
+From equation \eqref{eq:lambda} it is clear that the FE estimator \eqref{eq:fGLS} goes towards the POLS estimator when unobserved heterogeneity is small, $\sigma_c^2\rightarrow0$ but goes towards the FE estimator when $T\sigma_c^2\rightarrow\infty$. As $T=26,300$ is an unusually large number of time periods we expect the term \eqref{eq:lambda} to indeed go towards infinity given some presence of unobserved heterogeneity, $c_i\neq0$. While the FE estimator never is efficient the RE estimator can be both consistent and efficient if $c_i$ is not endogenous in which case the standard errors $se\left(\widehat{\beta_{RE}}\right)<se\left(\widehat{\beta_{FE}}\right)$, thus, in choosing RE over FE the strict exogeneity assumption \eqref{eq:exogeneity} is critical and can be tested by the Hausman test statistic:
+\begin{equation}
+  W=\frac{\left(\widehat{\beta_{RE}}=\widehat{\beta_{FE}}\right)^2}
+         {var(\widehat{\beta_{RE}})=var(\widehat{\beta_{FE}})}
+         \stackrel{H_0}{\sim} \chi^2_1
+  \label{eq:hausman}
+\end{equation}
+Where the numerator is a measure for the consistency loss from choosing the RE over FE, while the denominator indicates the relative gains of efficiency from choosing RE over FE. Due to the high number of time periods $T$ and compositional differences between grid areas in terms of sociodemographics and firm characteristics, we expect $\widehat{\lamba}\rightarrow1$ in \eqref{eq:lambda}, thus, we should not expect to be able to reject the Hausman test, meaning that RE is more efficient than FE estimation.
+\par
+The \textbf{random effects instrumental variables (REIV)} estimator is a three-stage generalized IV (GIV) estimator where the first stages are basicly the FEIV estimaton for estimating the reduced form and $\widehat{\lamba}$ needed to perform a quasi-within-transformation of our model \eqref{eq:baseline}.
 
 \subsection{Robustness checks}
 \label{subsec:e_robustness}
-The robustness of the elasticity for wholesale electricity demand in the peak-hours 12-15 is tested by splitting the sample by region, year, and month respectively to look for heterogeneous effects. Furthermore, we run do the estimation for each grid area and for the mean of each price region using 2SLS. As the FE estimates are identical, however less efficient, we also try to weight the estimates by the number of wholesale meters in each grid.
-\medskip\\
+Robustness of the elasticity for wholesale electricity demand in the peak-hours 11-15 is tested by splitting the sample by price region, year, and month to look for heterogeneous effects. Furthermore, we estimate the equation (\ref{eq:baseline}) for each grid area using P2SLS.
+\par
+Likewise, we estimate the elasticity for retail electricity demand in the peak-hours 17-19 by price region and year, though consumers have no direct price incentive to react to hourly prices except for those that become flex-settled by 2018 where the .
+\bigskip\par
 Tests of the robustness of the effect of the TOU tariff is less straight forward. We try including the dummy constructed for Radius in estimation of retail electricity demand in different grids.

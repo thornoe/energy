@@ -1,8 +1,85 @@
+\section{Statistical tests}
+\label{app:statistical_tests}
 
+\subsection{Hausman test for endogeneity of unobserved effects}
+\label{app:hausman}
+\begin{table}[H]
+\centering
+\begin{threeparttable}
+  \caption{log wholesale electricity consumption, business days, hours 11-15 (FE, RE, FEIV, and REIV)}
+  \label{tab:ws_fe}
+  \footnotesize
+    \input{04_tables/ws_fe}
+    \begin{tablenotes}
+    \item Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.
+    \item Log spot price is instrumented for by wind power prognosis for the same region.
+  \end{tablenotes}
+\end{threeparttable}
+\end{table}
 
-\section{Testing for endogeneity}
-\label{app:endogeneity}
+\clearpage
 
+\subsection{Testing for homoscedasticity}
+\label{app:homoscedasticity}
+\begin{table}[H]
+\centering
+\begin{threeparttable}
+  \caption{log wholesale electricity consumption by grid, business days, hours 11-15 (POLS)}
+  \label{tab:ws_homoscedasticity}
+  \footnotesize
+    \input{04_tables/ws_homoscedasticity}
+    \begin{tablenotes}
+    \item (Robust) standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.
+    \item Grid number 131 is N1 (DK1) and grid number 791 is Radius (DK2).
+  \end{tablenotes}
+\end{threeparttable}
+\end{table}
 
-\section{Testing for overidentifying restrictions}
-\label{app:overidentifying}
+\clearpage
+
+\subsection{Validity of instruments (DK2)}
+\label{app:validity}
+
+\begin{table}[H]
+\begin{threeparttable}
+  \centering
+  \caption{Reduced form of log spot price for DK2, business days, hours 11-15 (POLS)}
+  \label{tab:reduced_form_price_dk2}
+  \footnotesize
+  \begin{tabular}{lcccc}
+         \input{04_tables/reduced_form_price_791}
+  \end{tabular}
+    \begin{tablenotes}
+        \item Robust standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.
+    \end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\clearpage
+
+\subsection{Testing for endogeneity and overidentifying restrictions}
+\label{app:endog_overid}
+\begin{table}[H]
+\centering
+\begin{threeparttable}
+  \caption{log wholesale electricity consumption for N1 (DK1), business days, hours 11-15}
+  \label{tab:ws_endog_overid_131}
+  \footnotesize
+    \input{04_tables/ws_endog_overid_131}
+    \begin{tablenotes}
+    \item Robust standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.
+  \end{tablenotes}
+\end{threeparttable}
+\end{table}
+\begin{table}[H]
+\centering
+\begin{threeparttable}
+  \caption{log wholesale electricity consumption for Radius (DK2), business days, hours 11-15}
+  \label{tab:ws_endog_overid_791}
+  \footnotesize
+    \input{04_tables/ws_endog_overid_791}
+    \begin{tablenotes}
+    \item Robust standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.
+  \end{tablenotes}
+\end{threeparttable}
+\end{table}

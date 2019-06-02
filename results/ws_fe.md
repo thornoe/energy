@@ -1,4 +1,4 @@
-**Table:** log wholesale electricity consumption by FE, RE, FEIV, and REIV<br>*Business days, hours 11-15. Baseline: year 2016 and each hour for December.*<br><html><table>
+**Table:** log wholesale electricity consumption, business days, hours 11-15 (FE, RE, FEIV, and REIV)<br>*Business days, hours 11-15. Baseline: year 2016 and each hour for December.*<br><html><table>
 <tr><td>                    </td><td>      (1) FE   </td><td>      (2) RE   </td><td>    (3) FEIV   </td><td>    (4) REIV   </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
 <tr><td>log spot price      </td><td>-0.0096***<br>(0.0028)   </td><td>-0.0096<br>(.)   </td><td>-0.0484***<br>(0.0163)   </td><td>-0.0484***<br>(0.0163)   </td></tr>
@@ -60,31 +60,31 @@
 <tr><td>week=49             </td><td>0.0094<br>(47.5706)   </td><td>-0.0640<br>(.)   </td><td>25.5477***<br>(2.2346)   </td><td>25.5664***<br>(2.2363)   </td></tr>
 <tr><td>week=50             </td><td>0.0010<br>(48.3203)   </td><td>-0.0725<br>(.)   </td><td>26.0810***<br>(2.2806)   </td><td>26.1002***<br>(2.2824)   </td></tr>
 <tr><td>week=51             </td><td>-0.0526<br>(41.8823)   </td><td>-0.1261<br>(.)   </td><td>26.5615***<br>(2.3234)   </td><td>26.5810***<br>(2.3252)   </td></tr>
-<tr><td>hour=11 # day_bd=1  </td><td>0.0000<br>(.)   </td><td>0.0524<br>(.)   </td><td>0.0000<br>(.)   </td><td>0.0000<br>(.)   </td></tr>
-<tr><td>hour=11 # day_bd=2  </td><td>0.0083<br>(0.1875)   </td><td>0.0607<br>(.)   </td><td>0.0849***<br>(0.0071)   </td><td>0.0849***<br>(0.0071)   </td></tr>
-<tr><td>hour=11 # day_bd=3  </td><td>0.0098<br>(0.4096)   </td><td>0.0622<br>(.)   </td><td>0.1609***<br>(0.0138)   </td><td>0.1610***<br>(0.0138)   </td></tr>
-<tr><td>hour=11 # day_bd=4  </td><td>0.0056<br>(.)   </td><td>0.0579<br>(.)   </td><td>0.2322***<br>(0.0200)   </td><td>0.2324***<br>(0.0200)   </td></tr>
-<tr><td>hour=11 # day_bd=5  </td><td>-0.0390<br>(.)   </td><td>0.0134<br>(.)   </td><td>0.2657***<br>(0.0243)   </td><td>0.2659***<br>(0.0243)   </td></tr>
-<tr><td>hour=12 # day_bd=1  </td><td>-0.0325***<br>(0.0036)   </td><td>0.0199<br>(.)   </td><td>-0.0337***<br>(0.0036)   </td><td>-0.0338***<br>(0.0036)   </td></tr>
-<tr><td>hour=12 # day_bd=2  </td><td>-0.0229<br>(0.0309)   </td><td>0.0295<br>(.)   </td><td>0.0533***<br>(0.0051)   </td><td>0.0533***<br>(0.0051)   </td></tr>
-<tr><td>hour=12 # day_bd=3  </td><td>-0.0230<br>(.)   </td><td>0.0294<br>(.)   </td><td>0.1271***<br>(0.0113)   </td><td>0.1271***<br>(0.0113)   </td></tr>
-<tr><td>hour=12 # day_bd=4  </td><td>-0.0286<br>(0.5485)   </td><td>0.0237<br>(.)   </td><td>0.1972***<br>(0.0176)   </td><td>0.1973***<br>(0.0176)   </td></tr>
-<tr><td>hour=12 # day_bd=5  </td><td>-0.1017<br>(0.1694)   </td><td>-0.0493<br>(.)   </td><td>0.2021***<br>(0.0198)   </td><td>0.2022***<br>(0.0198)   </td></tr>
-<tr><td>hour=13 # day_bd=1  </td><td>-0.0182***<br>(0.0024)   </td><td>0.0342<br>(.)   </td><td>-0.0188***<br>(0.0024)   </td><td>-0.0189***<br>(0.0024)   </td></tr>
-<tr><td>hour=13 # day_bd=2  </td><td>-0.0098<br>(0.1427)   </td><td>0.0426<br>(.)   </td><td>0.0660***<br>(0.0072)   </td><td>0.0659***<br>(0.0072)   </td></tr>
-<tr><td>hour=13 # day_bd=3  </td><td>-0.0113<br>(0.2720)   </td><td>0.0411<br>(.)   </td><td>0.1382***<br>(0.0134)   </td><td>0.1382***<br>(0.0134)   </td></tr>
-<tr><td>hour=13 # day_bd=4  </td><td>-0.0184<br>(0.4549)   </td><td>0.0340<br>(.)   </td><td>0.2065***<br>(0.0197)   </td><td>0.2066***<br>(0.0197)   </td></tr>
-<tr><td>hour=13 # day_bd=5  </td><td>-0.1482<br>(0.6498)   </td><td>-0.0958<br>(.)   </td><td>0.1545***<br>(0.0182)   </td><td>0.1546***<br>(0.0182)   </td></tr>
-<tr><td>hour=14 # day_bd=1  </td><td>-0.0512***<br>(0.0047)   </td><td>0.0012<br>(.)   </td><td>-0.0516***<br>(0.0047)   </td><td>-0.0517***<br>(0.0047)   </td></tr>
-<tr><td>hour=14 # day_bd=2  </td><td>-0.0426<br>(0.0555)   </td><td>0.0098<br>(.)   </td><td>0.0328***<br>(0.0067)   </td><td>0.0328***<br>(0.0067)   </td></tr>
-<tr><td>hour=14 # day_bd=3  </td><td>-0.0475<br>(0.3129)   </td><td>0.0049<br>(.)   </td><td>0.1016***<br>(0.0125)   </td><td>0.1016***<br>(0.0125)   </td></tr>
-<tr><td>hour=14 # day_bd=4  </td><td>-0.0554<br>(0.6528)   </td><td>-0.0030<br>(.)   </td><td>0.1695***<br>(0.0186)   </td><td>0.1695***<br>(0.0186)   </td></tr>
-<tr><td>hour=14 # day_bd=5  </td><td>-0.2356<br>(0.2471)   </td><td>-0.1833<br>(.)   </td><td>0.0658***<br>(0.0093)   </td><td>0.0660***<br>(0.0093)   </td></tr>
-<tr><td>hour=15 # day_bd=1  </td><td>-0.1246***<br>(0.0109)   </td><td>-0.0722<br>(.)   </td><td>-0.1238***<br>(0.0109)   </td><td>-0.1240***<br>(0.0110)   </td></tr>
-<tr><td>hour=15 # day_bd=2  </td><td>-0.1133<br>(0.1181)   </td><td>-0.0609<br>(.)   </td><td>-0.0372***<br>(0.0073)   </td><td>-0.0374***<br>(0.0073)   </td></tr>
-<tr><td>hour=15 # day_bd=3  </td><td>-0.1198<br>(.)   </td><td>-0.0674<br>(.)   </td><td>0.0316***<br>(0.0080)   </td><td>0.0315***<br>(0.0079)   </td></tr>
-<tr><td>hour=15 # day_bd=4  </td><td>-0.1263<br>(.)   </td><td>-0.0739<br>(.)   </td><td>0.0993***<br>(0.0123)   </td><td>0.0993***<br>(0.0123)   </td></tr>
-<tr><td>hour=15 # day_bd=5  </td><td>-0.3020<br>(0.6677)   </td><td>-0.2496<br>(.)   </td><td>0.0000<br>(.)   </td><td>0.0000<br>(.)   </td></tr>
+<tr><td>hour=11 # day_bd=1  </td><td>0.0000<br>(.)   </td><td>0.0523<br>(.)   </td><td>0.0000<br>(.)   </td><td>0.0000<br>(.)   </td></tr>
+<tr><td>hour=11 # day_bd=2  </td><td>0.0083<br>(0.1875)   </td><td>0.0606<br>(.)   </td><td>0.0849***<br>(0.0071)   </td><td>0.0849***<br>(0.0071)   </td></tr>
+<tr><td>hour=11 # day_bd=3  </td><td>0.0098<br>(0.4096)   </td><td>0.0620<br>(.)   </td><td>0.1609***<br>(0.0138)   </td><td>0.1610***<br>(0.0138)   </td></tr>
+<tr><td>hour=11 # day_bd=4  </td><td>0.0056<br>(.)   </td><td>0.0578<br>(.)   </td><td>0.2322***<br>(0.0200)   </td><td>0.2324***<br>(0.0200)   </td></tr>
+<tr><td>hour=11 # day_bd=5  </td><td>-0.0390<br>(.)   </td><td>0.0133<br>(.)   </td><td>0.2657***<br>(0.0243)   </td><td>0.2659***<br>(0.0243)   </td></tr>
+<tr><td>hour=12 # day_bd=1  </td><td>-0.0325***<br>(0.0036)   </td><td>0.0198<br>(.)   </td><td>-0.0337***<br>(0.0036)   </td><td>-0.0338***<br>(0.0036)   </td></tr>
+<tr><td>hour=12 # day_bd=2  </td><td>-0.0229<br>(0.0309)   </td><td>0.0294<br>(.)   </td><td>0.0533***<br>(0.0051)   </td><td>0.0533***<br>(0.0051)   </td></tr>
+<tr><td>hour=12 # day_bd=3  </td><td>-0.0230<br>(.)   </td><td>0.0293<br>(.)   </td><td>0.1271***<br>(0.0113)   </td><td>0.1271***<br>(0.0113)   </td></tr>
+<tr><td>hour=12 # day_bd=4  </td><td>-0.0286<br>(0.5485)   </td><td>0.0236<br>(.)   </td><td>0.1972***<br>(0.0176)   </td><td>0.1973***<br>(0.0176)   </td></tr>
+<tr><td>hour=12 # day_bd=5  </td><td>-0.1017<br>(0.1694)   </td><td>-0.0494<br>(.)   </td><td>0.2021***<br>(0.0198)   </td><td>0.2022***<br>(0.0198)   </td></tr>
+<tr><td>hour=13 # day_bd=1  </td><td>-0.0182***<br>(0.0024)   </td><td>0.0341<br>(.)   </td><td>-0.0188***<br>(0.0024)   </td><td>-0.0189***<br>(0.0024)   </td></tr>
+<tr><td>hour=13 # day_bd=2  </td><td>-0.0098<br>(0.1427)   </td><td>0.0425<br>(.)   </td><td>0.0660***<br>(0.0072)   </td><td>0.0659***<br>(0.0072)   </td></tr>
+<tr><td>hour=13 # day_bd=3  </td><td>-0.0113<br>(0.2720)   </td><td>0.0410<br>(.)   </td><td>0.1382***<br>(0.0134)   </td><td>0.1382***<br>(0.0134)   </td></tr>
+<tr><td>hour=13 # day_bd=4  </td><td>-0.0184<br>(0.4549)   </td><td>0.0339<br>(.)   </td><td>0.2065***<br>(0.0197)   </td><td>0.2066***<br>(0.0197)   </td></tr>
+<tr><td>hour=13 # day_bd=5  </td><td>-0.1482<br>(0.6498)   </td><td>-0.0959<br>(.)   </td><td>0.1545***<br>(0.0182)   </td><td>0.1546***<br>(0.0182)   </td></tr>
+<tr><td>hour=14 # day_bd=1  </td><td>-0.0512***<br>(0.0047)   </td><td>0.0011<br>(.)   </td><td>-0.0516***<br>(0.0047)   </td><td>-0.0517***<br>(0.0047)   </td></tr>
+<tr><td>hour=14 # day_bd=2  </td><td>-0.0426<br>(0.0555)   </td><td>0.0096<br>(.)   </td><td>0.0328***<br>(0.0067)   </td><td>0.0328***<br>(0.0067)   </td></tr>
+<tr><td>hour=14 # day_bd=3  </td><td>-0.0475<br>(0.3129)   </td><td>0.0048<br>(.)   </td><td>0.1016***<br>(0.0125)   </td><td>0.1016***<br>(0.0125)   </td></tr>
+<tr><td>hour=14 # day_bd=4  </td><td>-0.0554<br>(0.6528)   </td><td>-0.0031<br>(.)   </td><td>0.1695***<br>(0.0186)   </td><td>0.1695***<br>(0.0186)   </td></tr>
+<tr><td>hour=14 # day_bd=5  </td><td>-0.2356<br>(0.2471)   </td><td>-0.1834<br>(.)   </td><td>0.0658***<br>(0.0093)   </td><td>0.0660***<br>(0.0093)   </td></tr>
+<tr><td>hour=15 # day_bd=1  </td><td>-0.1246***<br>(0.0109)   </td><td>-0.0723<br>(.)   </td><td>-0.1238***<br>(0.0109)   </td><td>-0.1240***<br>(0.0110)   </td></tr>
+<tr><td>hour=15 # day_bd=2  </td><td>-0.1133<br>(0.1181)   </td><td>-0.0610<br>(.)   </td><td>-0.0372***<br>(0.0073)   </td><td>-0.0374***<br>(0.0073)   </td></tr>
+<tr><td>hour=15 # day_bd=3  </td><td>-0.1198<br>(.)   </td><td>-0.0675<br>(.)   </td><td>0.0316***<br>(0.0080)   </td><td>0.0315***<br>(0.0079)   </td></tr>
+<tr><td>hour=15 # day_bd=4  </td><td>-0.1263<br>(.)   </td><td>-0.0740<br>(.)   </td><td>0.0993***<br>(0.0123)   </td><td>0.0993***<br>(0.0123)   </td></tr>
+<tr><td>hour=15 # day_bd=5  </td><td>-0.3020<br>(0.6677)   </td><td>-0.2497<br>(.)   </td><td>0.0000<br>(.)   </td><td>0.0000<br>(.)   </td></tr>
 <tr><td>hour=11 # month=1   </td><td>0.0000<br>(.)   </td><td>-0.0725<br>(.)   </td><td>0.0000<br>(.)   </td><td>0.0000<br>(.)   </td></tr>
 <tr><td>hour=11 # month=2   </td><td>0.0051<br>(0.0109)   </td><td>-0.0673<br>(.)   </td><td>0.0035<br>(0.0108)   </td><td>0.0036<br>(0.0108)   </td></tr>
 <tr><td>hour=11 # month=3   </td><td>0.0102<br>(0.0117)   </td><td>-0.0622<br>(.)   </td><td>0.0100<br>(0.0117)   </td><td>0.0101<br>(0.0117)   </td></tr>
@@ -142,9 +142,9 @@
 <tr><td>hour=15 # month=11  </td><td>0.0144<br>(0.0108)   </td><td>0.0146<br>(.)   </td><td>0.0304**<br>(0.0125)   </td><td>0.0307**<br>(0.0125)   </td></tr>
 <tr><td>week=52             </td><td>        <br>   </td><td>0.0000<br>(.)   </td><td>        <br>   </td><td>        <br>   </td></tr>
 <tr><td>week=53             </td><td>        <br>   </td><td>0.0000<br>(.)   </td><td>        <br>   </td><td>        <br>   </td></tr>
-<tr><td>_cons               </td><td>2.0495***<br>(0.3801)   </td><td>1.9343<br>(.)   </td><td>2.4652***<br>(0.2348)   </td><td>2.3288***<br>(0.2985)   </td></tr>
+<tr><td>_cons               </td><td>2.0495***<br>(0.3801)   </td><td>1.9344<br>(.)   </td><td>2.4652***<br>(0.2348)   </td><td>2.3288***<br>(0.2985)   </td></tr>
 <tr><td>R&sup2 within       </td><td>      0.3686   </td><td>      0.3686   </td><td>      0.3612   </td><td>      0.3614   </td></tr>
 <tr><td>R&sup2 between      </td><td>      0.9485   </td><td>      0.9485   </td><td>      0.9494   </td><td>      0.9492   </td></tr>
 <tr><td>Number of groups    </td><td>          48   </td><td>          48   </td><td>          48   </td><td>          48   </td></tr>
 <tr><td>Obs. per group      </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td></tr>
-</table>Cluster robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>
+</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>

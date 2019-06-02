@@ -24,12 +24,13 @@
 
 \small {
 \tableofcontents
-\listoffigures
-\listoftables
+%\listoffigures
+%\listoftables
 %\printacronyms[include-classes=abbrev,name=Abbreviations, heading=chapter*]
 }
 \clearpage
 \pagestyle{scrheadings}
+\normalsize
 
 \section{Introduction}
 \input{02_chapters/01_introduction}
@@ -37,7 +38,7 @@
 \section{Literature review}
 \input{02_chapters/02_background}
 
-\section{Economic theory/En anden titel}
+\section{The electricity market}
 \input{02_chapters/03_theory}
 
 \section{Data and variables}
@@ -57,16 +58,23 @@
 \clearpage
 
 \appendix
-\renewcommand\thefigure{\thesection.\arabic{figure}}
-\setcounter{figure}{0}
 \setcounter{page}{1}
 \pagenumbering{roman}
+% \renewcommand\thefigure{\thesection.\arabic{figure}}
+% \renewcommand\thetable{\thesection.\arabic{figure}}
+% \setcounter{figure}{0}
+% \setcounter{table}{0}
 
 \input{02_chapters/A_appendix}
 \clearpage
 \input{02_chapters/B_appendix}
 \clearpage
 \input{02_chapters/C_appendix}
+\clearpage
+\input{02_chapters/D_appendix}
+\clearpage
+\input{02_chapters/E_appendix}
+\clearpage
 
 
 \end{document}

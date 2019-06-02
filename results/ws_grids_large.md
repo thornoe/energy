@@ -145,4 +145,4 @@
 <tr><td>_cons               </td><td>1.8415**<br>(0.7941)   </td><td>-0.9462***<br>(0.3069)   </td><td>-19.9243***<br>(4.3104)   </td><td>3.4937***<br>(0.6679)   </td><td>9.5604***<br>(0.4076)   </td></tr>
 <tr><td>Adj. R&sup2         </td><td>      0.8649   </td><td>      0.8125   </td><td>      0.8062   </td><td>      0.6474   </td><td>      0.8613   </td></tr>
 <tr><td>Observations        </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td></tr>
-</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>
+</table>Robust standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>

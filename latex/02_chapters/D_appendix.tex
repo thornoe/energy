@@ -1,0 +1,31 @@
+\section{Robustness checks for wholesale consumption}
+\label{app:robustness_wholesale}
+\begin{table}[H]
+\centering
+\begin{threeparttable}
+  \caption{log wholesale electricity consumption by region/year, business days, hours 11-15 (REIV)}
+  \label{tab:ws_region_year}
+  \footnotesize
+    \input{04_tables/ws_region_year}
+    \begin{tablenotes}
+    \item Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.
+    \item Log spot price is instrumented for by wind power prognosis for the same region.
+  \end{tablenotes}
+\end{threeparttable}
+\end{table}
+\begin{landscape}
+\begin{table}[H]
+\centering
+\begin{threeparttable}
+  \caption{log wholesale electricity consumption for each of the five larges grid companies (P2SLS)}
+  \label{tab:ws_grids_large}
+  \footnotesize
+    \input{04_tables/ws_grids_large}
+    \begin{tablenotes}
+    \item Robust standard errors are in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.
+    \item Log spot price is instrumented for by wind power prognosis for the same region.
+  \end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\end{landscape}

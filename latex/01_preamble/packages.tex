@@ -27,6 +27,8 @@
 %customized line spacing
 \usepackage{setspace}
 \setstretch{1.5} % line spacing
+% \setlength{\textfloatsep}{2pt plus 2pt minus 2pt} % space left between floats
+% \setlength{\textfloatsep}{10pt plus 2pt minus 4pt} % space between text and float
 \usepackage{enumitem} % e.g. Less space: \begin{itemize}[noitemsep]
 
 %Inclusion of pdf's
@@ -63,11 +65,12 @@
 \usepackage{multicol}
 \usepackage{pdfpages}
 \usepackage{kbordermatrix}% http://www.hss.caltech.edu/~kcb/TeX/kbordermatrix.sty
+\usepackage{lscape}
 
 % Tables, figures
 \usepackage{booktabs} %Create publication quality tables
 \usepackage{tabularx}
-\usepackage{threeparttable}
+\usepackage[referable]{threeparttablex}
 \usepackage{siunitx}
 \usepackage[figuresright]{rotating}
 \usepackage{subcaption}

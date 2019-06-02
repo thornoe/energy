@@ -302,7 +302,9 @@ for df in df_list:
     df.plot(kind='line', ax=ax1, y='wp_DK1', label='Wind power prognosis, DK1 (LHS)', linestyle='solid', color=color_left)
     df.plot(kind='line', ax=ax1, y='wp_DK2', label='Wind power prognosis, DK2 (LHS)', linestyle='dashed', color='#74c476')
     # df.plot(kind='line', ax=ax1, y='wp_se', label='Wind power prognosis, Sweden (LHS)', linestyle='dotted', color='#a1d99b')
-    ax1.set_ylim(0)
+    if df.name == 'weekdays':
+        ax1.set_ylim([0,1400])
+        ax1.grid(axis='both')
     ax1.tick_params(axis='y', labelcolor=color_left)
     plt.legend(bbox_to_anchor=(.0, 1.02, .49, 1), # bbox=(x, y, width, height)
                loc='lower left', ncol=1, mode="expand", borderaxespad=0.)
@@ -311,6 +313,8 @@ for df in df_list:
     ax2.set_ylabel('spot price, DKK/MWh', color=color_right)
     df.plot(kind='line', ax=ax2, y='p_DK1', label='Spot price, DK1 (RHS)', linestyle='solid', color=color_right)
     df.plot(kind='line', ax=ax2, y='p_DK2', label='Spot price, DK2 (RHS)', linestyle='dashed', color='#fd8d3c')
+    if df.name == 'weekdays':
+        ax2.set_ylim([0,350])
     ax2.tick_params(axis='y', labelcolor=color_right)
     plt.legend(bbox_to_anchor=(.51, 1.02, .49, 1), # bbox=(x, y, width, height)
                loc='lower left', ncol=1, mode="expand", borderaxespad=0.)
