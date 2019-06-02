@@ -21,7 +21,7 @@ global results	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\results"
 /* 	'omit' is ignored during the 1st stage of P2SLS nor G2SLS, thus, for consistent
 	 interpretation we need to control how multicollinearity is avoided */
 * Wholesale:
-global x_w "n_w temp* trend i.year i.week" // daytime only relevant shoulder or off-peak
+global x_w "n_w temp* trend i.year i.week" // daytime only relevant for shoulder and off-peak
 * Retail:
 global x_hh "n_hh temp* daytime trend i.year i.week"
 * Interaction terms for relevant hours (omitting interactions with december)
@@ -772,10 +772,10 @@ qui foreach d in 0 1 {
 }
 estout bd1* using "r_hour_bd.xls", replace ///
 	label cells( b(fmt(4)) se(par fmt(4)) ) ///
-	drop(*.* s_tout oct_mar n_w temp* daytime trend _cons)
+	drop(*.* s_tout oct_mar n_hh temp* daytime trend _cons)
 estout bd0* using "r_hour_nbd.xls", replace ///
 	label cells( b(fmt(4)) se(par fmt(4)) ) ///
-	drop(*.* s_tout oct_mar n_w temp* daytime trend _cons)
+	drop(*.* s_tout oct_mar n_hh temp* daytime trend _cons)
 estout bd1* using $results/r_hour_bd.md, style(html) replace ///
 	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///

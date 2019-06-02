@@ -1,5 +1,5 @@
 **Table:** Testing for homoscedasticity, log wholesale electricity consumption, business days, hours 11-15 (POLS)<br>*Grid 131 is N1 (DK1), grid 791 is Radius (DK2)*<br>Baseline: year 2016 and each hour for December.<br><html><table>
-<tr><td>                    </td><td>(1) 131: non-robust s.e.   </td><td>(2) 131: robust s.e.   </td><td>(3) 791: non-robust s.e.   </td><td>(4) 791: robust s.e.   </td></tr>
+<tr><td>                    </td><td>(1) 131: s.e.   </td><td>(2) 131: robust s.e.   </td><td>(3) 791: s.e.   </td><td>(4) 791: robust s.e.   </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
 <tr><td>log spot price      </td><td>-0.0089***<br>(0.0014)   </td><td>-0.0089***<br>(0.0017)   </td><td>-0.0039***<br>(0.0010)   </td><td>-0.0039***<br>(0.0009)   </td></tr>
 <tr><td>log wholesale meters</td><td>0.5673***<br>(0.0873)   </td><td>0.5673***<br>(0.0864)   </td><td>-0.2972***<br>(0.0459)   </td><td>-0.2972***<br>(0.0426)   </td></tr>
