@@ -18,6 +18,7 @@ data.drop(['wp', 'wp_other', 'n_w', 'n_f', 'n_r', 'n_r', 'n_hh', 'n_t', 'name',\
            's_tout', 'oct_mar'], axis=1, inplace=True)
 data.columns.values
 
+
 # Subset data
 business_days = data[data['bd']==1] # df for business days excluding holidays
 tue_thu = business_days[(business_days.day !=1) & (business_days.day !=5)]
