@@ -118,4 +118,4 @@
 <tr><td>_cons               </td><td>28.8555**<br>(11.8861)   </td><td>24.8453*<br>(12.7170)   </td><td>1.7345<br>(23.2501)   </td></tr>
 <tr><td>Adj. R&sup2         </td><td>      0.9462   </td><td>      0.9587   </td><td>      0.9297   </td></tr>
 <tr><td>Observations        </td><td>       3,288   </td><td>       2,205   </td><td>       1,083   </td></tr>
-</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>
+</table>Robust standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for DK2.</html>

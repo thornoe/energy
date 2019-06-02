@@ -151,4 +151,4 @@
 <tr><td>p-val, overidentifying restrictions</td><td>               </td><td>               </td><td>               </td><td>      0.0001   </td></tr>
 <tr><td>N*R&sup2            </td><td>      0.8635   </td><td>      0.8649   </td><td>      0.8698   </td><td>      0.8622   </td></tr>
 <tr><td>p-val               </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td></tr>
-</table>Robust standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: year 2016 and each hour for December.</html>
+</table>Robust standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: year 2016 and each hour for December.</html>

@@ -307,7 +307,7 @@ est clear
 xtreg e_w p $x_w $x_11_15 ///
 	if bd==1 & inrange(hour,11,15), fe vce(cluster grid)
 est store fe, title("FE")
-qui xtreg e_w p $x_w $x_11_15 ///
+xtreg e_w p $x_w $x_11_15 ///
 	if bd==1 & inrange(hour,11,15), re vce(cluster grid)
 est store re, title("RE")
 xtivreg e_w (p = c.wp#DK1) $x_w $x_11_15 ///
@@ -359,7 +359,7 @@ qui foreach i in 131 791 {
 	estadd scalar hettest = r(chi2)
 	estadd scalar hetdf = r(df)
 	estadd scalar hetp = r(p)
-	est store non_robust_`i', title("`i': non-robust s.e.")
+	est store non_robust_`i', title("`i': s.e.")
 	matrix A_`i' = r(mtest)
 	/*
 	The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity
@@ -421,16 +421,16 @@ estadd scalar f3_p = r(p)
 test wp_other = wp_se = 0
 estadd scalar f2 = r(F)
 estadd scalar f2_p = r(p)
-est store a_131, title("Price DK1")
+est store a_131, title("3 instruments")
 qui reg p wp wp_other $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
 test wp = wp_other = 0
 estadd scalar f2 = r(F)
 estadd scalar f2_p = r(p)
-est store b_131, title("Price DK1")
+est store b_131, title("DK1 and DK2")
 qui reg p wp $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
-est store c_131, title("Price DK1")
+est store c_131, title("DK1")
 qui reg p $x_w $x_11_15 if grid==131 & bd==1 & inrange(hour,11,15), robust
-est store d_131, title("Price DK1")
+est store d_131, title("None")
 * DK2:
 qui reg p wp wp_other wp_se $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
 test wp = wp_other = wp_se = 0
@@ -439,16 +439,16 @@ estadd scalar f3_p = r(p)
 test wp_other = wp_se = 0
 estadd scalar f2 = r(F)
 estadd scalar f2_p = r(p)
-est store a_791, title("Price DK2")
+est store a_791, title("3 instruments")
 qui reg p wp wp_se $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
 test wp = wp_se = 0
 estadd scalar f2 = r(F)
 estadd scalar f2_p = r(p)
-est store b_791, title("Price DK2")
+est store b_791, title("DK2 and SE")
 qui reg p wp $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
-est store c_791, title("Price DK2")
-qui reg p wp $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
-est store d_791, title("Price DK2")
+est store c_791, title("DK2")
+qui reg p $x_w $x_11_15 if grid==791 & bd==1 & inrange(hour,11,15), robust
+est store d_791, title("None")
 
 estout _all using "reduced_form_price.xls", replace ///
 	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
