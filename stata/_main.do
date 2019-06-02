@@ -237,19 +237,19 @@ estout _all using $results/ws_month.md, style(html) replace ///
 est clear
 qui ivregress 2sls e_w (p = wp) $x_w $x_11_15 ///
 	if grid==131 & bd==1 & inrange(hour,11,15), robust
-est store peak_131, title("N1 DK1")
+est store peak_131, title("N1 (DK1)")
 qui ivregress 2sls e_w (p = wp) $x_w $x_11_15 ///
 	if grid==151 & bd==1 & inrange(hour,11,15), robust
-est store peak_151, title("Konstant DK1")
+est store peak_151, title("Konstant (DK1)")
 qui ivregress 2sls e_w (p = wp) $x_w $x_11_15 ///
 	if grid==344 & bd==1 & inrange(hour,11,15), robust
-est store peak_344, title("Evonet DK1")
+est store peak_344, title("Evonet (DK1)")
 qui ivregress 2sls e_w (p = wp) $x_w $x_11_15 ///
 	if grid==740 & bd==1 & inrange(hour,11,15), robust
-est store peak_740, title("Cerius DK2")
+est store peak_740, title("Cerius (DK2)")
 qui ivregress 2sls e_w (p = wp) $x_w $x_11_15 ///
 	if grid==791 & bd==1 & inrange(hour,11,15), robust
-est store peak_791, title("Radius DK2")
+est store peak_791, title("Radius (DK2)")
 
 estout _all using "ws_grids_large.xls", replace ///
 	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
@@ -332,7 +332,7 @@ estout _all using $results/ws_fe.md, style(html) replace ///
 	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 %12.0gc) labels("R&sup2 within" "R&sup2 between" "Number of groups" "Obs. per group") ) ///
-	prehead("**Table:** log wholesale electricity consumption by FE, RE, FEIV, and REIV<br>*Business days, hours 11-15. Baseline: year 2016 and each hour for December.*<br><html><table>") ///
+	prehead("**Table:** log wholesale electricity consumption, business days, hours 11-15 (FE, RE, FEIV, and REIV)<br>*Business days, hours 11-15. Baseline: year 2016 and each hour for December.*<br><html><table>") ///
 	postfoot("</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>")
 
 	
@@ -384,11 +384,11 @@ estout _all using "ws_homoscedasticity.xls", replace ///
 	label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(hettest hetdf hetp r2 r2_a N, fmt(0 0 3 3 3 %12.0gc) )
-estout _all using $latex/reduced_form_price_`i'.tex, style(tex) replace ///
+estout _all using $latex/ws_homoscedasticity.tex, style(tex) replace ///
 		label cells( b(star fmt(4)) se(par fmt(4)) ) ///
 		starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 		indicate("Time variables=*.*") drop(trend _cons) ///
-		stats(hettest hetdf hetp r2 r2_a N, fmt(1 0 3 3 3 %12.0gc) labels("Chi&sup2" "DF" "Adj. p-val" "R&sup2" "Adj. R&sup2" "Observations") ) ///
+		stats(hettest hetdf hetp r2 r2_a N, fmt(1 0 3 3 3 %12.0gc) labels("\(chi^2\)" "DF" "Adj. p-val" "\(R^2\)" "Adj. \(R^2\)" "Observations") ) ///
 		prehead("\begin{tabular}{lcccc}\toprule") posthead("\midrule") ///
 		prefoot("\midrule") postfoot("\bottomrule\end{tabular}")
 estout _all using "$results/ws_homoscedasticity.md", style(html) replace ///
@@ -396,7 +396,7 @@ estout _all using "$results/ws_homoscedasticity.md", style(html) replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(hettest hetdf hetp r2 r2_a N, fmt(1 0 3 3 3 %12.0gc) labels("\(\chi^2\)" "DF" "Adj. p-val" "\(R^2\)" "Adj. \(R^2\)" "Observations") ) ///
 	prehead("**Table:** Testing for homoscedasticity, log wholesale electricity consumption, business days, hours 11-15 (POLS)<br>*Grid 131 is N1 (DK1), grid 791 is Radius (DK2)*<br>Baseline: year 2016 and each hour for December.<br><html><table>") ///
-	postfoot("</table>Standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2, DF, and Adj. p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.</html>")
+	postfoot("</table>(robust) standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2, DF, and Adj. p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.</html>")
 mat A1 = A_131[1..., 1]
 mat A2 = A_131[1..., 4]
 mat A3 = A_791[1..., 1]
@@ -703,7 +703,7 @@ qui xtivreg e_hh (p = c.wp#DK1) s_tout oct_mar $x_hh $x_17_19 ///
 	if bd==1 & inrange(hour,17,19), re vce(cluster grid)
 est store bd, title("Business day")
 qui xtivreg e_hh (p = c.wp#DK1) s_tout oct_mar $x_hh $x_17_19 ///
-	if bd==1 & inrange(hour,17,19), re vce(cluster grid)
+	if bd==0 & inrange(hour,17,19), re vce(cluster grid)
 est store nbd, title("Non-business day")
 qui xtivreg e_hh (p = wp) $x_hh $x_17_19 ///
 	if DK1==1 & inrange(hour,17,19), re vce(cluster grid)
@@ -721,7 +721,7 @@ estout _all using $latex/r_region.tex, style(tex) replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 %12.0gc) labels("\(R^2\) within" "\(R^2\) between" "Number of groups" "Obs. per group") ) ///
-	prehead("\begin{tabular}{lccc}\toprule") posthead("\midrule") ///
+	prehead("\begin{tabular}{lccccc}\toprule") posthead("\midrule") ///
 	prefoot("\midrule") postfoot("\bottomrule\end{tabular}")	
 estout _all using $results/r_region.md, style(html) replace ///
 	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
@@ -751,7 +751,7 @@ estout _all using $latex/r_year.tex, style(tex) replace ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	indicate("Time variables=*.*") drop(trend _cons) ///
 	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 %12.0gc) labels("\(R^2\) within" "\(R^2\) between" "Number of groups" "Obs. per group") ) ///
-	prehead("\begin{tabular}{lccccc}\toprule") posthead("\midrule") ///
+	prehead("\begin{tabular}{lccc}\toprule") posthead("\midrule") ///
 	prefoot("\midrule") postfoot("\bottomrule\end{tabular}")	
 estout _all using $results/r_year.md, style(html) replace ///
 	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
@@ -763,17 +763,28 @@ estout _all using $results/r_year.md, style(html) replace ///
 
 *** by hour ***
 est clear
-qui foreach h of numlist 0/23 {
-	qui xtivreg e_hh (p = c.wp#DK1) s_tout oct_mar $x_hh $x_17_19 ///
-		if hour==`h', re vce(cluster grid)
-	est store h`h', title("`h'")
+qui foreach d in 0 1 {
+	foreach h of numlist 0/23 {
+		qui xtivreg e_hh (p = c.wp#DK1) s_tout oct_mar $x_hh $x_17_19 ///
+			if bd==`d' & hour==`h', re vce(cluster grid)
+		est store bd`d'_h`h', title("`h'")
+	}
 }
-estout _all using "r_hour.xls", replace ///
+estout bd1* using "r_hour_bd.xls", replace ///
 	label cells( b(fmt(4)) se(par fmt(4)) ) ///
-	drop(*.* s_tout oct_mar n_w temp* trend _cons)
-estout _all using $results/r_hour.md, style(html) replace ///
+	drop(*.* s_tout oct_mar n_w temp* daytime trend _cons)
+estout bd0* using "r_hour_nbd.xls", replace ///
+	label cells( b(fmt(4)) se(par fmt(4)) ) ///
+	drop(*.* s_tout oct_mar n_w temp* daytime trend _cons)
+estout bd1* using $results/r_hour_bd.md, style(html) replace ///
 	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
 	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
 	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 %12.0gc) labels("R&sup2 within" "R&sup2 between" "Number of groups" "Obs. per group") ) ///
-	prehead("**Table:** log retail electricity consumption by hour (REIV)<br>*Baseline: December.*<br><html><table>") ///
+	prehead("**Table:** log retail electricity consumption by hour (REIV)<br>*Business days. Baseline: December.*<br><html><table>") ///
+	postfoot("</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>")
+estout bd1* using $results/r_hour_nbd.md, style(html) replace ///
+	label cells( b(star fmt(4)) & se(par fmt(4)) ) incelldelimiter(<br>) ///
+	starlevels(* .10 ** .05 *** .01) mlabels(,titles numbers) ///
+	stats(r2_w r2_b N_g g_avg, fmt(4 4 0 %12.0gc) labels("R&sup2 within" "R&sup2 between" "Number of groups" "Obs. per group") ) ///
+	prehead("**Table:** log retail electricity consumption by hour (REIV)<br>*Business days. Baseline: December.*<br><html><table>") ///
 	postfoot("</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>")
