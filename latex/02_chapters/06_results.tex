@@ -2,7 +2,7 @@
 % Consequences and implications for the public policy from different expected results.
 \subsection{Results for wholesale}
 \label{subsec:r_wholesale}
-For wholesale consumers the baseline specification (\ref{eq:baseline}) is first estimated separately for each hour of the business day to identify peak, off-peak, and the shoulder hours. Based on these the peak-period is defined as the five consecutive hours 11am-3pm for which the estimated elasticity $\hat{\varepsilon}$ is below $-.045$, wile the off-peak period is defined as the five consecutive hours 12am-4am where $\hat{\varepsilon}$ is greater than $-.030$. The hours on each side of these intervals are classified as shoulder periods. For non-business days none of these classifications are used because the estimated elasticities do not vary much, they are all of small small magnitude ($\hat{\varepsilon}\geq-.03$)  and even insignificant for several hours of the day.
+For wholesale consumers the baseline specification \eqref{eq:baseline} is first estimated separately for each hour of the business day to identify peak, off-peak, and the shoulder hours. Based on these the peak-period is defined as the five consecutive hours 11-15 (11am-3pm) for which the estimated elasticity $\widehat{\varepsilon}$ is below $-.045$, wile the off-peak period is defined as the five consecutive hours 00-04 (12am-4am) where $\widehat{\varepsilon}$ is greater than $-.030$. The hours on each side of these intervals are classified as shoulder periods. For non-business days none of these classifications are used because the estimated elasticities do not vary much, they are all of small magnitude ($\widehat{\varepsilon}\geq-.03$)  and even insignificant for several hours of the day.
 
 \begin{table}[H]
 \begin{threeparttable}
@@ -18,10 +18,10 @@ For wholesale consumers the baseline specification (\ref{eq:baseline}) is first 
 \end{threeparttable}
 \end{table}
 \noindent
-For the peak-hours 11-15 on business days wholesale of electricity is estimated to decrease with 5 percent when the spot price doubles all other things equal, as can be noted from column 1 in table \ref{tab:ws_preferred}. The difference between business and non-business days is quite outspoken; wholesale consumers are 1,5 times as responsive at peak on business-days compared to the average on non-business days. Weather and daytime controls also have significant effect on energy consumption. An increase in temperature of  $1^{\circ}$C translates into a small decrease of 0.3 percent lower electricity consumption - except at extreme temperatures (cold or warm) where consumption increases slightly.   
+For the peak-hours 11-15 on business days wholesale of electricity is estimated to decrease with 5 percent when the spot price doubles all other things equal, as can be noted from column 1 in table \ref{tab:ws_preferred}. The difference between business and non-business days is quite outspoken; wholesale consumers are 1.5 times as responsive at peak on business-days compared to the average on non-business days. Weather and daytime controls also have significant effect on energy consumption in the expected direction. An increase in temperature of  $1^{\circ}$C translates into a small decrease of 0.3 percent lower electricity consumption - except at extreme temperatures (cold or warm) where consumption increases slightly more.
 
 \subsection{Results for households and small companies}
-The estimation of \eqref{eq:baseline} is reported below in table \ref{tab:r_region}. Pooling across all days we find that a 100 percent increase in the spot price causes a decrease consumption of about 2.75 percent - which appears to be driven by reductions on business days. This suggests that people may be less willing to shift  either may be less. oive on .. The overall electricity elasticity is
+The estimation of \eqref{eq:baseline} is reported below in table \ref{tab:r_region}. Pooling across all days we find that a 100 percent increase in the spot price causes a decrease consumption of about 2.75 percent - which appears to be driven by reductions on business days. Given that for the full duration of the time period the majority of consumers pay a fixed price it is a relatively surprising how responsive the consumption of households and small firms are compared to that of wholesale consumers. One possible explanation for why this may be is that residential consumers are likely to be more homogeneous. This is in line with the smaller magnitude of the standard errors for the estimated elasticity.
 \label{subsec:r_households}
 \begin{table}[H]
 \begin{threeparttable}
@@ -36,12 +36,13 @@ The estimation of \eqref{eq:baseline} is reported below in table \ref{tab:r_regi
   \end{tablenotes}
 \end{threeparttable}
 \end{table}
-%It may be surprising that we find such
-%Kommenter - clustering på 9 grids er måske lidt lidt... 
-Daytime => leisurely activities very weather dependent and the part of consumption that may most easily be altered . 
-\medskip
+//There is a relatively large consumption decrease associated with "daytime" where daylight implies a decrease in consumption of about 4 percent. This can be because many non-electricity consuming leisure activities are weather/light dependent. It is also worth noting that the TOU-effects are larger on non-business days where it can be easier to alter consumption patterns simply because there are more non-work hours free to shift consumption to. In Radius the TOU-effect almost cancel out the additional use of electricity in the months between October and March.  
+%Er der mere klogt at sige om de estimater?? /C
 
-We examine the grid company Radius separately. Radius operates in the Copenhagen metropolitan and its flex-settled customers (households and small companies) are charged a Time-of-Use (TOU) tariff of 0.835 DKK (0.112 EUR) for the hours 17-19 from October until March and 0.3236 DKK (0.043 EUR) otherwise. The estimated effect of this tariff is found to be a decrease in electricity demand of 1.9 percent when the spot price doubles. However, on business days the smaller effect of 1.4 percent is only statistically significant at the 10\% level while the decrease is 4.4 percent. on non-business days. Table \ref{tab:r_radius} shows pooled 2SLS estimates of electricity consumption for households and small companies in Radius for the hours 17, 18, and 19. The estimation results also show a small elasticity for the hourly spot price which is instrumented for by wind power prognosis for DK2 and DK1. This is despite that for two of the three years none of the consumers pay the spot market price rather than a fixed price. %Jeg har ændret da man jo betaler for andet end bare gennemsnitsprisen ligesom det er forskelligt om du betaler gns. af kvartal eller året. 
+%More homogenous consumers => mainly residential. 
+%Kommenter - clustering på 9 grids er måske lidt lidt... -> Driver at vi opnår så lavt et resultat  
+\subsubsection{Results for Radius}
+We examine the grid company Radius separately. Radius operates in the Copenhagen metropolitan and its flex-settled customers (households and small companies) are charged a Time-of-Use (TOU) tariff of 0.835 DKK (0.112 EUR) for the hours 17-19 from October until March and 0.3236 DKK (0.043 EUR) otherwise. The estimated effect of this tariff is found to be a decrease in electricity demand of 1.9 percent when the spot price doubles. However, on business days the smaller effect of 1.4 percent is only statistically significant at the 10\% level while the decrease is 4.4 percent. on non-business days. Table \ref{tab:r_radius} shows pooled 2SLS estimates of electricity consumption for households and small companies in Radius for the hours 17, 18, and 19. The estimation results also show a small elasticity for the hourly spot price which is instrumented for by wind power prognosis for DK2 and DK1. This is despite that for two of the three years none of the consumers pay the spot market price rather than a fixed price. 
 \begin{table}[H]
 \begin{threeparttable}
   \vspace{-0.0cm}
@@ -103,7 +104,7 @@ Heterogeneous effects
 
 \subsection{Discussion}
 \label{subsec:r_discussion}
-We obtain estimates of the short term elasticity of demand that are in the range of -0.019 to -0.048 for wholesale consumers and -0.018 to -0.025 for retail consumers. These are bigger than those obtained by \cite{lijesen2007real} but around the same size as \cite{wolak2001impact} finds. Part of difference has to with few having access to as high frequency data.  %High frequency => lower estimated elasticity.  In ger within the ranges of previous studies as reported in the meta-analysis by \cite{labandeira2017meta} that finds an overall elasticity of
+We obtain estimates of the short term elasticity of demand that are in the range of -0.019 to -0.048 for wholesale consumers and -0.018 to -0.025 for retail consumers. These are bigger than those obtained by \cite{lijesen2007real} but around the same size as \cite{wolak2001impact} finds for 5 of the 6 most elastic industries. Part of this difference has to do with few having access to as high frequency data.  %High frequency => lower estimated elasticity.  In ger within the ranges of previous studies as reported in the meta-analysis by \cite{labandeira2017meta} that finds an overall elasticity of
 All though estimates are statistically significant their economic significance is not as big. They all point to an inelastic electricity demand even for the most elastic part of the market. This suggests that the prospects of using decentralized interventions such as demand response programs are limited. From the small estimated effect on the time-of-use tariff in Radius similar conclusions can be conjectured. It should still be although they may still matter at peak demand where prices rise quite dramatically and small decreases in consumption still matter.
 \smallskip \\
 
