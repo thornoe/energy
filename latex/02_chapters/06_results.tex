@@ -67,14 +67,16 @@ The estimated effect of this tariff is found to be a decrease in electricity dem
 \end{table}
 
 
-\subsection{The validity of instruments}
+\subsection{The validity of instrumenting}
 \label{subsec:r_validity}
+All our statistical tests can be seen in appendix \ref{app:statistical_tests}. As they are first and foremost regarding the validity of instrumenting for the log spot price by wind power prognosis we choose to do the tests based on POLS and P2SLS procedures separately for the biggest grid company in each price region as more elaborate test methods are developed and implemented into the core of Stata for these techniques compared to REIV estimation \citep{statacorp2017stata}.
+\bigskip\par
 For single-grid estimations we must use robust standard errors as well, as for the biggest grid company in each price region the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroskedasticity with Bonferroni-adjusted p-values clearly rejects the $H_0$ of homoscedasticity $(p=0.000)$. However, specifically for Radius in DK2 the Bonferroni-adjusted p-values for price, number of wholesale meters, and temperature are $~1$ showing that they are quite homoscedastic while the heteroscedasticity is due to seasonality and daily patterns.
  (appendix \ref{app:homoscedasticity}).
 \bigskip\par
-Different specifications for the reduced form estimation of log spot price can be seen in table \ref{tab:reduced_form_price_dk1} for DK1 and equivalently in table \ref{tab:reduced_form_price_dk2} in appendix \ref{app:relevance} for DK2. The clear relevance of wind power prognosis in the same region as an instruments for the spot price can easily be seen from not only the significance of the estimate in column for (3) but also from the great reduction in the adjusted $R^2$ value when removing it in column (4) of each table.
+Different specifications for the reduced form estimation of log spot price can be seen in table \ref{tab:reduced_form_price_dk1} for DK1 and equivalently in table \ref{tab:reduced_form_price_dk2} in appendix \ref{app:relevance} for DK2. The clear relevance of wind power prognosis in the same region as an instruments for the spot price can easily be seen from not only the significance of the estimate in column for (3) but also from the great reduction in the adjusted $R^2$ value when removing it in column (4).
 \par
-The t-tests and F-tests deem the wind power prognosis for DK2 to be a relevant instrument for the log spot price in DK1. On the contrary, the capacity constraints of the Great Belt Link becomes clear as the wind power prognosis for DK1 is not significant for the log spot price in DK2 while the wind power prognosis for Sweden is. 
+The t-tests and F-tests deem the wind power prognosis for DK2 to be a relevant instrument for the log spot price in DK1. On the contrary, the capacity constraints of the Great Belt Link becomes clear as the wind power prognosis for DK1 is not significant for the log spot price in DK2 while the wind power prognosis for Sweden is. The robust test of the first stage in Stata likewise clearly reject that either of the instruments are weak \citep{statacorp2017stata}. However, the adjusted $R^2$ value barely decreases when omitting the second instrument in going from column (2) to (3), that is, they do not carry any noteworthy explanatory power.
 \begin{table}[H]
 \begin{threeparttable}
   \centering
@@ -89,15 +91,14 @@ The t-tests and F-tests deem the wind power prognosis for DK2 to be a relevant i
     \end{tablenotes}
 \end{threeparttable}
 \end{table}
-
-Test for endogeneity and overidentifying restrictions as shown in in appendix \ref{app:statistical_tests}). \citep{statacorp2017stata}.
-\bigskip\\
+Similarly both Wooldridge's robust score test and the robust regression-based test show that log spot price is endogenous when instrumenting by wind power prognosis in the other region (for DK1) or wind power prognosis for Sweden (for DK2) respectively both when using each instrument separately or jointly with wind power prognosis in the same region. However, Wooldridge's heteroscedasticity-robust score test of overidentifying restrictions is barely rejected for DK1 and clearly rejected for DK2 (appendix \ref{app:endog_overid}) \citep{statacorp2017stata}.
+\par
+Thus, as we see in \ref{tab:reduced_form_price_dk1} for DK1 and equivalently in table \ref{tab:reduced_form_price_dk2} that neither wind power prognosis for the other region nor for Sweden carries explanatory power, we conclude that our model would be misspecified, namely overspecified, if we included more instruments than the wind power prognosis for the same region.
 
 
 \subsection{Heterogeneity and robustness}
 \label{subsec:r_robustness}
-
-
+\begin{comment}
 Heterogeneous effects
 \begin{figure}[H]
   \centering
@@ -110,11 +111,33 @@ Heterogeneous effects
   \caption{Wholesale peak-elasticity by log grid size}
   \label{fig:ws_elasticity_grid}
 \end{figure}
+\end{comment}
+We conduct a number of additional estimations to evaluate the robustness of the results from above. Checks for wholesale consumption are included in appendix \ref{app:robustness_wholesale}, while those for retail are reported in appendix \ref{app:robustness_retail}.
+\par
+We re-estimate the baseline specification \eqref{eq:baseline} separately for the two price regions and for each year. Estimates are reported in table \ref{tab:ws_region_year} in the appendix. It appears that the overall response is likely to be driven by DK1 (Western Denmark) whereas estimates for DK2 are small and insignificant. It should, however, be noted that there are only 9 grid companies in DK2 which may boost the grid-clustered standard errors upwards. Also the 9 companies enter with equal weight even though the price region is clearly dominated by Radius and Cerius as is evident from appendix \ref{app:grids}.
+\par
+Results are, however, quite robust across years. Here we cannot reject that estimates differ. \bigskip \par
+We consider the five biggest grid-areas (in terms of aggregated consumption) separately. Here estimates differ quite significantly which suggests there are some unobservable heterogenous characteristics that can explain the different responses to price changes. For example the estimated elasticity for Cerius, albeit small in magnitude, is significantly positive for which we can think of no other reason than omitted variable bias. %Kom evt. med eksempler på hvad, der kunne være udeladt. 
+
+Our overall results remain largely robust, but also motivates a closer look at more disaggregated data to examine the drivers of the observed heterogeneities. 
+
+\begin{comment}
+Takes from table 11: 
+* Effect mainly driven by DK1. DK2 smaller estimate and insignificant, but can be due to large standard errors smaller sample size of only 9 clusters 
+*Overall constant over time => cannot reject elasticities are the same.
+Takes from table 12 - Estimation of largest grid companies separately:
+*Cerius weird ass.
+*differ a lot in magnitude 
+*Evonet has very high effect from no of meters 
+Takes from table 13: 
+* Changes over time elasticity. Highest in 2016, lowest in 2017. I don't know any explanations 
+\end{comment}
+
 
 
 \subsection{Discussion}
 \label{subsec:r_discussion}
-We obtain estimates of the short term elasticity of demand that are in the range of -0.019 to -0.048 for wholesale consumers and -0.018 to -0.025 for retail consumers. These are bigger than those obtained by \citet{lijesen2007real} but around the same size as \citet{wolak2001impact} finds for 5 of the 6 most elastic industries. Part of this difference has to do with limited access to disaggregated high frequency data.Although estimates are statistically significant their economic significance is more limited. They all point to a quite inelastic electricity demand even for the most elastic part of the market. This suggests that the prospects of using decentralized interventions such as demand response programs are restricted. From the small estimated effect on the time-of-use tariff in Radius similar conclusions can be conjectured. Prices does, however, rise quite dramatically during hours of peak demand. Thus rather small decreases in consumption can still matter. %Vores resultater er yderligere begrænset af at der i vores specifikation antages konstant elasticitet.
+We obtain estimates of the short term elasticity of demand that are in the range of -0.019 to -0.048 for wholesale consumers and -0.018 to -0.025 for retail consumers. These are bigger than those obtained by \citet{lijesen2007real} but around the same size as \citet{wolak2001impact} finds for 5 of the 6 most elastic industries. Part of this difference has to do with limited access to disaggregated high frequency data. Although estimates are statistically significant their economic significance is more limited. They all point to a quite inelastic electricity demand even for the most elastic part of the market. This suggests that the prospects of using decentralized interventions such as demand response programs are restricted. From the small estimated effect on the time-of-use tariff in Radius similar conclusions can be conjectured. Prices does, however, rise quite dramatically during hours of peak demand. Thus, rather small decreases in consumption can still matter. %Vores resultater er yderligere begrænset af at der i vores specifikation antages konstant elasticitet.
 \bigskip
 
 Oddly enough the time-of-use tariff did seem to have an effect outside of the area that was actually affected by the tariff. This could be a response from knowing that electricity demand and thus emissions from production are high in the peak period. This extra piece of information could be the driver of the result rather than an effect from changed prices. Even though people do not appear to respond much to electricity prices this could simply be due to little available information. Tariffs are applied grid wide, but its actual implementation (into billing contracts etc.) is left for the individual electricity providers to decide on. Thus information granted and actual exposure to the tariffs may vary significantly across providers. It could, however, also be the case that people have not had enough time to adjust their behavior, which can be costly in terms of utility. Adjustment time may similarly also depend on the implementation of the program, this is the extent to which consumers were actually aware of the tariff introduction.

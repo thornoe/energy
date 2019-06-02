@@ -81,20 +81,20 @@ Next we use the stored size of $\widehat{\lambda}$ to estimate the quasi-time de
     \end{split}
     \label{eq:fGLS}
 \end{equation}
-From equation \eqref{eq:lambda} it is clear that the FE estimator \eqref{eq:fGLS} goes towards the POLS estimator when unobserved heterogeneity is small, $\sigma_c^2\rightarrow0$ but goes towards the FE estimator when $T\sigma_c^2\rightarrow\infty$. As $T=26,300$ is an unusually large number of time periods we expect the term \eqref{eq:lambda} to indeed go towards infinity given some presence of unobserved heterogeneity, $c_i\neq0$. While the FE estimator never is efficient the RE estimator can be both consistent and efficient if $c_i$ is not endogenous in which case the standard errors $se\left(\widehat{\beta_{RE}}\right)<se\left(\widehat{\beta_{FE}}\right)$, thus, in choosing RE over FE the strict exogeneity assumption \eqref{eq:exogeneity} is critical and can be tested by the Hausman test statistic:
+From equation \eqref{eq:lambda} it is clear that the FE estimator \eqref{eq:fGLS} converges to the POLS estimator when unobserved heterogeneity is small, $\sigma_c^2\rightarrow0$ but goes towards the FE estimator when $T\sigma_c^2\rightarrow\infty$. As $T=26,300$ is an unusually large number of time periods we expect the term \eqref{eq:lambda} to indeed go towards infinity given some presence of unobserved heterogeneity, $c_i\neq0$. While the FE estimator never is efficient the RE estimator can be both consistent and efficient if $c_i$ is not endogenous in which case the standard errors $se\left(\widehat{\beta_{RE}}\right)<se\left(\widehat{\beta_{FE}}\right)$, thus, in choosing RE over FE the strict exogeneity assumption \eqref{eq:exogeneity} is critical and can be tested by the Hausman test statistic:
 \begin{equation}
   W=\frac{\left(\widehat{\beta_{RE}}=\widehat{\beta_{FE}}\right)^2}
          {var(\widehat{\beta_{RE}})=var(\widehat{\beta_{FE}})}
          \stackrel{H_0}{\sim} \chi^2_1
   \label{eq:hausman}
 \end{equation}
-Where the numerator is a measure for the consistency loss from choosing the RE over FE, while the denominator indicates the relative gains of efficiency from choosing RE over FE. Due to the high number of time periods $T$ and compositional differences between grid areas in terms of sociodemographics and firm characteristics, we expect $\widehat{\lambda}\rightarrow1$ in \eqref{eq:lambda}, thus, we should not expect to be able to reject the Hausman test, meaning that RE is more efficient than FE estimation.
+where the numerator is a measure for the consistency loss from choosing the RE over FE, and the denominator indicates the relative gains in efficiency from choosing RE over FE. Due to the high number of time periods $T$ and compositional differences between grid areas in terms of socio-demographics and firm characteristics, we expect $\widehat{\lambda}\rightarrow 1$ in \eqref{eq:lambda}, and thus, we should not expect to be able to reject the Hausman test, meaning that RE is more efficient than FE estimation.
 \par
-The \textbf{random effects instrumental variables (REIV)} estimator is a three-stage generalized IV (GIV) estimator where the first stages are basicly the FEIV estimaton for estimating the reduced form and $\widehat{\lambda}$ needed to perform a quasi-within-transformation of our model \eqref{eq:baseline}.
+The \textbf{random effects instrumental variables (REIV)} estimator is a three-stage generalized IV (GIV) estimator where the first stages are basically the FEIV estimation for estimating the reduced form and $\widehat{\lambda}$ needed to perform a quasi-within-transformation of our model \eqref{eq:baseline}.
 \subsection{Robustness checks}
 \label{subsec:e_robustness}
 Robustness of the elasticity for wholesale electricity demand in the peak-hours 11-15 is tested by splitting the sample by price region, year, and month to look for heterogeneous effects. Furthermore, we estimate the equation (\ref{eq:baseline}) for each grid area using P2SLS.
 \par
 Likewise, we estimate the elasticity for retail electricity demand in the peak-hours 17-19 by price region and year, though consumers have no direct price incentive to react to hourly prices except for those that become flex-settled by 2018 where the .
 \bigskip\par
-Tests of the robustness of the effect of the TOU tariff is less straight forward. We try including the dummy constructed for Radius in estimation of retail electricity demand in different grids.
+Tests of the robustness of the effect of the TOU tariff is less straight forward. We try including the dummy constructed for Radius in estimation of retail electricity demand in different grids.\todo{but why?}
