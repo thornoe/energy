@@ -1,5 +1,5 @@
-**Table:** Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15)<br>*Grid 131 is N1 (DK1), grid 791 is Radius (DK2)*<br><html><table>
-<tr><td>                    </td><td>(1) 131: POLS, non-robust s.e.   </td><td>(2) 131: POLS, robust s.e.   </td><td>(3) 791: POLS, non-robust s.e.   </td><td>(4) 791: POLS, robust s.e.   </td></tr>
+**Table:** Testing for homoscedasticity (log wholesale electricity consumption, business days, hours 11-15 (POLS)<br>*Grid 131 is N1 (DK1), grid 791 is Radius (DK2)*<br><html><table>
+<tr><td>                    </td><td>(1) 131: non-robust s.e.   </td><td>(2) 131: robust s.e.   </td><td>(3) 791: non-robust s.e.   </td><td>(4) 791: robust s.e.   </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
 <tr><td>log spot price      </td><td>-0.0089***<br>(0.0014)   </td><td>-0.0089***<br>(0.0017)   </td><td>-0.0039***<br>(0.0010)   </td><td>-0.0039***<br>(0.0009)   </td></tr>
 <tr><td>log wholesale meters</td><td>0.5673***<br>(0.0873)   </td><td>0.5673***<br>(0.0864)   </td><td>-0.2972***<br>(0.0459)   </td><td>-0.2972***<br>(0.0426)   </td></tr>
@@ -141,10 +141,10 @@
 <tr><td>hour=15 # month=10  </td><td>0.0283**<br>(0.0139)   </td><td>0.0283**<br>(0.0129)   </td><td>0.0050<br>(0.0090)   </td><td>0.0050<br>(0.0063)   </td></tr>
 <tr><td>hour=15 # month=11  </td><td>0.0219*<br>(0.0113)   </td><td>0.0219**<br>(0.0111)   </td><td>0.0103<br>(0.0072)   </td><td>0.0103**<br>(0.0048)   </td></tr>
 <tr><td>_cons               </td><td>1.2257<br>(0.7725)   </td><td>1.2257<br>(0.7639)   </td><td>9.5308***<br>(0.4410)   </td><td>9.5308***<br>(0.4094)   </td></tr>
-<tr><td>Chi&sup2            </td><td>        1423   </td><td>               </td><td>        1154   </td><td>               </td></tr>
+<tr><td>\(\chi^2\)          </td><td>      1422.7   </td><td>               </td><td>      1154.4   </td><td>               </td></tr>
 <tr><td>DF                  </td><td>         134   </td><td>               </td><td>         134   </td><td>               </td></tr>
 <tr><td>Adj. p-val          </td><td>       0.000   </td><td>               </td><td>       0.000   </td><td>               </td></tr>
-<tr><td>R&sup2              </td><td>       0.881   </td><td>       0.881   </td><td>       0.868   </td><td>       0.868   </td></tr>
-<tr><td>Adj. R&sup2         </td><td>       0.876   </td><td>       0.876   </td><td>       0.863   </td><td>       0.863   </td></tr>
+<tr><td>\(R^2\)             </td><td>       0.881   </td><td>       0.881   </td><td>       0.868   </td><td>       0.868   </td></tr>
+<tr><td>Adj. \(R^2\)        </td><td>       0.876   </td><td>       0.876   </td><td>       0.863   </td><td>       0.863   </td></tr>
 <tr><td>Observations        </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td></tr>
 </table>Standard errors are in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2, DF, and Adj. p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.<br>Baseline: year 2016 and each hour for December.</html>

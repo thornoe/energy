@@ -12,7 +12,7 @@ Our baseline model is a Random Effects (RE) model to be estimated using feasible
   &+\gamma\ days+\eta_{year}+\eta_{week}+\eta_{hour}\cdot\eta_{month}+\eta_{hour}\cdot\eta_{day}+c_i+u_{it}
   \end{split}
 \end{equation}
-Where $p$ is the electricity spot price in price region $r$ at time $t$, $n$ is the number of meters at the beginning of the month $m$, $\bm{w}$ is a vector of weather variables for the given price region $r$ at time $t$ (see section \ref{subsec:d_weather}). The time variables in the second line include the time trend $days$ and the $\eta$'s representing dummies for each year and each ISO week number, as well as dummies for hour of the day interacted with each month and each day of the week respectively. The error term consists of the grid-specific time-constant unobserved effect $c_i$ that is treated as random and the idiosyncratic error $u_{it}$.
+Where $p$ is the electricity spot price in price region $r$ at time $t$, $n$ is the number of meters at the beginning of the month $m$, $\bm{w}$ is a vector of weather variables for the given price region $r$ at time $t$ (see section \ref{subsec:d_weather}). The time variables in the second line include the time trend $days$ and the $\eta$'s representing dummies for each year and each ISO week number, as well as dummies for hour of the day interacted with each month and each day of the week respectively. The composite error term consists of the grid-specific time-constant unobserved effect $c_i$ that is treated as random and the idiosyncratic error $u_{it}$.
 \medskip\\
 We use a log-log specification for electricity consumption, the spot price, and the number of meters as it allows us to model demand responses across grid areas of different size. Furthermore, log-log is the more standard specification which allows for a more direct comparison to the results in other studies \citep{burke2017price}. Other attractive properties include that the estimation provides the elasticity directly and prevents predicting non-positive electricity consumption. Furthermore, the specification reduces the impact of outliers and is found to reduce systematic patterns in the estimated residuals \citep{burke2017price}.
 
@@ -43,13 +43,13 @@ An overproduction of wind power in one price region leads to transmission of che
 
 \subsection{Effect of Time-of-use tariff}
 \label{subsec:e_tout}
-To estimate the effect of the time-of-use (TOU) tariff (see subsection \ref{subsec:d_tout}) the baseline specification (\ref{eq:baseline}) is estimated for the hours 17-19 solely for the grid company Radius using Pooled 2SLS (P2SLS), thus, without the grid-area unobserved effect $c_i$ but including a term for the effect of the TOU tariff:
+To estimate the effect of the time-of-use (TOU) tariff (see subsection \ref{subsec:d_tout}) the baseline specification (\ref{eq:baseline}) is estimated for the hours 17-19 solely for the grid company Radius using pooled 2SLS (P2SLS), thus, without the grid-area unobserved effect $c_i$ but including a term for the effect of the TOU tariff:
 \begin{align}
   \alpha\frac{nf_{month}}{nr_{month}}\tau_{year,month}
   \label{eq:tout}
 \end{align}
 Where $nf$ is the number of flex-settled meters by month, $nr$ is the total number of meters for retail customers, and $\tau$ is a dummy for being in October-March in 2018.
-\par
+\medskip\\
 To isolate the effect of the TOU tariff we need to assume that residual consumers do not react on the tariff, on the contrary their consumption is assumed to follow the same hour-by-day, hour-by-month, and week patterns as the previous years and the effect of year dummies and the time trend to be evenly distributed across the year.
 \par
 One weakness is that the monthly records for the number of flex-settled meters provides a lack which can result in an downward bias of $\widehat{\alpha}$ (if there is a negative effect of the tariff). This could possibly be improved by assuming a linear daily growth between $nf_{month}$ and $nf_{month+1}$.
@@ -57,7 +57,19 @@ One weakness is that the monthly records for the number of flex-settled meters p
 
 \subsection{Random Effects estimation}
 \label{subsec:e_re}
-Different candidates for panel data estimation
+Different candidates exists for panel data estimation with unobserved effects \citep{wooldridge2010econometric}. The simplest method is \textbf{pooled ordinary least squares (POLS)} and the corresponding \textbf{pooled two stage least squares} for instrumental variables (IV) estimation which we will use for one-grid estimations of our model (\ref{eq:baseline}). However, the number of meters is the only grid-specific background variable we have, thus, for full-sample estimation it is likely that the presence of unobserved heterogeneity is not controlled for but correlates with the set of controls such as having different industries or firm size regarding wholesale or different daily patterns for retail consumers. Even if the strict exogeneity condition holds:
+\begin{equation}
+  cov(c_i, x_{it})=0
+  \label{eq:exogeneity}
+\end{equation}
+then POLS would still result in serial correlation given that $c_i\neq0$ which is present in the composite error for each time period, that is $cov(c_i+u_{it},c_i+u_{is})=\sigma_c^2>0$. Though we would still need to handle the serial correlation, a first step is to note that we regardless of estimation technique would need to use cluster robust standard errors for the full-sample estimation.
+\medskip\\
+Though it is a common way to handle serial correlation, we hardly consider the \textbf{first-difference (FD)} estimation as the great presence of heteroscedasticity in terms of seasonality and daily and weekly patterns with occasional holidays underlines that there is no obvious suggestion for the length of $t-s$ that would not violate the critical assumption (\ref{eq:exogeneity}). Furthermore, we see no signs of electricity consumption acting as a unit root process in figure \ref{fig:cons_hours}.
+\medskip\\
+The consistent but somewhat inefficient approach is the \textbf{fixed effects (FE)} estimation where we time-demean all variables. While the loss of time constant variables is a common flaw, we do not have any in our specification (\ref{eq:baseline}).
+
+26,300
+
 \begin{itemize}
     \item Least Squares Dummy Variables estimation (LSDV)
     \begin{itemize}
