@@ -6,7 +6,11 @@ For wholesale consumers the baseline specification \eqref{eq:baseline} is first 
 \bigskip\par
 As we find there is almost no difference between the FE and RE estimates (appendix \ref{app:hausman}) the Hausman statistic \eqref{eq:hausman} is low enough that we clearly reject exogeneity of unobserved effects and use REIV for consistent and efficient estimation of the quasi-time-demeaned system of our model \eqref{eq:baseline} and the reduced form \eqref{eq:reduced}.
 \bigskip\par
-For each of the above mentioned classifications table \ref{tab:ws_preferred} show the REIV estimates of wholesale electricity consumption which is instrumented for by wind power prognosis for the same region. As can be noted from column 1 for the peak-hours 11-15 on business days, wholesale of electricity is estimated to decrease with 5 percent when the spot price doubles all other things equal. The difference between business and non-business days is quite outspoken; wholesale consumers are 1.5 times as responsive at peak on business-days compared to the average on non-business days. Weather and daytime controls also have significant effect on energy consumption in the expected direction. An increase in temperature of  $1^{\circ}$C translates into a small decrease of 0.3 percent lower electricity consumption - except at extreme temperatures (cold or warm) where consumption increases slightly more.
+For each of the above mentioned classifications table \ref{tab:ws_preferred} show the REIV estimates of wholesale electricity consumption which is instrumented for by wind power prognosis for the same region. As can be noted from column 1 for the peak-hours 11-15 on business days, wholesale of electricity is estimated to decrease with almost 5 percent when the spot price doubles all other things equal. As seen in table \ref{tab:descriptive} the overall standard deviation of 108 DKK is a deviation by 43 percent of mean price, thus an increase in the price by a full standard deviation would decrease electricity demand by 2 percent.
+\par
+The difference between business and non-business days is quite outspoken; wholesale consumers are 1.5 times more responsive at peak on business-days compared to the average on non-business days.
+\par
+Weather and daytime controls also have significant effect on energy consumption in the expected direction. The effects of temperature translates into a \nth{2} order polynomial with the minimum electricity consumption at $7^{\circ}$C for peak hours on business days. All other things equal a decrease in the outdoor temperature from $-3$ to $-4^{\circ}$C or an increase from 21 to $22^{\circ}$C tend to increase electricity consumption by 0.5 percent.
 \begin{table}[H]
 \begin{threeparttable}
   \centering
@@ -20,13 +24,15 @@ For each of the above mentioned classifications table \ref{tab:ws_preferred} sho
   \label{tab:ws_preferred}
 \end{threeparttable}
 \end{table}
-\noindent
 
-\subsection{Results for retail consumpton}
-The REIV estimation of \eqref{eq:baseline} for the retail electricity consumption of the small companies and households is reported below in table \ref{tab:r_region}. Though small, our expectations for the size of the elasticity for the hourly spot price are exceeded by the the estimation results. This is despite that for two of the three years none of the consumers pay the spot market price rather than a fixed price.
 
-Pooling across all 1096 days we find that a 100 percent increase in the spot price causes a decrease in consumption of about 2.75 percent - which appears to be driven by reductions on business days. Given that for the full duration of the time period the majority of consumers pay a fixed price it is a relatively surprising how responsive the consumption of households and small firms are compared to that of wholesale consumers. Reversely, one possible explanation for why we do not capture a much higher elasticity for wholesale consumption, could be that wholesale consumers are much less homogeneous than retail consumers. This is in line with the smaller magnitude of the standard errors for the estimated elasticity.
+\subsection{Results for retail consumption}
 \label{subsec:r_households}
+The REIV estimation of \eqref{eq:baseline} for the retail electricity consumption of the small companies and households is reported below in table \ref{tab:r_region}. Though small, our expectations for the size of the elasticity for the hourly spot price are exceeded by the the estimation results. This is despite that for two of the three years none of the consumers pay the spot market price rather than a fixed price.
+\bigskip\par
+Pooling across all 1096 days we find that a 100 percent increase in the spot price causes a decrease in consumption of about 2.75 percent - which appears to be driven by reductions on business days. Given that for the full duration of the time period the majority of consumers pay a fixed price it is a relatively surprising how responsive the consumption of households and small firms are compared to that of wholesale consumers. Reversely, one possible explanation for why we do not capture a much higher elasticity for wholesale consumption, could be that wholesale consumers are much less homogeneous than retail consumers. This is in line with the smaller magnitude of the standard errors for the estimated elasticity.
+\bigskip\par
+There is a relatively large consumption decrease associated with $daytime$ where being before sunset implies a decrease in consumption of about 4 percent. This can be due to many non-electricity consuming leisure activities are weather/light dependent.
 \begin{table}[H]
 \begin{threeparttable}
   \centering
@@ -40,8 +46,6 @@ Pooling across all 1096 days we find that a 100 percent increase in the spot pri
   \end{tablenotes}
 \end{threeparttable}
 \end{table}
-There is a relatively large consumption decrease associated with $daytime$ where being before sunset implies a decrease in consumption of about 4 percent. This can be due to many non-electricity consuming leisure activities are weather/light dependent.
-
 %More homogenous consumers => mainly residential.
 %Kommenter - clustering på 9 grids er måske lidt lidt... -> Driver at vi opnår så lavt et resultat
 \subsubsection{Results for Radius}
@@ -117,20 +121,20 @@ We conduct a number of additional estimations to evaluate the robustness of the 
 We re-estimate the baseline specification \eqref{eq:baseline} separately for the two price regions and for each year. Estimates are reported in table \ref{tab:ws_region_year} in the appendix. It appears that the overall response is likely to be driven by DK1 (Western Denmark) whereas estimates for DK2 are small and insignificant. It should, however, be noted that there are only 9 grid companies in DK2 which may boost the grid-clustered standard errors upwards. Also the 9 companies enter with equal weight even though the price region is clearly dominated by Radius and Cerius as is evident from appendix \ref{app:grids}.
 \par
 Results are, however, quite robust across years. Here we cannot reject that estimates differ. \bigskip \par
-We consider the five biggest grid-areas (in terms of aggregated consumption) separately. Here estimates differ quite significantly which suggests there are some unobservable heterogenous characteristics that can explain the different responses to price changes. For example the estimated elasticity for Cerius, albeit small in magnitude, is significantly positive for which we can think of no other reason than omitted variable bias. %Kom evt. med eksempler på hvad, der kunne være udeladt. 
+We consider the five biggest grid-areas (in terms of aggregated consumption) separately. Here estimates differ quite significantly which suggests there are some unobservable heterogenous characteristics that can explain the different responses to price changes. For example the estimated elasticity for Cerius, albeit small in magnitude, is significantly positive for which we can think of no other reason than omitted variable bias. %Kom evt. med eksempler på hvad, der kunne være udeladt.
 
-Our overall results remain largely robust, but also motivates a closer look at more disaggregated data to examine the drivers of the observed heterogeneities. 
+Our overall results remain largely robust, but also motivates a closer look at more disaggregated data to examine the drivers of the observed heterogeneities.
 
 \begin{comment}
-Takes from table 11: 
-* Effect mainly driven by DK1. DK2 smaller estimate and insignificant, but can be due to large standard errors smaller sample size of only 9 clusters 
+Takes from table 11:
+* Effect mainly driven by DK1. DK2 smaller estimate and insignificant, but can be due to large standard errors smaller sample size of only 9 clusters
 *Overall constant over time => cannot reject elasticities are the same.
 Takes from table 12 - Estimation of largest grid companies separately:
 *Cerius weird ass.
-*differ a lot in magnitude 
-*Evonet has very high effect from no of meters 
-Takes from table 13: 
-* Changes over time elasticity. Highest in 2016, lowest in 2017. I don't know any explanations 
+*differ a lot in magnitude
+*Evonet has very high effect from no of meters
+Takes from table 13:
+* Changes over time elasticity. Highest in 2016, lowest in 2017. I don't know any explanations
 \end{comment}
 
 

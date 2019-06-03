@@ -38,7 +38,7 @@ Thus, estimating electricity consumption by a Random Effects Instrumental Variab
   \label{fig:wp_price_dk1_week}
     \includegraphics[width=1 \textwidth]{03_figures/wp_DK1_weeks}
 \end{figure}
-\noindent
+
 An overproduction of wind power in one price region leads to transmission of cheap electricity to connected price regions, thus, as additional instruments we also consider the wind power prognosis for the other price region as well as for all of Sweden.
 
 \subsection{Effect of Time-of-use tariff}
@@ -48,7 +48,7 @@ To estimate the effect of the time-of-use (TOU) tariff (see subsection \ref{subs
   \alpha\frac{nf_{month}}{nr_{month}}\tau_{year,month}
   \label{eq:tout}
 \end{align}
-Where $nf$ is the number of flex-settled meters by month, $nr$ is the total number of meters for retail customers, and $\tau$ is a dummy for being in October-March in 2018.
+Where $nf$ is the number of flex-settled meters by month, $nr$ is the total number of meters for retail customers, and $\tau$ is a dummy for being in October-March after December 2017.
 \bigskip\par
 To isolate the effect of the TOU tariff we need to assume that residual consumers do not react to the tariff so their consumption, on the contrary, is assumed to follow the same hour-by-day, hour-by-month, and week patterns as in previous years and that the effects of year dummies and the time trend are evenly distributed across the year.
 \par
@@ -95,6 +95,6 @@ The \textbf{random effects instrumental variables (REIV)} estimator is a three-s
 \label{subsec:e_robustness}
 Robustness of the elasticity for wholesale electricity demand in the peak-hours 11-15 is tested by splitting the sample by price region, year, and month to look for heterogeneous effects. Furthermore, we estimate the equation (\ref{eq:baseline}) for each grid area using P2SLS.
 \par
-Likewise, we estimate the elasticity for retail electricity demand in the peak-hours 17-19 by price region and year, though consumers have no direct price incentive to react to hourly prices except for those that become flex-settled by 2018 where the .
+Likewise, we estimate the elasticity for retail electricity demand in the peak-hours 17-19 by price region and year, though consumers have no direct price incentive to react to hourly prices except for those that become flex-settled by 2018 and they actually change billing method to actually pay the spot market or real-time price that corresponds to hourly consumption.
 \bigskip\par
-Tests of the robustness of the effect of the TOU tariff is less straight forward. We try including the dummy constructed for Radius in estimation of retail electricity demand in different grids.\todo{but why?}
+Tests of the robustness of the effect of the TOU tariff is less straight forward. To reassure us that the constructed dummy constructed for Radius does not capture other effects, we try including the same dummy in the estimation of retail electricity demand for different grids, even though it functions as a pseudo variable we should expect to be zero as it only depends on the design of the TOU tariff for Radius and likewise the share of flex-settled meters in Radius.
