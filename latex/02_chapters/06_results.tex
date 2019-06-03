@@ -55,9 +55,9 @@ We examine the grid company Radius separately. Radius operates in the Copenhagen
 \par
 The estimated effect of this tariff is found to be a decrease in electricity demand of 2.2 percent for the hours when it is relevant. However, on business days the smaller effect of 1.4 percent is only statistically significant at the 10\% level while the decrease is no less than 4.1 percent on non-business days where it can be easier to alter consumption patterns simply because there are more non-work hours free to shift consumption to.
 \begin{table}[H]
+\centering
 \begin{threeparttable}
   \vspace{-0.0cm}
-  \centering
   \caption{log retail electricity consumption in Radius, hours 17-19 (P2SLS)}
   \label{tab:r_radius}
       \footnotesize
@@ -77,14 +77,14 @@ The estimated effect of this tariff is found to be a decrease in electricity dem
 \label{subsec:r_validity}
 All our statistical test results are reported in appendix \ref{app:statistical_tests}. As they are first and foremost regarding the validity of instrumenting for the log spot price by wind power prognosis we choose to do the tests based on POLS and P2SLS procedures separately for the biggest grid company in each price region as more elaborate test methods are developed and implemented into the core of Stata for these techniques compared to RE and REIV procedures \citep{statacorp2017stata}.
 \bigskip\par
-For single-grid estimations we use robust standard errors as well, as the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroskedasticity clearly rejects the $H_0$ of homoscedasticity $(p=0.000)$. However, specifically for Radius in DK2 the Bonferroni-adjusted p-values for price, number of wholesale meters, and temperature are $\sim1$, showing that they are quite homoscedastic while heteroscedasticity is caused by seasonality and daily patterns.
+For single-grid estimations we use robust standard errors as well, as the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroskedasticity clearly rejects the $H_0$ of homoscedasticity $(p=0.000)$. However, specifically for Radius in DK2 the Bonferroni-adjusted p-values for price, number of wholesale meters, and temperature are $\sim1$, shows that they are quite homoscedastic while heteroscedasticity is caused by seasonality and daily patterns.
  (appendix \ref{app:homoscedasticity}).
 \bigskip\par
 Different specifications for the reduced form estimation of log spot price can be seen in table \ref{tab:reduced_form_price_dk1} for DK1 and equivalently in table \ref{tab:reduced_form_price_dk2} in appendix \ref{app:relevance} for DK2. The clear relevance of wind power prognosis in the same region as an instruments for the spot price stands out. Not only due to the high significance of the estimate in column for (3) but even more so from the great reduction in the adjusted $R^2$ value by .09 for DK1 and .07 for DK2 when having omitted wind power prognosis in column (4) relative to column (3).
+%\par % Er næste par nødvendig? 
+%Though the effect of a given absolute change in the wind power prognosis is almost 3 times as high for DK2, this is more than offset by both the mean and standard deviation of wind power prognosis 3$\frac{1}{2}$ times higher for DK1 (table \ref{tab:descriptive}).
 \par
-Though the effect of a given absolute change in the wind power prognosis is almost 3 times as high for DK2, this is more than offset by both the mean and standard deviation of wind power prognosis 3$\frac{1}{2}$ times higher for DK1 (table \ref{tab:descriptive}).
-\par
-The t-tests and F-tests deem the wind power prognosis for DK2 to be a relevant instrument for the log spot price in DK1. On the contrary, the capacity constraints of the Great Belt Link becomes clear as the wind power prognosis for DK1 is not significant for the log spot price in DK2 while the wind power prognosis for Sweden is. The robust test of the first stage in Stata likewise clearly reject that either of the instruments are weak \citep{statacorp2017stata}. However, the adjusted $R^2$ value barely decreases when omitting the second instrument in going from column (2) to (3), that is, they do not carry any noteworthy explanatory power.
+The t-tests and F-tests deem the wind power prognosis for DK2 to be a relevant instrument for the log spot price in DK1. This reverse does not hold. Instead the wind power prognosis for Sweden is relevant. The robust test of the first stage in Stata likewise clearly rejects that either of the instruments are weak \citep{statacorp2017stata}. However, the adjusted $R^2$ value barely decreases when omitting the second instrument in going from column (2) to (3); they do not carry any relevant explanatory power. This observation lead us to the conclusion that our model would be overspecified if more instruments than the wind power prognosis for the same region were included. \footnote{Wooldridge's robust score test and the robust regression-based test show that log spot price is endogenous when instrumenting by wind power prognosis in the other region (for DK1) or wind power prognosis for Sweden (for DK2). However, Wooldridge's heteroscedasticity-robust score test of overidentifying restrictions is only barely rejected for DK1 and clearly rejected for DK2 (appendix \ref{app:endog_overid}), \citep{statacorp2017stata}.}
 \begin{table}[H]
 \begin{threeparttable}
   \centering
@@ -99,9 +99,6 @@ The t-tests and F-tests deem the wind power prognosis for DK2 to be a relevant i
     \end{tablenotes}
 \end{threeparttable}
 \end{table}
-Similarly, Wooldridge's robust score test as well as the robust regression-based test show that log spot price is endogenous when instrumenting by wind power prognosis in the other region (for DK1) or wind power prognosis for Sweden (for DK2) respectively both when using the instrument on its own or jointly with wind power prognosis in the same region. However, Wooldridge's heteroscedasticity-robust score test of overidentifying restrictions is barely rejected for DK1 and clearly rejected for DK2 (appendix \ref{app:endog_overid}) \citep{statacorp2017stata}.
-\par
-Thus, due to our observation that neither wind power prognosis for the other region nor for Sweden carries explanatory power in the reduced form estimation of the log spot price, we conclude that our model would be misspecified, namely overspecified, if we included more instruments than the wind power prognosis for the same region.
 
 
 \subsection{Heterogeneity and robustness}
@@ -120,32 +117,18 @@ Heterogeneous effects
   \label{fig:ws_elasticity_grid}
 \end{figure}
 \end{comment}
-We conduct a number of additional estimations to evaluate the robustness of the above results. Checks for wholesale consumption are included in appendix \ref{app:robustness_wholesale}, while those for retail are reported in appendix \ref{app:robustness_retail}. We estimate sample split results of our specification \eqref{eq:baseline} by the two price regions and for each year.
+We conduct a number of additional estimations to evaluate the robustness of the results above. Checks for wholesale consumption are included in appendix \ref{app:robustness_wholesale}, while those for retail are reported in appendix \ref{app:robustness_retail}. We estimate sample split results of our specification \eqref{eq:baseline} by the two price regions and for each year.
 \bigskip\par
 For wholesale consumption estimates are reported in table \ref{tab:ws_region_year}. It appears that the overall response is likely to be driven by DK1 (Western Denmark) whereas estimates for DK2 are small and insignificant. It should, however, be noted that there are only 9 grid companies in DK2 which may boost the grid-clustered standard errors upwards. Also the 9 companies enter with equal weight even though the price region is clearly dominated by Radius and Cerius as is evident from appendix \ref{app:grids}.
 \par
 Results are, however, quite robust across years. Here we cannot reject that estimates differ. By considering the five largest grid-areas (in terms of the number of meters) separately in table \ref{tab:ws_grids_large}. Here estimates differ quite significantly which suggests there are some unobservable heterogenous characteristics that can explain the different responses to price changes. For example the estimated elasticity for Cerius, albeit small in magnitude, is significantly positive for which we can think of no other reason than omitted variable bias.
-\par
-For retail consumption there is no difference in the price elasticity between the price regions (table \ref{tab:r_region}). Though we would expect the elasticity to be higher in 2018 compared to 2016, this is not the case, however being significantly smaller in 2017 (table \ref{tab:r_year}). While not being our preferred specification for estimating the effect of the TOUT as the only control for grid-specific consumption patterns is the dummy for being in the months October-March and grid company Radius. For the full sample and split by business day and non-business day the estimated effect of the TOUT use is nonetheless significant and of greater magnitude which shows some robustness (table \ref{tab:r_region}).
+\par %Det nedenfor giver altså ikke rigtig mening 
+For retail consumption there is no difference in the price elasticity between the price regions (table \ref{tab:r_region}). Though we would expect the elasticity to be higher in 2018 compared to 2016, this is not the case (table \ref{tab:r_year}). To examine the robustness of the effects from the time-of-use tariff we include While not being our preferred specification for estimating the effect of the TOU-tariff as the only control for grid-specific consumption patterns is the dummy for being in the months October-March and grid company Radius. For the full sample and split by business day and non-business day the estimated effect of the TOUT use is nonetheless significant and of greater magnitude which shows some robustness (table \ref{tab:r_region}).
 \par
 On the contrary, including the Radius-specific dummy \eqref{eq:tout} to the estimation for each of the 47 other grids yields disappointing though not too surprising results, as the pseudo "effect" is significant and even higher for many of the other grid companies.\footnote{\href{https://github.com/thornoe/energy/blob/master/results/r_grids_DK1.md}{github.com/thornoe/energy/blob/master/results/r\_grids\_DK1.md}\\\href{https://github.com/thornoe/energy/blob/master/results/r_grids_DK2.md}{github.com/thornoe/energy/blob/master/results/r\_grids\_DK2.md}} Taking another look at this variable, except for only being activated for the winter half of the year it is constructed as the share of flex-settled retail consumers in Radius which follow an almost linear growth of .05 per month throughout 2018, thus it will simply act as a time trend, but ignoring the summer half of the year for which consumption faces a huge slope.
 \bigskip\par
 Our overall estimates of the price elasticity for wholesale and retail consumption remain largely robust, but also motivates a closer look at more disaggregated data to examine the drivers of the observed heterogeneities.
 \par
-
-\begin{comment}
-Takes from table 11:
-* Effect mainly driven by DK1. DK2 smaller estimate and insignificant, but can be due to large standard errors smaller sample size of only 9 clusters
-*Overall constant over time => cannot reject elasticities are the same.
-Takes from table 12 - Estimation of largest grid companies separately:
-*Cerius weird ass.
-*differ a lot in magnitude
-*Evonet has very high effect from no of meters
-Takes from table 13:
-* Changes over time elasticity. Highest in 2016, lowest in 2017. I don't know any explanations
-\end{comment}
-
-
 
 \subsection{Discussion}
 \label{subsec:r_discussion}
