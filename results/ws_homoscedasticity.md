@@ -141,10 +141,10 @@
 <tr><td>hour=15 # month=10  </td><td>0.0283**<br>(0.0139)   </td><td>0.0283**<br>(0.0129)   </td><td>0.0050<br>(0.0090)   </td><td>0.0050<br>(0.0063)   </td></tr>
 <tr><td>hour=15 # month=11  </td><td>0.0219*<br>(0.0113)   </td><td>0.0219**<br>(0.0111)   </td><td>0.0103<br>(0.0072)   </td><td>0.0103**<br>(0.0048)   </td></tr>
 <tr><td>_cons               </td><td>1.2257<br>(0.7725)   </td><td>1.2257<br>(0.7639)   </td><td>9.5308***<br>(0.4410)   </td><td>9.5308***<br>(0.4094)   </td></tr>
-<tr><td>\(\chi^2\)          </td><td>      1422.7   </td><td>               </td><td>      1154.4   </td><td>               </td></tr>
+<tr><td>Chi&sup2            </td><td>      1422.7   </td><td>               </td><td>      1154.4   </td><td>               </td></tr>
 <tr><td>DF                  </td><td>         134   </td><td>               </td><td>         134   </td><td>               </td></tr>
 <tr><td>Adj. p-val          </td><td>       0.000   </td><td>               </td><td>       0.000   </td><td>               </td></tr>
-<tr><td>\(R^2\)             </td><td>       0.881   </td><td>       0.881   </td><td>       0.868   </td><td>       0.868   </td></tr>
-<tr><td>Adj. \(R^2\)        </td><td>       0.876   </td><td>       0.876   </td><td>       0.863   </td><td>       0.863   </td></tr>
+<tr><td>R&sup2              </td><td>       0.881   </td><td>       0.881   </td><td>       0.868   </td><td>       0.868   </td></tr>
+<tr><td>Adj. R&sup2         </td><td>       0.876   </td><td>       0.876   </td><td>       0.863   </td><td>       0.863   </td></tr>
 <tr><td>Observations        </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td></tr>
 </table>(robust) standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2, DF, and Adj. p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.</html>
