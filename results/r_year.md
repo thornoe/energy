@@ -1,4 +1,4 @@
-**Table:** log retail electricity consumption by year (REIV)<br>*Hours 17-19. Baseline: Each hour for December.*<br><html><table>
+**Table:** log retail electricity consumption by year, hours 17-19 (REIV)<br>*Baseline: Each hour for December.*<br><html><table>
 <tr><td>                    </td><td>(1) Year 2016   </td><td>(2) Year 2017   </td><td>   (3) Year    </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
 <tr><td>log spot price      </td><td>-0.0314***<br>(0.0060)   </td><td>-0.0117**<br>(0.0048)   </td><td>-0.0275***<br>(0.0065)   </td></tr>
@@ -117,4 +117,4 @@
 <tr><td>R&sup2 between      </td><td>      0.9936   </td><td>      0.9930   </td><td>      0.9919   </td></tr>
 <tr><td>Number of groups    </td><td>          48   </td><td>          48   </td><td>          48   </td></tr>
 <tr><td>Obs. per group      </td><td>       1,098   </td><td>       1,095   </td><td>       1,095   </td></tr>
-</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>
+</table>Robust standard errors are clustered at grid level and reported in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>

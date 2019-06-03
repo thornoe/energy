@@ -1,4 +1,4 @@
-**Table:** log retail electricity consumption by region (REIV)<br>*Hours 17-19. Baseline: year 2016 and each hour for December.*<br><html><table>
+**Table 3:** log retail electricity consumption by region, hours 17-19 (REIV)<br>*Baseline: year 2016 and each hour for December.*<br><html><table>
 <tr><td>                    </td><td>     (1) All   </td><td>(2) Business day   </td><td>(3) Non-business day   </td><td>     (4) DK1   </td><td>     (5) DK2   </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
 <tr><td>log spot price      </td><td>-0.0275***<br>(0.0056)   </td><td>-0.0354***<br>(0.0059)   </td><td>-0.0041<br>(0.0061)   </td><td>-0.0292***<br>(0.0061)   </td><td>-0.0305***<br>(0.0092)   </td></tr>
@@ -121,4 +121,4 @@
 <tr><td>R&sup2 between      </td><td>      0.9930   </td><td>      0.9933   </td><td>      0.9922   </td><td>      0.9927   </td><td>      0.9963   </td></tr>
 <tr><td>Number of groups    </td><td>          48   </td><td>          48   </td><td>          48   </td><td>          39   </td><td>           9   </td></tr>
 <tr><td>Obs. per group      </td><td>       3,288   </td><td>       2,205   </td><td>       1,083   </td><td>       3,288   </td><td>       3,288   </td></tr>
-</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>
+</table>Robust standard errors are clustered at grid level and reported in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>

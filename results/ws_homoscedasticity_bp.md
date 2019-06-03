@@ -1,4 +1,4 @@
-**Table:** The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity w. Bonferroni-adjusted p-values<br>(log wholesale electricity consumption, business days, hours 11-15)<br>*Grid number 131 is N1 (DK1), grid number 791 is Radius (DK2)*<br><html><table>
+**Table 7.b:** The Breusch-Pagan / Cook-Weisberg test for heteroskedasticity w. Bonferroni-adjusted p-values<br>log wholesale electricity consumption, business days, hours 11-15<br>*Grid number 131 is N1 (DK1), grid number 791 is Radius (DK2)*<br><html><table>
 <tr><td>            </td><td>           A</td><td>            </td><td>            </td><td>            </td></tr>
 <tr><td>            </td><td>Chi&sup2 (131)</td><td>Adj. p-val (131)</td><td>Chi&sup2 (791)</td><td>Adj. p-val (791)</td></tr>
 <tr><td>p           </td><td>       116.9</td><td>       0.000</td><td>         2.9</td><td>       1.000</td></tr>

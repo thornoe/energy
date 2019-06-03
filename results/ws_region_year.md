@@ -1,4 +1,4 @@
-**Table:** log wholesale electricity consumption by region and year (REIV)<br>*Business days, hours 11-15. Baseline: Each hour for December.*<br><html><table>
+**Table 11:** log wholesale electricity consumption by region and year, business days, hours 11-15 (REIV)<br>*Baseline: Each hour for December.*<br><html><table>
 <tr><td>                    </td><td>(1) Western DK   </td><td>(2) Eastern DK   </td><td>    (3) 2016   </td><td>    (4) 2017   </td><td>    (5) 2018   </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
 <tr><td>log spot price      </td><td>-0.0523***<br>(0.0188)   </td><td>-0.0064<br>(0.0070)   </td><td>-0.0454**<br>(0.0184)   </td><td>-0.0407***<br>(0.0139)   </td><td>-0.0562***<br>(0.0151)   </td></tr>
@@ -145,4 +145,4 @@
 <tr><td>R&sup2 between      </td><td>      0.9430   </td><td>      0.9886   </td><td>      0.9501   </td><td>      0.9464   </td><td>      0.9480   </td></tr>
 <tr><td>Number of groups    </td><td>          39   </td><td>           9   </td><td>          48   </td><td>          48   </td><td>          48   </td></tr>
 <tr><td>Obs. per group      </td><td>       3,675   </td><td>       3,675   </td><td>       1,235   </td><td>       1,225   </td><td>       1,215   </td></tr>
-</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>
+</table>Robust standard errors are clustered at grid level and reported in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>

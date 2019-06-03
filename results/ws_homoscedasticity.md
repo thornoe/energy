@@ -1,4 +1,4 @@
-**Table:** Testing for homoscedasticity, log wholesale electricity consumption, business days, hours 11-15 (POLS)<br>*Grid number 131 is N1 (DK1), grid number 791 is Radius (DK2)*<br>Baseline: year 2016 and each hour for December.<br><html><table>
+**Table 7:** Testing for homoscedasticity: log wholesale electricity consumption, business days, hours 11-15 (POLS)<br>*Grid number 131 is N1 (DK1), grid number 791 is Radius (DK2)*<br>Baseline: year 2016 and each hour for December.<br><html><table>
 <tr><td>                    </td><td>(1) 131: s.e.   </td><td>(2) 131: robust s.e.   </td><td>(3) 791: s.e.   </td><td>(4) 791: robust s.e.   </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
 <tr><td>log spot price      </td><td>-0.0089***<br>(0.0014)   </td><td>-0.0089***<br>(0.0017)   </td><td>-0.0039***<br>(0.0010)   </td><td>-0.0039***<br>(0.0009)   </td></tr>
@@ -147,4 +147,4 @@
 <tr><td>R&sup2              </td><td>       0.881   </td><td>       0.881   </td><td>       0.868   </td><td>       0.868   </td></tr>
 <tr><td>Adj. R&sup2         </td><td>       0.876   </td><td>       0.876   </td><td>       0.863   </td><td>       0.863   </td></tr>
 <tr><td>Observations        </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td></tr>
-</table>(robust) standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2, DF, and Adj. p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.</html>
+</table>(Robust) standard errors are reported in parentheses.* p<0.10, ** p<0.05, *** p<0.01.<br>Chi&sup2, DF, and Adj. p-val are for the simultaneous Breusch-Pagan / Cook-Weisberg test for heteroscedasticity using Bonferroni-adjusted p-values.</html>

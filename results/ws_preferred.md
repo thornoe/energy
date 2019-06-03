@@ -1,4 +1,4 @@
-**Table:** log wholesale electricity consumption (REIV)<br>*Business days (col. 1-3) and non-business days (col. 4). Baseline: year 2016 and each hour for December.*<br><html><table>
+**Table 2:** log wholesale electricity consumption (REIV)<br>Business days (col. 1-3) and non-business days (col. 4).<br>*Baseline: year 2016 and each hour for December.*<br><html><table>
 <tr><td>                    </td><td>(1) Peak: 11-15   </td><td>(2) Off-peak: 00-04   </td><td>(3) Shoulder   </td><td>(4) Non-business day   </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
 <tr><td>log spot price      </td><td>-0.0484***<br>(0.0163)   </td><td>-0.0266***<br>(0.0094)   </td><td>-0.0333**<br>(0.0149)   </td><td>-0.0189*<br>(0.0099)   </td></tr>
@@ -452,4 +452,4 @@
 <tr><td>R&sup2 between      </td><td>      0.9492   </td><td>      0.9140   </td><td>      0.9375   </td><td>      0.9250   </td></tr>
 <tr><td>Number of groups    </td><td>          48   </td><td>          48   </td><td>          48   </td><td>          48   </td></tr>
 <tr><td>Obs. per group      </td><td>       3,675   </td><td>       3,675   </td><td>      13,178   </td><td>       8,660   </td></tr>
-</table>Robust standard errors are clustered at grid level and reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>
+</table>Robust standard errors are clustered at grid level and reported in parentheses. * p<0.10, ** p<0.05, *** p<0.01.<br>Log spot price is instrumented for by wind power prognosis for the same region.</html>

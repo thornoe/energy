@@ -1,4 +1,4 @@
-**Table:** Testing endogeneity and overidentifying restrictions (wholesale, business days, hours 11-15)<br>*For grid company Radius (DK2)*<br><html><table>
+**Table 10:** Testing endogeneity and overidentifying restrictions for Radius (DK2)<br>*log wholesale electricity consumption, business days, hours 11-15. Baseline: year 2016 and each hour for December.*<br><html><table>
 <tr><td>                    </td><td>    (1) POLS   </td><td>(2) P2SLS, wp DK2   </td><td>(3) P2SLS, wp SE   </td><td>(4) P2SLS, both   </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
 <tr><td>log spot price      </td><td>-0.0039***<br>(0.0009)   </td><td>-0.0347***<br>(0.0051)   </td><td>-0.0283***<br>(0.0070)   </td><td>-0.0096***<br>(0.0027)   </td></tr>
@@ -151,4 +151,4 @@
 <tr><td>p-val, overidentifying restrictions</td><td>               </td><td>               </td><td>               </td><td>      0.0001   </td></tr>
 <tr><td>N*R&sup2            </td><td>      0.8635   </td><td>      0.8649   </td><td>      0.8698   </td><td>      0.8622   </td></tr>
 <tr><td>p-val               </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td><td>       3,675   </td></tr>
-</table>Robust standard errors are reported in parentheses below each estimate. * p<0.10, ** p<0.05, *** p<0.01.<br>Baseline: year 2016 and each hour for December.</html>
+</table>Robust standard errors are reported in parentheses. * p<0.10, ** p<0.05, *** p<0.01.</html>
