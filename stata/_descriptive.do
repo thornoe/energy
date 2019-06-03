@@ -8,7 +8,7 @@
 
 *** Global directories, Cathrine ***
 cd 				"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\stata"
-*global data		"??? \Google Drev\Energy Economics\Data"
+global data		"C:\Users\Cathrine Pedersen\Documents\Google Drev\Energy Economics\Data"
 global latex	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\latex\04_tables"
 global results	"C:\Users\Cathrine Pedersen\Documents\GitHub\energy\results"
 

@@ -1,4 +1,4 @@
-**Table:** log retail electricity consumption in Radius (P2SLS)<br>*Hours 17-19. Baseline: year 2016 and each hour for December.*<br><html><table>
+**Table:** log retail electricity consumption in Radius, hours 17-19 (P2SLS)<br>*Baseline: year 2016 and each hour for December.*<br><html><table>
 <tr><td>                    </td><td>(1) All days   </td><td>(2) Business days   </td><td>(3) Non-business days   </td></tr>
 <tr><td>                    </td><td>        b/se   </td><td>        b/se   </td><td>        b/se   </td></tr>
 <tr><td>log spot price      </td><td>-0.0184**<br>(0.0076)   </td><td>-0.0251***<br>(0.0081)   </td><td>0.0061<br>(0.0179)   </td></tr>
