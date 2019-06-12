@@ -23,7 +23,7 @@ The complete tables of estimation results including the coefficients for each of
 
 * [Table 4:](https://github.com/thornoe/energy/blob/master/results/r_radius.md) log retail electricity consumption in Radius, hours 17-19 (P2SLS)
 
-* [Table 5:](https://github.com/thornoe/energy/blob/master/results/reduced_form_price_131.md) Reduced form of log spot price for DK1, business days, hours 11-15 (POLS)
+* [Table 5:](https://github.com/thornoe/energy/blob/master/results/reduced_form_price_dk1.md) Reduced form of log spot price for DK1, business days, hours 11-15 (POLS)
 
 * [Table 6:](https://github.com/thornoe/energy/blob/master/results/ws_fe.md) log wholesale electricity consumption, business days, hours 11-15 (FE, RE, FEIV, and REIV)
 
@@ -31,7 +31,7 @@ The complete tables of estimation results including the coefficients for each of
 
   * [Table 7b:](https://github.com/thornoe/energy/blob/master/results/ws_homoscedasticity_bp.md) Breusch-Pagan / Cook-Weisberg test for heteroskedasticity
 
-* [Table 8:](https://github.com/thornoe/energy/blob/master/results/reduced_form_price_791.md) Reduced form of log spot price for DK2, business days, hours 11-15 (POLS)
+* [Table 8:](https://github.com/thornoe/energy/blob/master/results/reduced_form_price_dk2.md) Reduced form of log spot price for DK2, business days, hours 11-15 (POLS)
 
 * [Table 9:](https://github.com/thornoe/energy/blob/master/results/ws_endog_overid_131.md) log wholesale electricity consumption for N1 (DK1), business days, hours 11-15
 
