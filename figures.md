@@ -2,10 +2,10 @@
 ![2](https://github.com/thornoe/energy/blob/master/latex/03_figures/cons_hours.png)
 
 **Figure 3:** Time series for mean electricity consumption (business days)
-![3](https://github.com/thornoe/energy/blob/master/latex/03_figures/cons_time series, business days.png)
+![3](https://github.com/thornoe/energy/blob/master/latex/03_figures/cons_time%20series,%20business%20days.png)
 
 **Figure 4:** Total consumption, wind power and spot price by hour (business days)
-![4](https://github.com/thornoe/energy/blob/master/latex/03_figures/trio_DK2_hours, business days.png)
+![4](https://github.com/thornoe/energy/blob/master/latex/03_figures/trio_DK2_hours,%20business%20days.png)
 
 **Figure 5:** Flex-settled and residual consumption by week (Radius, 2018)
 ![5](https://github.com/thornoe/energy/blob/master/latex/03_figures/03_figures/radius_w39_w40.png)
