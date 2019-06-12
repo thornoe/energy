@@ -11,6 +11,19 @@ os.chdir('C:/Users/thorn/Onedrive/Dokumenter/GitHub/energy/') # one level up
 # from scraping import scrape_cons
 # cons = scrape_cons(limit = 10000, sleeping = 10)
 
+##############################################################################
+#   EXAMPLE: Illustration of estimates and s.e.                              #
+##############################################################################
+xvals = range(10)
+means = [len(xvals) - i - randn() for i in xvals]
+upper = [m + 1 for m in means]
+lower = [m - 1 for m in means]
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.scatter(xvals, means, color = 'black')
+for x, low, high in zip(xvals, lower, upper):
+    ax.plot([x,x], [low, high], color = 'black')
 
 ##############################################################################
 #   WHOLESALE CONSUMPTION BY MONTH                                           #

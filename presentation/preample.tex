@@ -1,0 +1,87 @@
+\documentclass[8pt,apectratio=169]{beamer}
+
+\usetheme[progressbar=frametitle]{metropolis}
+\usepackage{appendixnumberbeamer}
+\usepackage[style=authoryear, backend=bibtex8, natbib=true, maxcitenames=2]{biblatex}
+
+\usepackage[utf8]{inputenc} % utf8x  defines more symbols, but may cause compatible problems
+\usepackage{lmodern,textcomp} % Latin Modern fonts, contains €
+
+\usepackage{graphicx}
+\usepackage{import}
+
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+% Math
+\usepackage{amsmath}
+\usepackage{bm} % bold symbol in math mode
+
+% Optional packages
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage[super,negative]{nth} % allows writing 1st, 2nd, 3rd with superscript
+%\usepackage{ulem} % use the "sout" tag to "strikethrough" text
+
+
+% Select what to do with command \comment:
+  % \newcommand{\comment}[1]{}  %comments not shown
+   \newcommand{\comment}[1]{\par {\bfseries \color{blue} #1 \par}} %comment showed
+
+% Select what to do with todonotes: i.e. \todo{}, \todo[inline]{}
+  % \usepackage[disable]{todonotes} % notes not shown
+  \usepackage[draft]{todonotes}   % notes shown
+
+  %\numberwithin{equation}{section}
+
+
+\addbibresource{bib_energy}
+
+\titlegraphic{\hfill \includegraphics[width=0.15 \textwidth]{graphics/logo}}
+\title{Heterogeneity in demand responses to electricity spot prices}
+\date{May 8 2019} % \today
+\author{Thor Donsby Noe
+        \and Cathrine Falbe Pedersen    }
+\institute{\normalsize Department of Economics,
+            University of Copenhagen \\
+            \small Seminar in Energy Economics w. Frederik Roose Øvlisen}
+%\institute{Department of Economics, University of Copenhagen}
+
+    % \definecolor{BlueTOL}{HTML}{222255}
+    \definecolor{BrownTOL}{HTML}{666633}
+    \definecolor{GreenTOL}{HTML}{225522}
+    % \setbeamercolor{normal text}{fg=BlueTOL,bg=white}
+    \setbeamercolor{alerted text}{fg=BrownTOL}
+    \setbeamercolor{example text}{fg=GreenTOL}
+
+    \setbeamercolor{block title alerted}{use=alerted text,
+        fg=alerted text.fg,
+        bg=}
+    \setbeamercolor{block body alerted}{use={block title alerted, alerted text},
+        fg=alerted text.fg,
+        bg=}
+    \setbeamercolor{block title example}{use=example text,
+        fg=example text.fg,
+        bg=}
+    \setbeamercolor{block body example}{use={block title example, example text},
+        fg=example text.fg,
+        bg=}
+
+    \setbeamercolor{block title alerted}{use=alerted text,
+        fg=alerted text.fg,
+        bg=alerted text.bg!80!alerted text.fg}
+    \setbeamercolor{block body alerted}{use={block title alerted, alerted text},
+        fg=alerted text.fg,
+        bg=block title alerted.bg!50!alerted text.bg}
+    \setbeamercolor{block title example}{use=example text,
+        fg=example text.fg,
+        bg=example text.bg!80!example text.fg}
+    \setbeamercolor{block body example}{use={block title example, example text},
+        fg=example text.fg,
+        bg=block title example.bg!50!example text.bg}
