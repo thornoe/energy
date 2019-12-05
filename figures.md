@@ -1,4 +1,4 @@
-*These 8 main figures are further described in our [seminar paper](https://github.com/thornoe/energy/blob/master/latex/main.pdf).*
+*The results presented in the eight figures below are further described in our [seminar paper](https://github.com/thornoe/energy/blob/master/latex/main.pdf).*
 
 **Figure 2:** Mean electricity consumption by hour and type
 ![2](https://github.com/thornoe/energy/blob/master/latex/03_figures/cons_hours.png)
