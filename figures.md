@@ -9,9 +9,6 @@
 **Figure 4:** Total consumption, wind power and spot price by hour (business days)
 ![4](https://github.com/thornoe/energy/blob/master/latex/03_figures/trio_DK2_hours,%20business%20days.png)
 
-**Figure 5:** Flex-settled and residual consumption by week (Radius, 2018)
-![5](https://github.com/thornoe/energy/blob/master/latex/03_figures/radius_w39_w40.png)
-
 **Figure 6:** Wind power prognosis and spot price by week (DK1)
 ![6](https://github.com/thornoe/energy/blob/master/latex/03_figures/wp_DK1_weeks.png)
 
