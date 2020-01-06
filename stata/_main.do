@@ -18,7 +18,7 @@ global results	"C:\Users\thorn\OneDrive\Dokumenter\GitHub\energy\results"
 
 
 *** Global variable lists ***
-/* 	'omit' is ignored during the 1st stage of P2SLS nor G2SLS, thus, for consistent
+/* 	'omit' is ignored during the 1st stage of P2SLS and G2SLS, thus, for consistent
 	 interpretation we need to control how multicollinearity is avoided */
 * Wholesale:
 global x_w "n_w temp* trend i.year i.week" // daytime only relevant for shoulder and off-peak
