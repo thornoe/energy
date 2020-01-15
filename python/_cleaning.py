@@ -55,7 +55,7 @@ for i in ['370', '371', '587', '588', '590', '591']:
     wide.drop(i, level=0, inplace=True)
 
 ### Drop aggregate row and save ###
-wide.drop('Hovedtotal', level=0, inplace=True) # 48 grids in total without Dinel+Læsø
+wide.drop('Hovedtotal', level=0, inplace=True) # 48 grids in total
 wide.to_excel('python/grids.xlsx', index=True)
 
 ### Long format ###
