@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import os
 
-os.chdir('C:/Users/thorn/Onedrive/Dokumenter/GitHub/energy/') # one level up
+os.chdir('C:/Users/jwz766/Documents/GitHub/energy/') # one level up
 
 # from scraping import scrape_cons
 # cons = scrape_cons(limit = 10000, sleeping = 10)
@@ -91,8 +91,8 @@ for row in range(len(mergers)):
     m = mergers[row][0]
     overtaken = mergers[row][1]
     df = cons[cons.grid==m]
-    for i in overtaken:
-        df = pd.merge(df, cons[cons.grid==i], how='outer',\ # 'outer' as 'Dinel' lacks early observations
+    for i in overtaken: # 'outer' as 'Dinel' lacks early observations
+        df = pd.merge(df, cons[cons.grid==i], how='outer',\
                         on=['date','hour'], suffixes=['', '_r']).fillna(0)
         for var in ['hourly', 'flex', 'residual']:
             df[var] = df[var] + df[str(var+'_r')]
@@ -132,7 +132,7 @@ grids['DK1'] = grids['grid'] < 700
 grids['DK1'] = grids['DK1'].astype(int)
 
 ### Prices and wind power prognosis in the relevant price area ###
-grids['p'] = (grids['P_DK1']*grids['DK1']+grids['P_DK2']*(1-grids['DK1']))
+grids['p'] = (grids['p_DK1']*grids['DK1']+grids['p_DK2']*(1-grids['DK1']))
 grids['wp'] = (grids['wp_DK1']*grids['DK1']+grids['wp_DK2']*(1-grids['DK1']))
 grids['wp_other'] = (grids['wp_DK1']*(1-grids['DK1'])+grids['wp_DK2']*grids['DK1'])
 grids['wp_se'] = grids['wp_SE']
@@ -144,7 +144,7 @@ grids['month'], grids['year'] = grids['date'].dt.month, grids['date'].dt.year
 grids = pd.merge(grids, meters, how='inner', on=['month', 'year', 'grid'])
 
 ### Drop columns ###
-grids.drop(['P_DK1','P_DK2','wp_SE','month','year'], axis=1, inplace=True)
+grids.drop(['p_DK1','p_DK2','wp_SE','month','year'], axis=1, inplace=True)
 
 grids.head(2)
 
@@ -280,6 +280,13 @@ print('Full rank:',
       '\nMissing observations:',
       full_rank - data['grid'].value_counts(dropna=False).mean())
 
+##############################################################################
+#   EXPORT DATASET FOR DESCRIPTIVE STATISTICS                                #
+##############################################################################
+
+### To CSV for plots ###
+data.to_csv('python/data.csv', index=False)
+
 
 ##############################################################################
 #   DATA SET FOR STATA                                                       #
@@ -310,14 +317,6 @@ ds2 = ds2[['date', 's_tout']]
 ds2.columns = ['date', 's_radius']
 ds = pd.merge(ds, ds2, how='inner', on='date')
 
-
-##############################################################################
-#   EXPORT READY DATASETS                                                    #
-##############################################################################
 ### To DTA for STATA ###
 ds.to_stata('D:/Google Drev/KU Thor/Energy Economics/Data/data_stata.dta', write_index=False) # too big for GitHub
 ds.columns.values
-
-
-### To CSV for plots ###
-data.to_csv('python/data.csv', index=False)

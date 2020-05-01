@@ -9,7 +9,7 @@ import matplotlib.dates as mdates
 import os
 
 # Set working folder
-os.chdir('C:/Users/thorn/Onedrive/Dokumenter/GitHub/energy/') # one level up
+os.chdir('C:/Users/jwz766/Documents/GitHub/energy/') # one level up
 
 # Load data
 data = pd.read_csv('python/data.csv')
